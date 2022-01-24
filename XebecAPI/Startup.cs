@@ -42,7 +42,7 @@ namespace XebecAPI
 
 
             services.AddTransient<IUsersCustomRepo, UsersCustomRepo>();
-
+            services.AddTransient<IJobsCustomRepo, JobsCustomRepo>();
             services.AddTransient<IApplicationPhaseHelperRepository, ApplicationPhaseHelperRepository>();
 
 

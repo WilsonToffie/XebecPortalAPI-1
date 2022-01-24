@@ -20,11 +20,13 @@ namespace XebecAPI.Controllers
     public class JobController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IJobsCustomRepo jobsCustomRepo;
         private readonly IMapper mapper;
 
-        public JobController(IUnitOfWork unitOfWork, IMapper mapper)
+        public JobController(IUnitOfWork unitOfWork, IJobsCustomRepo jobsCustomRepo, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.jobsCustomRepo = jobsCustomRepo;
             this.mapper = mapper;
         }
 
@@ -36,8 +38,8 @@ namespace XebecAPI.Controllers
         {
             try
             {
-                var Jobs = await _unitOfWork.Jobs.GetAll();
-             
+                var Jobs = await jobsCustomRepo.GetAllJobsFullDetails();
+                Jobs = Jobs.GroupBy(p => p.Id).Select(x => x.First()).ToList();
                 return Ok(Jobs);
 
             }
@@ -55,7 +57,8 @@ namespace XebecAPI.Controllers
         {
             try
             {
-                var Job = await _unitOfWork.Jobs.GetT(q => q.Id == id);
+ 
+                var Job = await jobsCustomRepo.GetJobTDetails(id);
                 return Ok(Job);
             }
             catch (Exception e)
