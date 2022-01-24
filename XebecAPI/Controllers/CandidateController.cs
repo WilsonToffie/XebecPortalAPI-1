@@ -1,0 +1,124 @@
+﻿using AutoMapper;
+using XebecAPI.Data;
+using XebecAPI.IRepositories;
+using XebecAPI.Shared;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace XebecAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CandidateController : ControllerBase
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUsersCustomRepo usersCustomRepo;
+        private readonly IMapper mapper;
+
+        public CandidateController(IUnitOfWork unitOfWork, IUsersCustomRepo _usersCustomRepo, IMapper mapper)
+        {
+            _unitOfWork = unitOfWork;
+            usersCustomRepo = _usersCustomRepo;
+            this.mapper = mapper;
+        }
+
+        // GET: api/<CandidateConroller>
+        // Get all Role == Candidate
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetCandidates()
+        {
+            try
+            {
+                var Candidate = await _unitOfWork.AppUsers.GetAll(q => q.Role == "Candidate");
+
+                return Ok(Candidate);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET api/<Candidate>/5
+        // Get Single Candidate
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCandidate(int id)
+        {
+            try
+            {
+                var Candidate = await _unitOfWork.AppUsers.GetT(q => q.Id == id && q.Role == "Candidate");
+                return Ok(Candidate);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        //get by appuserId
+        // GET api/<PersonalInformationController>/5
+       
+        //get by appuserId
+        // GET api/<PersonalInformationController>/5
+        [HttpGet("all/{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetPersonalInformationsByUserID(int id)
+        {
+            try
+            {
+                var PersonalInformation = await _unitOfWork.PersonalInformation.GetAll(q => q.AppUserId == id);
+                return Ok(PersonalInformation);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        
+
+        // GET api/<PersonalInformationController>candidates/15
+        [HttpGet("candidates")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> SearchCandidate([FromQuery] string role, [FromQuery] string name )
+        {
+            try
+            {
+                
+                var candidateInfo = await usersCustomRepo.SearchCandidate(role, name);
+
+                return Ok(candidateInfo);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+       
+
+       
+
+       
+
+
+       
+
+       
+    }
+}
