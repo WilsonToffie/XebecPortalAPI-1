@@ -92,6 +92,40 @@ namespace XebecAPI.Repositories
             return await queryFinal.AsNoTracking().ToListAsync();
         }
 
+        public async Task<List<ApplicantViewModel>> GetallApplicants()
+        {
+            IQueryable<ApplicantViewModel> queryFinal;
+            Random r = new Random();
+            int i = 1;
+            string[] Comments = new[]
+            {
+            "Awaiting resutls", "Good Choice", "Has Portential", "No Potential", "I like a lot", "Overqualified", "Balmy", "I don't know", "Maybe in the future?", "@Merril it's yours"
+            };
+            IQueryable<Application> queryapps = from applications in _context.Applications
+                                                select applications;
+            //IQueryable<PersonalInformation> queryFinal = _context.PersonalInformations.
+            //    FromSqlRaw("SELECT * from PersonalInformations Where UserId IN (SELECT UserId FROM Applications where JobId = @jobId)", job);
+
+
+            queryFinal = from apps in queryapps
+                         join phase in _context.ApplicationPhasesHelpers.Include(a => a.ApplicationPhase)
+                         on apps.Id equals phase.ApplicationId
+                         join personal in _context.PersonalInformations
+                         on apps.AppUserId equals personal.AppUserId
+                         select new ApplicantViewModel()
+                         {
+                             Id = apps.AppUserId,
+                             FirstName = personal.FirstName,
+                             LastName = personal.LastName,
+                             CstComment = Comments[r.Next(Comments.Length)],
+                             CstMark = r.Next(1, 6),
+                             InterviewComment = Comments[r.Next(Comments.Length)],
+                             InterviewRating = r.Next(1, 6),
+                             Phase = phase.ApplicationPhase.Description
+                         };
+            return await queryFinal.AsNoTracking().ToListAsync();
+        }
+
         public async Task<List<ApplicantViewModel>> GetApplicants(int jobId)
         {
             IQueryable<ApplicantViewModel> queryFinal;

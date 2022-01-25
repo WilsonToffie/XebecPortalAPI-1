@@ -27,6 +27,29 @@ namespace XebecAPI.Controllers
         }
 
         // GET: api/<ApplicationsController>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllApplicants()
+        {
+            try
+            {
+                var Applications = await _unitOfWork.GetallApplicants();
+                if (Applications.Count < 1)
+                {
+                    return StatusCode(StatusCodes.Status412PreconditionFailed);
+                }
+
+                return Ok(Applications);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET: api/<ApplicationsController>
         [HttpGet("{jobId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
