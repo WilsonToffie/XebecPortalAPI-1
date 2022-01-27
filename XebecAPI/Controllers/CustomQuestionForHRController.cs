@@ -33,7 +33,7 @@ namespace XebecAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetQuestionHRForms()
         {
             try
             {
@@ -52,7 +52,7 @@ namespace XebecAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<IActionResult> GetQuestionnaireHRForm(int id)
         {
             try
             {
@@ -65,10 +65,22 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<UsersController>/email=test@test.com
 
-
-        // GET api/<UserController>/role=candidate
+        [HttpGet("HR/{HRJobId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetQuestionnaireHRFormByJobId(int HRJobId)
+        {
+            try
+            {
+                var user = await _unitOfWork.QuestionnaireHRForms.GetT(q => q.JobId == HRJobId);
+                return Ok(user);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
 
 
         // POST api/<UsersController>
