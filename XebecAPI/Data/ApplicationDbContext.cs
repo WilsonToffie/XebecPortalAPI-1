@@ -44,6 +44,8 @@ namespace XebecAPI.Data
         public DbSet<JobApplicationPhase> JobApplicationPhases { get; set; }
         public DbSet<Question> Questions { get; set; }
 
+        public DbSet<AnswerType> AnswerTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

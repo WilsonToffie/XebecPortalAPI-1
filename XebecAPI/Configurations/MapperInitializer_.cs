@@ -35,6 +35,7 @@ namespace XebecAPI.Configurations
             CreateMap<QuestionnaireApplicantForm, QuestionnaireApplicantFormDTO>().ReverseMap();
             CreateMap<QuestionnaireHRForm, QuestionnaireHRFormDTO>().ReverseMap();
             CreateMap<DeveloperAssigned, DeveloperAssignedDTO>().ReverseMap();
+            CreateMap<AnswerType, AnswerTypeDTO>().ReverseMap();
         }
 
     }

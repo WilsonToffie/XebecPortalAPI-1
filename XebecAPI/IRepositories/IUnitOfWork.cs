@@ -48,6 +48,8 @@ namespace XebecAPI.IRepositories
 
         IGenericRepository<Question> Questions { get; }
 
+        IGenericRepository<AnswerType> AnswerTypes{ get; }
+
 
         //Saving to the DB
         Task Save();

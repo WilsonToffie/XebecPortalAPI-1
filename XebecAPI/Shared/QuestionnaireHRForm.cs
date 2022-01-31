@@ -15,5 +15,11 @@ namespace XebecAPI.Shared
         //Foreign Key: Job
         public int JobId { get; set; }
         public Job Job { get; set; }
+
+        //Foreign Key: AnswerType 
+
+        public int AnswerTypeId { get; set; }
+
+        public AnswerType AnswerType { get; set; }
     }
 }

@@ -51,6 +51,7 @@ namespace XebecAPI.Repositories
         private IGenericRepository<JobApplicationPhase> _jobApplicationPhase;
         private IGenericRepository<ApplicationSubPhase> _applicationSubPhase;
         private IGenericRepository<Question> _question;
+        private IGenericRepository<AnswerType> _answerType;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -104,6 +105,8 @@ namespace XebecAPI.Repositories
         public IGenericRepository<JobApplicationPhase> JobApplicationPhases => _jobApplicationPhase ??= new GenericRepository<JobApplicationPhase>(_context);
 
         public IGenericRepository<Question> Questions => _question ??= new GenericRepository<Question>(_context);
+
+        public IGenericRepository<AnswerType> AnswerTypes => _answerType ??= new GenericRepository<AnswerType>(_context);
 
 
         public void Dispose()
