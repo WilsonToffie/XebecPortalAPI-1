@@ -8,12 +8,26 @@ namespace XebecAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AnswerTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnswerTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ApplicationPhases",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailTemplate = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -102,19 +116,6 @@ namespace XebecAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Questions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    QuestionDescription = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Questions", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Statuses",
                 columns: table => new
                 {
@@ -125,6 +126,26 @@ namespace XebecAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Statuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    QuestionDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AnswerTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Questions_AnswerTypes_AnswerTypeId",
+                        column: x => x.AnswerTypeId,
+                        principalTable: "AnswerTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -331,15 +352,16 @@ namespace XebecAPI.Migrations
                 name: "Applications",
                 columns: table => new
                 {
-                    JobId = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     TimeApplied = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BeginApplication = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    BeginApplication = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    JobId = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Applications", x => new { x.AppUserId, x.JobId });
+                    table.PrimaryKey("PK_Applications", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Applications_AppUser_AppUserId",
                         column: x => x.AppUserId,
@@ -355,49 +377,17 @@ namespace XebecAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DevelopersAssigned",
+                name: "JobApplicationPhases",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     JobId = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<int>(type: "int", nullable: false),
                     ApplicationPhaseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DevelopersAssigned", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DevelopersAssigned_ApplicationPhases_ApplicationPhaseId",
-                        column: x => x.ApplicationPhaseId,
-                        principalTable: "ApplicationPhases",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DevelopersAssigned_AppUser_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AppUser",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DevelopersAssigned_Jobs_JobId",
-                        column: x => x.JobId,
-                        principalTable: "Jobs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "JobApplicationPhases",
-                columns: table => new
-                {
-                    JobId = table.Column<int>(type: "int", nullable: false),
-                    ApplicationPhaseId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobApplicationPhases", x => new { x.ApplicationPhaseId, x.JobId });
+                    table.PrimaryKey("PK_JobApplicationPhases", x => x.Id);
                     table.ForeignKey(
                         name: "FK_JobApplicationPhases_ApplicationPhases_ApplicationPhaseId",
                         column: x => x.ApplicationPhaseId,
@@ -416,13 +406,14 @@ namespace XebecAPI.Migrations
                 name: "JobPlatformHelpers",
                 columns: table => new
                 {
-                    JobId = table.Column<int>(type: "int", nullable: false),
-                    JobPlatformId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    JobId = table.Column<int>(type: "int", nullable: false),
+                    JobPlatformId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobPlatformHelpers", x => new { x.JobPlatformId, x.JobId });
+                    table.PrimaryKey("PK_JobPlatformHelpers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_JobPlatformHelpers_JobPlatforms_JobPlatformId",
                         column: x => x.JobPlatformId,
@@ -445,11 +436,18 @@ namespace XebecAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Question = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    JobId = table.Column<int>(type: "int", nullable: false)
+                    JobId = table.Column<int>(type: "int", nullable: false),
+                    AnswerTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_QuestionnaireHRForms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_QuestionnaireHRForms_AnswerTypes_AnswerTypeId",
+                        column: x => x.AnswerTypeId,
+                        principalTable: "AnswerTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_QuestionnaireHRForms_Jobs_JobId",
                         column: x => x.JobId,
@@ -462,13 +460,14 @@ namespace XebecAPI.Migrations
                 name: "JobTypeHelpers",
                 columns: table => new
                 {
-                    JobId = table.Column<int>(type: "int", nullable: false),
-                    JobTypeId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    JobId = table.Column<int>(type: "int", nullable: false),
+                    JobTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobTypeHelpers", x => new { x.JobTypeId, x.JobId });
+                    table.PrimaryKey("PK_JobTypeHelpers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_JobTypeHelpers_Jobs_JobId",
                         column: x => x.JobId,
@@ -487,19 +486,18 @@ namespace XebecAPI.Migrations
                 name: "ApplicationPhasesHelpers",
                 columns: table => new
                 {
-                    ApplicationId = table.Column<int>(type: "int", nullable: false),
-                    ApplicationPhaseId = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     TimeMoved = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<float>(type: "real", nullable: false),
-                    ApplicationAppUserId = table.Column<int>(type: "int", nullable: false),
-                    ApplicationJobId = table.Column<int>(type: "int", nullable: false)
+                    ApplicationId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationPhaseId = table.Column<int>(type: "int", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationPhasesHelpers", x => new { x.ApplicationId, x.ApplicationPhaseId, x.StatusId });
+                    table.PrimaryKey("PK_ApplicationPhasesHelpers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ApplicationPhasesHelpers_ApplicationPhases_ApplicationPhaseId",
                         column: x => x.ApplicationPhaseId,
@@ -507,10 +505,10 @@ namespace XebecAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicationPhasesHelpers_Applications_ApplicationAppUserId_ApplicationJobId",
-                        columns: x => new { x.ApplicationAppUserId, x.ApplicationJobId },
+                        name: "FK_ApplicationPhasesHelpers_Applications_ApplicationId",
+                        column: x => x.ApplicationId,
                         principalTable: "Applications",
-                        principalColumns: new[] { "AppUserId", "JobId" },
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ApplicationPhasesHelpers_Statuses_StatusId",
@@ -553,9 +551,9 @@ namespace XebecAPI.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationPhasesHelpers_ApplicationAppUserId_ApplicationJobId",
+                name: "IX_ApplicationPhasesHelpers_ApplicationId",
                 table: "ApplicationPhasesHelpers",
-                columns: new[] { "ApplicationAppUserId", "ApplicationJobId" });
+                column: "ApplicationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationPhasesHelpers_ApplicationPhaseId",
@@ -568,6 +566,11 @@ namespace XebecAPI.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Applications_AppUserId",
+                table: "Applications",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Applications_JobId",
                 table: "Applications",
                 column: "JobId");
@@ -576,21 +579,6 @@ namespace XebecAPI.Migrations
                 name: "IX_ApplicationSubPhases_ApplicationPhaseId",
                 table: "ApplicationSubPhases",
                 column: "ApplicationPhaseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DevelopersAssigned_ApplicationPhaseId",
-                table: "DevelopersAssigned",
-                column: "ApplicationPhaseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DevelopersAssigned_AppUserId",
-                table: "DevelopersAssigned",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DevelopersAssigned_JobId",
-                table: "DevelopersAssigned",
-                column: "JobId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documents_AppUserId",
@@ -603,6 +591,11 @@ namespace XebecAPI.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_JobApplicationPhases_ApplicationPhaseId",
+                table: "JobApplicationPhases",
+                column: "ApplicationPhaseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JobApplicationPhases_JobId",
                 table: "JobApplicationPhases",
                 column: "JobId");
@@ -613,9 +606,19 @@ namespace XebecAPI.Migrations
                 column: "JobId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_JobPlatformHelpers_JobPlatformId",
+                table: "JobPlatformHelpers",
+                column: "JobPlatformId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JobTypeHelpers_JobId",
                 table: "JobTypeHelpers",
                 column: "JobId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobTypeHelpers_JobTypeId",
+                table: "JobTypeHelpers",
+                column: "JobTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LoginHelpers_AppUserId",
@@ -643,9 +646,19 @@ namespace XebecAPI.Migrations
                 column: "QuestionnaireHRFormId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_QuestionnaireHRForms_AnswerTypeId",
+                table: "QuestionnaireHRForms",
+                column: "AnswerTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_QuestionnaireHRForms_JobId",
                 table: "QuestionnaireHRForms",
                 column: "JobId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Questions_AnswerTypeId",
+                table: "Questions",
+                column: "AnswerTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RegisterHelpers_AppUserId",
@@ -668,9 +681,6 @@ namespace XebecAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "ApplicationSubPhases");
-
-            migrationBuilder.DropTable(
-                name: "DevelopersAssigned");
 
             migrationBuilder.DropTable(
                 name: "Documents");
@@ -731,6 +741,9 @@ namespace XebecAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "AppUser");
+
+            migrationBuilder.DropTable(
+                name: "AnswerTypes");
 
             migrationBuilder.DropTable(
                 name: "Jobs");
