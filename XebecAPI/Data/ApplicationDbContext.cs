@@ -39,7 +39,6 @@ namespace XebecAPI.Data
         public DbSet<ProfilePortfolioLink> ProfilePortfolioLinks { get; set; }
         public DbSet<QuestionnaireHRForm> QuestionnaireHRForms { get; set; }
         public DbSet<QuestionnaireApplicantForm> QuestionnaireApplicantForms { get; set; }
-        public DbSet<DeveloperAssigned> DevelopersAssigned { get; set; }
         public DbSet<ApplicationSubPhase> ApplicationSubPhases { get; set; }
         public DbSet<JobApplicationPhase> JobApplicationPhases { get; set; }
         public DbSet<Question> Questions { get; set; }
@@ -50,11 +49,7 @@ namespace XebecAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);   
-            modelBuilder.Entity<ApplicationPhaseHelper>().HasKey(ap => new { ap.ApplicationId, ap.ApplicationPhaseId, ap.StatusId });
-            modelBuilder.Entity<JobApplicationPhase>().HasKey(ja => new { ja.ApplicationPhaseId, ja.JobId });
-            modelBuilder.Entity<Application>().HasKey(a => new { a.AppUserId, a.JobId });
-            modelBuilder.Entity<JobTypeHelper>().HasKey(jt => new { jt.JobTypeId, jt.JobId });
-            modelBuilder.Entity<JobPlatformHelper>().HasKey(jp => new { jp.JobPlatformId, jp.JobId });
+           
         }
 
     }

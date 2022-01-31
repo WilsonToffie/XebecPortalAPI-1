@@ -73,8 +73,8 @@ namespace XebecAPI.Controllers
         {
             try
             {
-                var user = await _unitOfWork.QuestionnaireHRForms.GetT(q => q.JobId == HRJobId);
-                return Ok(user);
+                var questions = await _unitOfWork.QuestionnaireHRForms.GetAll(q => q.JobId == HRJobId);
+                return Ok(questions);
             }
             catch (Exception e)
             {
