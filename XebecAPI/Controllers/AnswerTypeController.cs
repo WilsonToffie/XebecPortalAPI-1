@@ -1,47 +1,40 @@
 ﻿using AutoMapper;
-using XebecAPI.Data;
-using XebecAPI.IRepositories;
-using XebecAPI.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using XebecAPI.Shared.Security;
 using XebecAPI.DTOs;
-
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using XebecAPI.IRepositories;
+using XebecAPI.Shared;
 
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DeveloperAssignedController : ControllerBase
+    public class AnswerTypeController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper mapper;
-        private readonly IUsersCustomRepo usersCustomRepo;
 
-        public DeveloperAssignedController(IUnitOfWork unitOfWork, IMapper mapper, IUsersCustomRepo usersCustomRepo)
+        public AnswerTypeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
-            this.usersCustomRepo = usersCustomRepo;
         }
 
-        // GET: api/<UsersController>
+        // GET: api/<AdditionalInformationController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetDevelopersAssigned()
+        public async Task<IActionResult> GetAnswerTypes()
         {
             try
             {
-                var users = await _unitOfWork.DevelopersAssigned.GetAll();
+                var Type = await _unitOfWork.AnswerTypes.GetAll();
 
-                return Ok(users);
+                return Ok(Type);
 
             }
             catch (Exception e)
@@ -50,16 +43,16 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<UsersController>/5
+        // GET api/<AdditionalInformationController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetDeveloperAssigned(int id)
+        public async Task<IActionResult> GetAnswerType(int id)
         {
             try
             {
-                var user = await _unitOfWork.DevelopersAssigned.GetT(q => q.Id == id);
-                return Ok(user);
+                var Type = await _unitOfWork.AnswerTypes.GetT(q => q.Id == id);
+                return Ok(Type);
             }
             catch (Exception e)
             {
@@ -67,17 +60,13 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<UserController>/role=candidate
-
-
-        // POST api/<UsersController>
-        [HttpPost("jobId")]
+        // POST api/<AdditionalInformationController>
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateJobApplicationPhase(int jobId, int userId, [FromBody] int[] listofId)
+        public async Task<IActionResult> CreateType([FromBody] AnswerType Type)
         {
-            List<DeveloperAssigned> jobApplicationPhase = new List<DeveloperAssigned>();
 
             if (!ModelState.IsValid)
             {
@@ -89,23 +78,11 @@ namespace XebecAPI.Controllers
             try
             {
 
-                //var jobs = _unitOfWork.Jobs.GetAll();
-                //var job = jobs.Result.LastOrDefault();
-                
-                foreach (var items in listofId)
-                {
-                    jobApplicationPhase.Add(new DeveloperAssigned
-                    {
-                        JobId = jobId,
-                        ApplicationPhaseId = items,
-                        AppUserId = userId
-                    });
-                }
-                await _unitOfWork.DevelopersAssigned.InsertRange(jobApplicationPhase);
-
+                await _unitOfWork.AnswerTypes.Insert(Type);
                 await _unitOfWork.Save();
 
-                return NoContent();
+                return CreatedAtAction("GetType", new { id = Type.Id }, Type);
+
             }
             catch (Exception e)
             {
@@ -117,9 +94,10 @@ namespace XebecAPI.Controllers
 
         }
 
-        // PUT api/<UsersController>/5
+
+        // PUT api/<AdditionalInformationController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] DeveloperAssignedDTO user)
+        public async Task<IActionResult> UpdateType(int id, [FromBody] AnswerTypeDTO Type)
         {
             if (!ModelState.IsValid)
             {
@@ -128,14 +106,14 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var originalUser = await _unitOfWork.DevelopersAssigned.GetT(q => q.Id == id);
+                var originalType = await _unitOfWork.AnswerTypes.GetT(q => q.Id == id);
 
-                if (originalUser == null)
+                if (originalType == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                mapper.Map(user, originalUser);
-                _unitOfWork.DevelopersAssigned.Update(originalUser);
+                mapper.Map(Type, originalType);
+                _unitOfWork.AnswerTypes.Update(originalType);
                 await _unitOfWork.Save();
 
                 return NoContent();
@@ -149,12 +127,12 @@ namespace XebecAPI.Controllers
         }
 
 
-        // DELETE api/<UsersController>/5
+        // DELETE api/<AdditionalInformationController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteType(int id)
         {
             if (id < 1)
             {
@@ -163,14 +141,14 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var user = await _unitOfWork.JobApplicationPhases.GetT(q => q.Id == id);
+                var Type= await _unitOfWork.AnswerTypes.GetT(q => q.Id == id);
 
-                if (user == null)
+                if (Type == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
 
-                await _unitOfWork.JobApplicationPhases.Delete(id);
+                await _unitOfWork.AnswerTypes.Delete(id);
                 await _unitOfWork.Save();
 
                 return NoContent();

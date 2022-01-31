@@ -47,10 +47,10 @@ namespace XebecAPI.Repositories
 
         private IGenericRepository<QuestionnaireHRForm> _customQuestionsForHR;
         private IGenericRepository<QuestionnaireApplicantForm> _customQuestionsForApplicant;
-        private IGenericRepository<DeveloperAssigned> _developersassinged;
         private IGenericRepository<JobApplicationPhase> _jobApplicationPhase;
         private IGenericRepository<ApplicationSubPhase> _applicationSubPhase;
         private IGenericRepository<Question> _question;
+        private IGenericRepository<AnswerType> _answerType;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -97,13 +97,13 @@ namespace XebecAPI.Repositories
 
         public IGenericRepository<QuestionnaireHRForm> QuestionnaireHRForms => _customQuestionsForHR ??= new GenericRepository<QuestionnaireHRForm>(_context);
 
-        public IGenericRepository<DeveloperAssigned> DevelopersAssigned => _developersassinged ??= new GenericRepository<DeveloperAssigned>(_context);
-
         public IGenericRepository<ApplicationSubPhase> ApplicationSubPhases => _applicationSubPhase ??= new GenericRepository<ApplicationSubPhase>(_context);
 
         public IGenericRepository<JobApplicationPhase> JobApplicationPhases => _jobApplicationPhase ??= new GenericRepository<JobApplicationPhase>(_context);
 
         public IGenericRepository<Question> Questions => _question ??= new GenericRepository<Question>(_context);
+
+        public IGenericRepository<AnswerType> AnswerTypes => _answerType ??= new GenericRepository<AnswerType>(_context);
 
 
         public void Dispose()
