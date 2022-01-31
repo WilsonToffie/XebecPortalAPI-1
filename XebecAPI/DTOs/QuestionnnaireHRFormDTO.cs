@@ -13,5 +13,8 @@ namespace XebecAPI.DTOs
         public string Answer { get; set; }
         public int JobId { get; set; }
         public JobDTO Job { get; set; }
+
+        public int AnswerTypeId { get; set; }
+        public AnswerTypeDTO AnswerType { get; set; }
     }
 }

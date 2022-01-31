@@ -45,24 +45,43 @@ namespace XebecAPI.Migrations
                     b.ToTable("AdditionalInformations");
                 });
 
+            modelBuilder.Entity("XebecAPI.Shared.AnswerType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AnswerTypes");
+                });
+
             modelBuilder.Entity("XebecAPI.Shared.Application", b =>
                 {
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("JobId")
+                    b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("BeginApplication")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("JobId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TimeApplied")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("AppUserId", "JobId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("JobId");
 
@@ -79,6 +98,9 @@ namespace XebecAPI.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("EmailTemplate")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("ApplicationPhases");
@@ -86,40 +108,36 @@ namespace XebecAPI.Migrations
 
             modelBuilder.Entity("XebecAPI.Shared.ApplicationPhaseHelper", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("ApplicationId")
                         .HasColumnType("int");
 
                     b.Property<int>("ApplicationPhaseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ApplicationAppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ApplicationJobId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<float>("Rating")
                         .HasColumnType("real");
 
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("TimeMoved")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ApplicationId", "ApplicationPhaseId", "StatusId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
 
                     b.HasIndex("ApplicationPhaseId");
 
                     b.HasIndex("StatusId");
-
-                    b.HasIndex("ApplicationAppUserId", "ApplicationJobId");
 
                     b.ToTable("ApplicationPhasesHelpers");
                 });
@@ -142,33 +160,6 @@ namespace XebecAPI.Migrations
                     b.HasIndex("ApplicationPhaseId");
 
                     b.ToTable("ApplicationSubPhases");
-                });
-
-            modelBuilder.Entity("XebecAPI.Shared.DeveloperAssigned", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ApplicationPhaseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("JobId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("ApplicationPhaseId");
-
-                    b.HasIndex("JobId");
-
-                    b.ToTable("DevelopersAssigned");
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.Document", b =>
@@ -265,16 +256,20 @@ namespace XebecAPI.Migrations
 
             modelBuilder.Entity("XebecAPI.Shared.JobApplicationPhase", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("ApplicationPhaseId")
                         .HasColumnType("int");
 
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("ApplicationPhaseId", "JobId");
+                    b.HasIndex("ApplicationPhaseId");
 
                     b.HasIndex("JobId");
 
@@ -298,18 +293,22 @@ namespace XebecAPI.Migrations
 
             modelBuilder.Entity("XebecAPI.Shared.JobPlatformHelper", b =>
                 {
-                    b.Property<int>("JobPlatformId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("JobPlatformId")
                         .HasColumnType("int");
 
-                    b.HasKey("JobPlatformId", "JobId");
+                    b.HasKey("Id");
 
                     b.HasIndex("JobId");
+
+                    b.HasIndex("JobPlatformId");
 
                     b.ToTable("JobPlatformHelpers");
                 });
@@ -331,18 +330,22 @@ namespace XebecAPI.Migrations
 
             modelBuilder.Entity("XebecAPI.Shared.JobTypeHelper", b =>
                 {
-                    b.Property<int>("JobTypeId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("JobTypeId")
                         .HasColumnType("int");
 
-                    b.HasKey("JobTypeId", "JobId");
+                    b.HasKey("Id");
 
                     b.HasIndex("JobId");
+
+                    b.HasIndex("JobTypeId");
 
                     b.ToTable("JobTypeHelpers");
                 });
@@ -444,10 +447,15 @@ namespace XebecAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AnswerTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("QuestionDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnswerTypeId");
 
                     b.ToTable("Questions");
                 });
@@ -487,6 +495,9 @@ namespace XebecAPI.Migrations
                     b.Property<string>("Answer")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("AnswerTypeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
@@ -494,6 +505,8 @@ namespace XebecAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnswerTypeId");
 
                     b.HasIndex("JobId");
 
@@ -653,6 +666,12 @@ namespace XebecAPI.Migrations
 
             modelBuilder.Entity("XebecAPI.Shared.ApplicationPhaseHelper", b =>
                 {
+                    b.HasOne("XebecAPI.Shared.Application", "Application")
+                        .WithMany("PhaseHelpers")
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("XebecAPI.Shared.ApplicationPhase", "ApplicationPhase")
                         .WithMany("PhaseHelpers")
                         .HasForeignKey("ApplicationPhaseId")
@@ -662,12 +681,6 @@ namespace XebecAPI.Migrations
                     b.HasOne("XebecAPI.Shared.Status", "Status")
                         .WithMany("PhaseHelpers")
                         .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("XebecAPI.Shared.Application", "Application")
-                        .WithMany("PhaseHelpers")
-                        .HasForeignKey("ApplicationAppUserId", "ApplicationJobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -687,33 +700,6 @@ namespace XebecAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationPhase");
-                });
-
-            modelBuilder.Entity("XebecAPI.Shared.DeveloperAssigned", b =>
-                {
-                    b.HasOne("XebecAPI.Shared.Security.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("XebecAPI.Shared.ApplicationPhase", "ApplicationPhase")
-                        .WithMany()
-                        .HasForeignKey("ApplicationPhaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("XebecAPI.Shared.Job", "Job")
-                        .WithMany()
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationPhase");
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.Document", b =>
@@ -828,6 +814,17 @@ namespace XebecAPI.Migrations
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("XebecAPI.Shared.Question", b =>
+                {
+                    b.HasOne("XebecAPI.Shared.AnswerType", "AnswerType")
+                        .WithMany()
+                        .HasForeignKey("AnswerTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AnswerType");
+                });
+
             modelBuilder.Entity("XebecAPI.Shared.QuestionnaireApplicantForm", b =>
                 {
                     b.HasOne("XebecAPI.Shared.Security.AppUser", "User")
@@ -849,11 +846,19 @@ namespace XebecAPI.Migrations
 
             modelBuilder.Entity("XebecAPI.Shared.QuestionnaireHRForm", b =>
                 {
+                    b.HasOne("XebecAPI.Shared.AnswerType", "AnswerType")
+                        .WithMany()
+                        .HasForeignKey("AnswerTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("XebecAPI.Shared.Job", "Job")
                         .WithMany()
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AnswerType");
 
                     b.Navigation("Job");
                 });
