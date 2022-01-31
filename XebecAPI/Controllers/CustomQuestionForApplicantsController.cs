@@ -65,10 +65,40 @@ namespace XebecAPI.Controllers
         }
 
         // GET api/<UsersController>/email=test@test.com
-        
 
-        // GET api/<UserController>/role=candidate
-        
+
+        [HttpPost("list")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateQuestionsForForm(List<QuestionnaireApplicantForm> lstquestions)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+
+            try
+            {
+                await _unitOfWork.QuestionnaireApplicantForms.InsertRange(lstquestions);
+
+                await _unitOfWork.Save();
+
+                return AcceptedAtAction("GetQuestionnaire");
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    e.InnerException);
+            }
+
+
+        }
+
 
         // POST api/<UsersController>
         [HttpPost]
