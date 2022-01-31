@@ -40,8 +40,6 @@ namespace XebecAPI.IRepositories
 
         IGenericRepository<QuestionnaireHRForm> QuestionnaireHRForms{ get; }
 
-        IGenericRepository<DeveloperAssigned> DevelopersAssigned { get; }
-
         IGenericRepository<ApplicationSubPhase> ApplicationSubPhases { get; }
 
         IGenericRepository<JobApplicationPhase> JobApplicationPhases { get; }
