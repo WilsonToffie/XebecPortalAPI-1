@@ -133,6 +133,42 @@ namespace XebecAPI.Controllers
 
         }
 
+        [HttpPost("List")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateEducations([FromBody] List<Education> Educations)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+
+            try
+            {
+              
+                    await _unitOfWork.Education.InsertRange(Educations);
+                    await _unitOfWork.Save();
+
+                   
+             
+
+                return CreatedAtAction("GetEducations", Educations);
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    e.InnerException);
+            }
+
+
+        }
+
+
 
         // PUT api/<EducationController>/5
         [HttpPut("{id}")]

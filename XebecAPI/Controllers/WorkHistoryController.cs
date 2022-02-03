@@ -132,6 +132,42 @@ namespace XebecAPI.Controllers
         }
 
 
+        [HttpPost("List")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateEducations([FromBody] List<WorkHistory> workHistories)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+
+            try
+            {
+
+                await _unitOfWork.WorkHistory.InsertRange(workHistories);
+                await _unitOfWork.Save();
+
+
+
+
+                return CreatedAtAction("GetWorkHistories", workHistories);
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    e.InnerException);
+            }
+
+
+        }
+
+
         // PUT api/<WorkHistoryController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateWorkHistory(int id, [FromBody] WorkHistoryDTO WorkHistory)
