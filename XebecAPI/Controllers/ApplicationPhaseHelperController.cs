@@ -209,11 +209,11 @@ namespace XebecAPI.Controllers
         [HttpGet("myJobs")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetApplicationPhaseDetailsUser([FromQuery] int AppUserId, [FromQuery] int PhaseId)
+        public async Task<IActionResult> GetApplicationPhaseDetailsUser([FromQuery] int AppUserId, [FromQuery] int JobId)
         {
             try
             {
-                var ApplicationPhaseHelpers = await applicationPhaseHelperRepository.GetApplicationPhaseInfoForUser(AppUserId, PhaseId);
+                var ApplicationPhaseHelpers = await applicationPhaseHelperRepository.GetApplicationPhaseInfoForUser(AppUserId, JobId);
 
                 return Ok(ApplicationPhaseHelpers);
 

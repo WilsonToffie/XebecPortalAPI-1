@@ -87,7 +87,7 @@ namespace XebecAPI.Controllers
 
                 await _unitOfWork.Save();
 
-                return AcceptedAtAction("GetUsers");
+                return CreatedAtAction("GetUsers", lstquestions);
             }
             catch (Exception e)
             {
