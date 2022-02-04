@@ -47,6 +47,7 @@ namespace XebecAPI.IRepositories
         IGenericRepository<Question> Questions { get; }
 
         IGenericRepository<AnswerType> AnswerTypes{ get; }
+        IGenericRepository<CollaboratorsAssigned> CollaboratorsAssigneds { get; }
 
 
         //Saving to the DB
