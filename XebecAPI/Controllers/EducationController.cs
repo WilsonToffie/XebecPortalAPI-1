@@ -32,7 +32,7 @@ namespace XebecAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetEducation()
+        public async Task<IActionResult> GetEducations()
         {
             try
             {
