@@ -29,7 +29,7 @@ namespace XebecAPI.Repositories
                          join applications in _context.Applications.Where(a => a.AppUserId == AppUserId)
                              on users.ApplicationId equals applications.Id
                          select users;
-            return await queryFinal.AsNoTracking().ToListAsync();
+            return await queryFinal.Include(a => a.Application).ThenInclude(b => b.Job).AsNoTracking().ToListAsync();
         }
 
         public async Task<List<ApplicationPhaseHelper>> GetApplicationPhaseInfoDetailed(int AppUserId, int jobId)
@@ -54,36 +54,22 @@ namespace XebecAPI.Repositories
             IQueryable<ApplicationPhaseHelper> queryphase;
             IQueryable<myJobsViewModel> queryFinal = null;
             IQueryable<Job> queryJobs = null;
-            if (PhaseId < 1 || PhaseId > 4)
-            {
-                queryphase = from users in _context.AppUser
-                             join applications in _context.Applications.Where(a => a.AppUserId == AppUserId)
-                                 on users.Id equals applications.AppUserId
+                queryphase = from applications in _context.Applications.Where(a => a.AppUserId == AppUserId && a.JobId == PhaseId)
                              join phases in _context.ApplicationPhasesHelpers
                                   on applications.Id equals phases.ApplicationId
                              select phases;
-            }
-            else
-            {
-                queryphase = from users in _context.AppUser
-                             join applications in _context.Applications.Where(a => a.AppUserId == AppUserId)
-                                 on users.Id equals applications.AppUserId
-                             join phases in _context.ApplicationPhasesHelpers.Where(p => p.ApplicationPhaseId == PhaseId)
-                                  on applications.Id equals phases.ApplicationId
-                             select phases;
-            }
-            queryphase = queryphase.Include(s => s.Status).Include(p => p.ApplicationPhase);
+            queryphase = queryphase.Include(p => p.ApplicationPhase).Include(a => a.Application).ThenInclude(j => j.Job)    ;
             if (queryphase != null)
             {
-                queryJobs = from phases in queryphase
+                queryJobs = from applications in _context.Applications.Where(a => a.AppUserId == AppUserId && a.JobId == PhaseId)
                             join jobs in _context.Jobs
-                            on phases.Application.JobId equals jobs.Id
+                            on applications.JobId equals jobs.Id
                             select jobs;
             }
             if (queryJobs != null)
             {
                 queryFinal = from phases in queryphase
-                             join jobs in _context.Jobs
+                             join jobs in queryJobs
                              on phases.Application.JobId equals jobs.Id
                              select new myJobsViewModel() { Application = phases, Job = jobs };
             }
