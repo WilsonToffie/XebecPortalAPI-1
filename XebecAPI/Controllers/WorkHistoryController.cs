@@ -136,7 +136,7 @@ namespace XebecAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateEducations([FromBody] List<WorkHistory> workHistories)
+        public async Task<IActionResult> CreateWorkHistories([FromBody] List<WorkHistory> workHistories)
         {
 
             if (!ModelState.IsValid)
