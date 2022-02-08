@@ -18,48 +18,12 @@ namespace XebecAPI.Repositories
 
         public async Task<List<Job>> GetAllJobsFullDetails()
         {
-            IQueryable<Job> queryUsers;
-
-            queryUsers = from users in _context.Jobs
-                         join info in _context.JobTypeHelpers
-                          on users.Id equals info.JobId
-                         select new Job()
-                         {
-                             Id = users.Id,
-                             Company = users.Company,
-                             Compensation = users.Compensation,
-                             Description = users.Description,
-                             Department = users.Department,
-                             Title = users.Title,
-                             MinimumExperience = users.MinimumExperience,
-                             Location = users.Location,
-                             JobTypes = _context.JobTypeHelpers.Where(b => b.JobId == users.Id).Include(p => p.JobType).ToList()
-                         };
-
-            return await queryUsers.AsNoTracking().ToListAsync();
-
+             return await _context.Jobs.Include(t => t.JobTypes).Include(p => p.JobPlatforms).AsNoTracking().ToListAsync();
         }
 
         public async Task<Job> GetJobTDetails(int JobId)
         {
-
-            IQueryable<Job> queryUsers;
-            queryUsers = from users in _context.Jobs.Where(a => a.Id == JobId)
-                         join info in _context.JobTypeHelpers
-                          on users.Id equals info.JobId
-                         select new Job()
-                         {
-                             Id = users.Id,
-                             Company = users.Company,
-                             Compensation = users.Compensation,
-                             Description = users.Description,
-                             Department = users.Department,
-                             Title = users.Title,
-                             MinimumExperience = users.MinimumExperience,
-                             Location = users.Location,
-                             JobTypes = _context.JobTypeHelpers.Where(b => b.JobId == users.Id).Include(p => p.JobType).ToList()
-                         };
-            return await queryUsers.AsNoTracking().FirstAsync();
+            return await _context.Jobs.Where(j => j.Id == JobId).Include(t => t.JobTypes).Include(p => p.JobPlatforms).AsNoTracking().FirstAsync();
         }
     }
 }
