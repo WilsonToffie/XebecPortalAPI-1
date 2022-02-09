@@ -63,14 +63,14 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // POST api/<JobPlatformController>
+
+        // POST api/<JobAplicationphaseController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateJobPlatform(int[] listOfId)
+        public async Task<IActionResult> CreateJobPlatform([FromBody] JobPlatform JobPlatform)
         {
-            List<JobPlatformHelper> jobPlatformHelper = new List<JobPlatformHelper>();
 
             if (!ModelState.IsValid)
             {
@@ -81,24 +81,10 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var jobs = _unitOfWork.Jobs.GetAll();
-                var job = jobs.Result.LastOrDefault();
-                foreach(var items in listOfId)
-                {
-                    if(items != 0)
-                    {
-                        jobPlatformHelper.Add(new JobPlatformHelper
-                        {
-                            JobId = job.Id,
-                            JobPlatformId = items
-                        });
-                    }
-                }
-                await _unitOfWork.JobPlatformHelpers.InsertRange(jobPlatformHelper);
 
+                await _unitOfWork.JobPlatforms.Insert(JobPlatform);
                 await _unitOfWork.Save();
-
-                return NoContent();
+                return CreatedAtAction("GetJobPlatform", new { id = JobPlatform.Id }, JobPlatform);
 
             }
             catch (Exception e)

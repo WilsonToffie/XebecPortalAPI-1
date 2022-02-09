@@ -261,7 +261,7 @@ namespace XebecAPI.Repositories
 
         }
         #endregion
-        public async Task<List<PersonalInformation>> SearchCandidate(string role, string name)
+        public async Task<List<PersonalInformation>> SearchUser(string role, string name)
         {
             IQueryable<PersonalInformation> query;
 
@@ -276,9 +276,7 @@ namespace XebecAPI.Repositories
         {
             IQueryable<JobApplicationPhase> query;
 
-            query = from jobAppPhases in _context.JobApplicationPhases.Where(j => j.JobId == job)
-                    
-                    select jobAppPhases;
+            query = _context.JobApplicationPhases.Where(j => j.JobId == job);
 
             return await query.Include(z => z.ApplicationPhase).AsNoTracking().ToListAsync();
         }

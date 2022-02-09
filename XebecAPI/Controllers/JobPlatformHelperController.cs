@@ -64,6 +64,25 @@ namespace XebecAPI.Controllers
             }
         }
 
+        [HttpGet("job/{jobId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetJobPlatformHelperbyJob(int jobId)
+        {
+            try
+            {
+
+                var JobPlatformHelpers = await _unitOfWork.JobPlatformHelpers.GetAll(q => q.JobId == jobId);
+
+                return Ok(JobPlatformHelpers);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<JobPlatformHelpersController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -97,6 +116,39 @@ namespace XebecAPI.Controllers
 
 
         }
+
+        // POST api/<UsersController>
+        [HttpPost("list")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateJobPlatformHelper([FromBody] List<JobPlatformHelper> platforms)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _unitOfWork.JobPlatformHelpers.InsertRange(platforms);
+
+                await _unitOfWork.Save();
+
+                return Ok(platforms);
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    e.InnerException);
+            }
+
+
+        }
+
 
 
         // PUT api/<JobPlatformHelpersController>/5

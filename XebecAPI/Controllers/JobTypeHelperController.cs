@@ -64,14 +64,32 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // POST api/<JobTypeHelpersController>
+        [HttpGet("job/{jobId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetJobTypeHelperbyJob(int jobId)
+        {
+            try
+            {
+
+                var jobTypeHelpers = await _unitOfWork.JobTypeHelpers.GetAll(q => q.JobId == jobId);
+
+                return Ok(jobTypeHelpers);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // POST api/<JobTypeHelperController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateJobTypeHelper(int[] listOfId)
+        public async Task<IActionResult> CreateJobTypeHelper([FromBody] JobTypeHelper JobTypeHelper)
         {
-            List<JobTypeHelper> jobTypeHelper = new List<JobTypeHelper>();
 
             if (!ModelState.IsValid)
             {
@@ -82,23 +100,44 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var jobs = _unitOfWork.Jobs.GetAll();
-                var job = jobs.Result.LastOrDefault();
-                foreach (var items in listOfId)
-                {
-                    jobTypeHelper.Add(new JobTypeHelper
-                    {
-                        JobId = job.Id,
-                        JobTypeId = items
-                    });
-                }
 
-                await _unitOfWork.JobTypeHelpers.InsertRange(jobTypeHelper);
+                await _unitOfWork.JobTypeHelpers.Insert(JobTypeHelper);
+                await _unitOfWork.Save();
+
+                return CreatedAtAction("GetJobTypeHelper", new { id = JobTypeHelper.Id }, JobTypeHelper);
+
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    e.InnerException);
+            }
+
+
+        }
+
+        // POST api/<JobTypeHelperController>/list
+        [HttpPost("list")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateJobTypeHelper([FromBody] List<JobTypeHelper> types)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _unitOfWork.JobTypeHelpers.InsertRange(types);
 
                 await _unitOfWork.Save();
 
-                return NoContent();
-
+                return Ok(types);
             }
             catch (Exception e)
             {

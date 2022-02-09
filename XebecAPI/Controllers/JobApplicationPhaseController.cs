@@ -69,15 +69,15 @@ namespace XebecAPI.Controllers
 
       
        
-        [HttpGet("phase")]
+        [HttpGet("job/{jobId}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> SearchPhasebyJob([FromQuery] int job)
+        public async Task<IActionResult> SearchPhasebyJob(int jobId)
         {
             try
             {
 
-                var candidateInfo = await usersCustomRepo.SearchPhasebyJob(job);
+                var candidateInfo = await usersCustomRepo.SearchPhasebyJob(jobId);
 
                 return Ok(candidateInfo);
 
@@ -88,17 +88,13 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<UserController>/role=candidate
-
-
-        // POST api/<UsersController>
-        [HttpPost("{jobId}")]
+        // POST api/<JobAplicationphaseController>
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateJobApplicationPhase(int jobId, [FromBody] int[] listofId)
+        public async Task<IActionResult> CreateJobApplicationPhase([FromBody] JobApplicationPhase jobApplicationPhase)
         {
-            List<JobApplicationPhase> jobApplicationPhase = new List<JobApplicationPhase>();
 
             if (!ModelState.IsValid)
             {
@@ -110,22 +106,44 @@ namespace XebecAPI.Controllers
             try
             {
 
-                //var jobs = _unitOfWork.Jobs.GetAll();
-                //var job = jobs.Result.LastOrDefault();
-                
-                foreach (var items in listofId)
-                {
-                    jobApplicationPhase.Add(new JobApplicationPhase
-                    {
-                        JobId = jobId,
-                        ApplicationPhaseId = items
-                    });
-                }
-                await _unitOfWork.JobApplicationPhases.InsertRange(jobApplicationPhase);
+                await _unitOfWork.JobApplicationPhases.Insert(jobApplicationPhase);
+                await _unitOfWork.Save();
+                return CreatedAtAction("GetJobApplicationPhase", new { id = jobApplicationPhase.Id }, jobApplicationPhase);
+
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    e.InnerException);
+            }
+
+
+        }
+
+
+        // POST api/<UsersController>
+        [HttpPost("list")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateJobApplicationPhase([FromBody] List<JobApplicationPhase> phases)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+
+            try
+            {
+                await _unitOfWork.JobApplicationPhases.InsertRange(phases);
 
                 await _unitOfWork.Save();
 
-                return NoContent();
+                return Ok(phases);
             }
             catch (Exception e)
             {

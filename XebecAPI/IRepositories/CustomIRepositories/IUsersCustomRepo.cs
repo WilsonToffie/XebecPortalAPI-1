@@ -22,6 +22,6 @@ namespace XebecAPI.IRepositories
 
         Task<List<JobApplicationPhase>> SearchPhasebyJob(int job);
 
-        Task<List<PersonalInformation>> SearchCandidate(string role, string name);
+        Task<List<PersonalInformation>> SearchUser(string role, string name);
     }
 }
