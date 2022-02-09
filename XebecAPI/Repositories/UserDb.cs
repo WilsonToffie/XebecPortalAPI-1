@@ -93,6 +93,7 @@ namespace XebecAPI.Repositories
 				AppUserDTO appUserDto = new AppUserDTO(email, role, hashedPassword, name, surname);
 
                 var user = mapper.Map<AppUser>(appUserDto);
+				user.Registered = true;
                 await unitOfWork.AppUsers.Insert(user);
                 await unitOfWork.Save();
                 //Saving stuff
