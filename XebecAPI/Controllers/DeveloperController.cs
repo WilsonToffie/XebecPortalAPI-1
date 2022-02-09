@@ -16,24 +16,24 @@ namespace XebecAPI.Controllers
     public class DeveloperController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper mapper;
+        private readonly IUsersCustomRepo usersCustomRepo;
 
-        public DeveloperController(IUnitOfWork unitOfWork, IMapper mapper)
+        public DeveloperController(IUnitOfWork unitOfWork, IUsersCustomRepo _usersCustomRepo)
         {
             _unitOfWork = unitOfWork;
-            this.mapper = mapper;
+            usersCustomRepo = _usersCustomRepo;
         }
         // GET: api/<DeveloperController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetCandidates()
+        public async Task<IActionResult> GetDeveloper()
         {
             try
             {
-                var Candidate = await _unitOfWork.AppUsers.GetAll(q => q.Role == "Developer");
+                var Developer = await _unitOfWork.AppUsers.GetAll(q => q.Role == "Developer");
 
-                return Ok(Candidate);
+                return Ok(Developer);
 
             }
             catch (Exception e)
@@ -42,28 +42,41 @@ namespace XebecAPI.Controllers
             }
         }
         // GET api/<DeveloperController>/5
+        // Get Single developer
         [HttpGet("{id}")]
-        public string Get(int id)
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetDeveloper(int id)
         {
-            return "value";
+            try
+            {
+                var developer = await _unitOfWork.AppUsers.GetT(q => q.Id == id && q.Role == "Developer");
+                return Ok(developer);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
-        // POST api/<DeveloperController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        // GET api/<DeveloperController>search?name="Dave"
+        [HttpGet("search")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> SearchDeveloper([FromQuery] string name)
         {
-        }
+            try
+            {
 
-        // PUT api/<DeveloperController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+                var DeveloperInfo = await usersCustomRepo.SearchUser("Developer", name);
 
-        // DELETE api/<DeveloperController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+                return Ok(DeveloperInfo);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
     }
 }

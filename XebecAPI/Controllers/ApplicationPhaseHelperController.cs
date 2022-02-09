@@ -190,7 +190,7 @@ namespace XebecAPI.Controllers
         [HttpGet("appPhase")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetApplicationPhaseDetailse([FromQuery]int AppUserId, [FromQuery]int jobId)
+        public async Task<IActionResult> GetApplicationPhaseDetails([FromQuery]int AppUserId, [FromQuery]int jobId)
         {
             try
             {

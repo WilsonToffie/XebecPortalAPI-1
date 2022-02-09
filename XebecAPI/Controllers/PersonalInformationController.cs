@@ -71,7 +71,7 @@ namespace XebecAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetSibglePersonalInformationByUserID(int id)
+        public async Task<IActionResult> GetFirstPersonalInformationByUserID(int id)
         {
             try
             {
@@ -119,61 +119,61 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<PersonalInformationController>candidates/15
-        [HttpGet("candidates/{jobId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SearchApplicants(string jobId, [FromQuery] string SearchQuery, [FromQuery] string ethnicityFiler, [FromQuery] string GenderFilter, [FromQuery] string disabilityFilter)
-        {
-            try
-            {
-                int jobIdInt = int.Parse(jobId);
-                var applicantsInfo = await usersCustomRepo.SearchApplicants(jobIdInt, SearchQuery, ethnicityFiler, GenderFilter, disabilityFilter);
+        //// GET api/<PersonalInformationController>candidates/15
+        //[HttpGet("candidates/{jobId}")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> SearchApplicants(string jobId, [FromQuery] string SearchQuery, [FromQuery] string ethnicityFiler, [FromQuery] string GenderFilter, [FromQuery] string disabilityFilter)
+        //{
+        //    try
+        //    {
+        //        int jobIdInt = int.Parse(jobId);
+        //        var applicantsInfo = await usersCustomRepo.SearchApplicants(jobIdInt, SearchQuery, ethnicityFiler, GenderFilter, disabilityFilter);
 
-                return Ok(applicantsInfo);
+        //        return Ok(applicantsInfo);
 
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        //    }
+        //}
 
-        // GET api/<PersonalInformationController>/additional?disability=disabled
-        [HttpGet("additional")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPersonalInfoByAdditionalInfo([FromQuery] string disability, [FromQuery] string gender, [FromQuery] string ehtnicity)
-        {
-            try
-            {
-                var userInfo = await usersCustomRepo.GetPersonalByAdditional(disability,gender,ehtnicity);
+        //// GET api/<PersonalInformationController>/additional?disability=disabled
+        //[HttpGet("additional")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> GetPersonalInfoByAdditionalInfo([FromQuery] string disability, [FromQuery] string gender, [FromQuery] string ehtnicity)
+        //{
+        //    try
+        //    {
+        //        var userInfo = await usersCustomRepo.GetPersonalByAdditional(disability,gender,ehtnicity);
 
-                return Ok(userInfo);
+        //        return Ok(userInfo);
 
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        //    }
+        //}
 
-        // GET api/<UserController>/role=candidate
-        [HttpGet("Test/{id}")]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUsersByRole(int id)
-        {
-            try
-            {
-                var users = await usersCustomRepo.GetCandidateDetails(id);
-                return Ok(users);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
+        //// GET api/<UserController>/role=candidate
+        //[HttpGet("Test/{id}")]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //public async Task<IActionResult> GetUsersByRole(int id)
+        //{
+        //    try
+        //    {
+        //        var users = await usersCustomRepo.GetCandidateDetails(id);
+        //        return Ok(users);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        //    }
+        //}
 
         // POST api/<PersonalInformationController>
         [HttpPost]

@@ -26,11 +26,48 @@ namespace XebecAPI.Controllers
             this.usersCustomRepo = usersCustomRepo;
         }
 
-
-        [HttpGet("{JobId}")]
+        // GET: api/<UsersController>
+        [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetQuestions(int JobId)
+        public async Task<IActionResult> GetApplicantQuestionnaire()
+        {
+            try
+            {
+                var users = await _unitOfWork.QuestionnaireApplicantForms.GetAll();
+
+                return Ok(users);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetApplicantQuestionnaire(int id)
+        {
+
+            try
+            {
+
+                var Question = await _unitOfWork.QuestionnaireApplicantForms.GetT(p => p.Id == id);
+
+                return Ok(Question);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        [HttpGet("job/{JobId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetQuestionsForApplicantByJob(int JobId)
         {
             
             try
@@ -46,14 +83,12 @@ namespace XebecAPI.Controllers
             }
         }
 
-       
-
         // POST api/<QuestionnaireController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateQuestion([FromBody] QuestionnaireApplicantForm customQuestion)
+        public async Task<IActionResult> CreateApplicantQuestion([FromBody] QuestionnaireApplicantForm customQuestion)
         {
 
             if (!ModelState.IsValid)
@@ -69,8 +104,40 @@ namespace XebecAPI.Controllers
                 await _unitOfWork.QuestionnaireApplicantForms.Insert(customQuestion);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetQuestion", new { id = customQuestion.Id }, customQuestion);
+                return CreatedAtAction("GetApplicantQuestionnaire", new { id = customQuestion.Id }, customQuestion);
 
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    e.InnerException);
+            }
+
+
+        }
+
+        [HttpPost("list")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateQuestionsForForm([FromBody] List<QuestionnaireApplicantForm> lstquestions)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+
+            try
+            {
+                await _unitOfWork.QuestionnaireApplicantForms.InsertRange(lstquestions);
+
+                await _unitOfWork.Save();
+
+                return CreatedAtAction("GetApplicantQuestionnaire", lstquestions);
             }
             catch (Exception e)
             {
@@ -104,7 +171,7 @@ namespace XebecAPI.Controllers
                 _unitOfWork.QuestionnaireApplicantForms.Update(originalquestion);
                 await _unitOfWork.Save();
 
-                return NoContent();
+                 return CreatedAtAction("GetApplicantQuestionnaire", new { id = originalquestion.Id }, originalquestion);
 
             }
             catch (Exception e)

@@ -65,41 +65,18 @@ namespace XebecAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
-        }
+        }        
 
-        //get by appuserId
-        // GET api/<PersonalInformationController>/5
-       
-        //get by appuserId
-        // GET api/<PersonalInformationController>/5
-        [HttpGet("all/{id}")]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPersonalInformationsByUserID(int id)
-        {
-            try
-            {
-                var PersonalInformation = await _unitOfWork.PersonalInformation.GetAll(q => q.AppUserId == id);
-                return Ok(PersonalInformation);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
-
-        
-
-        // GET api/<PersonalInformationController>candidates/15
-        [HttpGet("candidates")]
+        // GET api/<CandidateController>search?name="Dave"
+        [HttpGet("search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SearchCandidate([FromQuery] string role, [FromQuery] string name )
+        public async Task<IActionResult> SearchCandidate([FromQuery] string name )
         {
             try
             {
                 
-                var candidateInfo = await usersCustomRepo.SearchCandidate(role, name);
+                var candidateInfo = await usersCustomRepo.SearchUser("Candidate", name);
 
                 return Ok(candidateInfo);
 

@@ -65,26 +65,6 @@ namespace XebecAPI.Controllers
             }
         }
 
-        
-
-        [HttpGet("hrAdmin={HRAdmin}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetHRAdmin(string hrAdmin)
-        {
-            try
-            {
-                var Candidate = await _unitOfWork.AppUsers.GetAll(q => q.Role == hrAdmin);
-
-                return Ok(Candidate);
-
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
-
         // GET api/<UsersController>/email=test@test.com
         [HttpGet("email={email}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
