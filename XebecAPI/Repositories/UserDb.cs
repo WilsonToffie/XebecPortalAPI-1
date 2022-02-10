@@ -90,7 +90,7 @@ namespace XebecAPI.Repositories
 				//hash the password provided
 				string hashedPassword = CreateHash(password);
 
-				AppUserDTO appUserDto = new AppUserDTO(email, role, hashedPassword, name, surname);
+				AppUserDTO appUserDto = new AppUserDTO(email, hashedPassword, role, name, surname);
 
                 var user = mapper.Map<AppUser>(appUserDto);
 				user.Registered = true;
