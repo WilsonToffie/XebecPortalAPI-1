@@ -13,7 +13,9 @@ using System.Text;
 using System.Threading.Tasks;
 using XebecAPI.IRepositories;
 using Microsoft.AspNetCore.Authentication;
-
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 namespace XebecAPI.Controllers
 {
@@ -147,6 +149,7 @@ namespace XebecAPI.Controllers
 					Role = user.Role,
 					Name = user.Name,
 					Surname = user.Surname,
+					
 					Success = true,
 				};
 
@@ -155,26 +158,41 @@ namespace XebecAPI.Controllers
 		}
 
 		[HttpPost("xcv")]
-		public async Task<bool> RegisterKey(string userKey)
+		public async Task<bool> RegisterKey([FromBody] AppUser user)
         {
-			var Keys = await unitOfWork.AppUsers.GetAll(); //keysAssiginer
 
-			var last = Keys.Last();
-			var lastDateTime = DateTime.Today;
-            if (lastDateTime < DateTime.Now)
+            try
             {
-				//var key = new Guid();
-				//await unitOfWork.AppUsers.Insert(key); //keysAssiginer
-				//await unitOfWork.Save()
-			}
-			else
-            {
-                if (last.Email.Equals(userKey))
+				string key = new Guid().ToString(); //create new key
+
+				user.Key = key;
+				HttpClient client = new HttpClient();
+				EmailModel model = new EmailModel()
+				{
+					Id = user.Id.ToString(),
+					ToEmail = user.Email,
+					ToName = user.Name,
+					PlainText = $" Hi there {user.Name} \n Please note that your key is {key}. If you have any questions, please email admin",
+					Subject = "Registration Confirmation key",
+					Htmlcontent = @" <b> This <\b> is a better test"
+				};
+				var jsonInString = JsonConvert.SerializeObject(model);
+				using (var msg = await client.PostAsync("https://xebecmail.azurewebsites.net", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
                 {
-					return true;
+                    if (msg.IsSuccessStatusCode)
+                    {
+						return true;
+					}
                 }
-            }
-			return false;
+				return false;
+				
+			}
+            catch (Exception)
+            {
+
+				return false;
+			}
+			
 		}
 
 	}

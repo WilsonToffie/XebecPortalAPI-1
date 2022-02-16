@@ -6,7 +6,7 @@ using XebecAPI.Shared.Security;
 
 namespace XebecAPI.Shared
 {
-    public class CollaboratorsAssigned
+    public class CollaboratorAssigned
     {
         public int Id { get; set; }
         public string Name { get; set; }

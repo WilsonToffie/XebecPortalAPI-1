@@ -44,7 +44,8 @@ namespace XebecAPI.Data
         public DbSet<Question> Questions { get; set; }
 
         public DbSet<AnswerType> AnswerTypes { get; set; }
-        public DbSet<CollaboratorsAssigned> CollaboratorsAssigneds { get; set; }
+        public DbSet<CollaboratorAssigned> CollaboratorsAssigneds { get; set; }
+        public DbSet<CandidateRecommender> CandidatesRecommender { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
