@@ -51,8 +51,8 @@ namespace XebecAPI.Repositories
         private IGenericRepository<ApplicationSubPhase> _applicationSubPhase;
         private IGenericRepository<Question> _question;
         private IGenericRepository<AnswerType> _answerType;
-        private IGenericRepository<CollaboratorsAssigned> _collaboratorsAssigned;
-
+        private IGenericRepository<CollaboratorAssigned> _collaboratorsAssigned;
+        private IGenericRepository<CandidateRecommender> _candidatesRecommender;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -105,8 +105,9 @@ namespace XebecAPI.Repositories
         public IGenericRepository<Question> Questions => _question ??= new GenericRepository<Question>(_context);
 
         public IGenericRepository<AnswerType> AnswerTypes => _answerType ??= new GenericRepository<AnswerType>(_context);
-        public IGenericRepository<CollaboratorsAssigned> CollaboratorsAssigneds => _collaboratorsAssigned ??= new GenericRepository<CollaboratorsAssigned>(_context);
+        public IGenericRepository<CollaboratorAssigned> CollaboratorsAssigned => _collaboratorsAssigned ??= new GenericRepository<CollaboratorAssigned>(_context);
 
+        public IGenericRepository<CandidateRecommender> CandidatesRecommender => _candidatesRecommender ??= new GenericRepository<CandidateRecommender>(_context);
 
         public void Dispose()
         {

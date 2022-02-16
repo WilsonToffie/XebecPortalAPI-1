@@ -15,27 +15,27 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CollaboratorsAssignedController : ControllerBase
+    public class CandidateRecommenderController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper mapper;
 
-        public CollaboratorsAssignedController(IUnitOfWork unitOfWork, IMapper mapper)
+        public CandidateRecommenderController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
-        // GET: api/<CollaboratorsAssignedController>
+        // GET: api/<CandidatesRecommenderController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetCollaboratorsAssigned()
+        public async Task<IActionResult> GetCandidatesRecommender()
         {
             try
             {
-                var collaboratorsAssigned = await _unitOfWork.CollaboratorsAssigned.GetAll();
+                var CandidatesRecommender = await _unitOfWork.CandidatesRecommender.GetAll();
 
-                return Ok(collaboratorsAssigned);
+                return Ok(CandidatesRecommender);
 
             }
             catch (Exception e)
@@ -44,16 +44,16 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<CollaboratorsAssignedController>/5
+        // GET api/<CandidatesRecommenderController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetCollaboratorsAssigned(int id)
+        public async Task<IActionResult> GetCandidatesRecommender(int id)
         {
             try
             {
-                var collaboratorsAssigned = await _unitOfWork.CollaboratorsAssigned.GetT(q => q.Id == id);
-                return Ok(collaboratorsAssigned);
+                var CandidatesRecommender = await _unitOfWork.CandidatesRecommender.GetT(q => q.Id == id);
+                return Ok(CandidatesRecommender);
             }
             catch (Exception e)
             {
@@ -61,12 +61,12 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // POST api/<CollaboratorsAssignedController>
+        // POST api/<CandidatesRecommenderController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateCollaboratorsAssigned([FromBody] CollaboratorAssigned collaboratorsAssigned)
+        public async Task<IActionResult> CreateCandidatesRecommender([FromBody] CandidateRecommender CandidatesRecommender)
         {
 
             if (!ModelState.IsValid)
@@ -79,10 +79,10 @@ namespace XebecAPI.Controllers
             try
             {
 
-                await _unitOfWork.CollaboratorsAssigned.Insert(collaboratorsAssigned);
+                await _unitOfWork.CandidatesRecommender.Insert(CandidatesRecommender);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetCollaboratorsAssigned", new { id = collaboratorsAssigned.Id }, collaboratorsAssigned);
+                return CreatedAtAction("GetCandidatesRecommender", new { id = CandidatesRecommender.Id }, CandidatesRecommender);
 
             }
             catch (Exception e)
@@ -95,9 +95,9 @@ namespace XebecAPI.Controllers
 
         }
 
-        // PUT api/<CollaboratorsAssignedController>/5
+        // PUT api/<CandidatesRecommenderController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCollaboratorsAssigned(int id, [FromBody] CollaboratorsAssignedDTO collaboratorsAssigned)
+        public async Task<IActionResult> UpdateCandidatesRecommender(int id, [FromBody] CandidateRecommenderDTO CandidatesRecommender)
         {
             if (!ModelState.IsValid)
             {
@@ -106,14 +106,14 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var originalAdditionalInformation = await _unitOfWork.CollaboratorsAssigned.GetT(q => q.Id == id);
+                var originalAdditionalInformation = await _unitOfWork.CandidatesRecommender.GetT(q => q.Id == id);
 
                 if (originalAdditionalInformation == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                mapper.Map(collaboratorsAssigned, originalAdditionalInformation);
-                _unitOfWork.CollaboratorsAssigned.Update(originalAdditionalInformation);
+                mapper.Map(CandidatesRecommender, originalAdditionalInformation);
+                _unitOfWork.CandidatesRecommender.Update(originalAdditionalInformation);
                 await _unitOfWork.Save();
 
                 return NoContent();
@@ -128,12 +128,12 @@ namespace XebecAPI.Controllers
 
 
 
-        // DELETE api/<CollaboratorsAssignedController>/5
+        // DELETE api/<CandidatesRecommenderController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteCollaboratorsAssigned(int id)
+        public async Task<IActionResult> DeleteCandidatesRecommender(int id)
         {
             if (id < 1)
             {
@@ -142,7 +142,7 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var AdditionalInformation = await _unitOfWork.CollaboratorsAssigned.GetT(q => q.Id == id);
+                var AdditionalInformation = await _unitOfWork.CandidatesRecommender.GetT(q => q.Id == id);
 
                 if (AdditionalInformation == null)
                 {
