@@ -21,8 +21,19 @@ namespace XebecAPI.Shared.Security
         public string Key { get; set; }
         public bool Registered { get; set; } = false;
         public int LinkVisits { get; set; }
+        public string? ImageUrl { get; set; }
 
         public List<Application> Applications { get; set; }
+
+        public AppUser(int id, string email, string role, string name, string surname, string imageurl)
+        {
+            this.Id = id;
+            this.Email = email;
+            this.Role = role;
+            this.Name = name;
+            this.Surname = surname;
+            this.ImageUrl = imageurl;
+        } //Used for LoginResult
 
         public AppUser(int id, string email, string role, string name, string surname)
         {
@@ -31,7 +42,7 @@ namespace XebecAPI.Shared.Security
             this.Role = role;
             this.Name = name;
             this.Surname = surname;
-        } //Used for LoginResult
+        } //Used for registration
 
         public AppUser(int id, string email, string role)
         {
@@ -44,7 +55,7 @@ namespace XebecAPI.Shared.Security
         {
             this.Email = email;
             this.PasswordHash = PasswordHash;
-        }
+        } //used for login process
 
         public AppUser()
         {

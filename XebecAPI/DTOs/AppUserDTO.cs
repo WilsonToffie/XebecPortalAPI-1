@@ -23,6 +23,8 @@ namespace XebecAPI.DTOs
         public bool Registered { get; set; } = false;
         public int LinkVisits { get; set; }
 
+        public string? ImageUrl { get; set; }
+
         public AppUserDTO(string email, string PasswordHash, string role, string name, string surname)
         {
             this.Email = email;
@@ -31,6 +33,17 @@ namespace XebecAPI.DTOs
             this.Name = name;
             this.Surname = surname;
             LinkVisits = 0;
+        }
+
+        public AppUserDTO(string email, string PasswordHash, string role, string name, string surname, string imageurl)
+        {
+            this.Email = email;
+            this.PasswordHash = PasswordHash;
+            this.Role = role;
+            this.Name = name;
+            this.Surname = surname;
+            LinkVisits = 0;
+            this.ImageUrl = imageurl;
         }
 
         public AppUserDTO(int id, string email, string role)

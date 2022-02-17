@@ -93,11 +93,14 @@ namespace XebecAPI.Repositories
 				AppUserDTO appUserDto = new AppUserDTO(email, hashedPassword, role, name, surname);
 
                 var user = mapper.Map<AppUser>(appUserDto);
-				user.Registered = true;
-                await unitOfWork.AppUsers.Insert(user);
+                if (role == "Candidate")
+                {
+					user.Registered = true;
+				}
+				//Saving stuff
+				await unitOfWork.AppUsers.Insert(user);
                 await unitOfWork.Save();
-                //Saving stuff
-
+               
                 // return user
                 return new AppUser(user.Id, email, role, name, surname); //get it done after saving
 
@@ -121,7 +124,7 @@ namespace XebecAPI.Repositories
 				if (!result.PasswordHash.Equals(CreateHash(password)))
 					return null;
 
-				return new AppUser(user.Id, email, result.Role, result.Name, result.Surname);
+				return new AppUser(user.Id, email, result.Role, result.Name, result.Surname, result.ImageUrl);
 			}
 			catch (Exception)
 			{
