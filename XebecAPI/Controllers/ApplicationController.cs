@@ -63,6 +63,26 @@ namespace XebecAPI.Controllers
             }
         }
 
+        // GET api/<ApplicationsController>/5
+        [HttpGet("job/{JobId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetApplicationByJob(int JobId)
+        {
+
+            try
+            {
+
+                var applications = await _unitOfWork.Applications.GetAll(p => p.JobId == JobId);
+
+                return Ok(applications);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<ApplicationsController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
