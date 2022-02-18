@@ -20,6 +20,11 @@ namespace XebecAPI.DTOs
 
         public string Department { get; set; }
 
+        public string Status { get; set; }
+
+        public int? AppUserId { get; set; }
+        public AppUserDTO AppUser { get; set; }
+
         public DateTime DueDate { get; set; }
         public string JobType { get; set; }
         public DateTime CreationDate { get; set; }
