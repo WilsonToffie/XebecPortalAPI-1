@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XebecAPI.Shared.Security;
 
 namespace XebecAPI.Shared
 {
@@ -23,6 +24,11 @@ namespace XebecAPI.Shared
         public string Location { get; set; }
 
         public string Department { get; set; }
+
+        public string? Status { get; set; }
+
+        public int? AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
 
         public DateTime DueDate { get; set; }
 
