@@ -48,7 +48,6 @@ namespace XebecAPI.Repositories
         private IGenericRepository<QuestionnaireHRForm> _customQuestionsForHR;
         private IGenericRepository<QuestionnaireApplicantForm> _customQuestionsForApplicant;
         private IGenericRepository<JobApplicationPhase> _jobApplicationPhase;
-        private IGenericRepository<ApplicationSubPhase> _applicationSubPhase;
         private IGenericRepository<Question> _question;
         private IGenericRepository<AnswerType> _answerType;
         private IGenericRepository<CollaboratorAssigned> _collaboratorsAssigned;
@@ -97,8 +96,6 @@ namespace XebecAPI.Repositories
         public IGenericRepository<QuestionnaireApplicantForm> QuestionnaireApplicantForms => _customQuestionsForApplicant ??= new GenericRepository<QuestionnaireApplicantForm>(_context);
 
         public IGenericRepository<QuestionnaireHRForm> QuestionnaireHRForms => _customQuestionsForHR ??= new GenericRepository<QuestionnaireHRForm>(_context);
-
-        public IGenericRepository<ApplicationSubPhase> ApplicationSubPhases => _applicationSubPhase ??= new GenericRepository<ApplicationSubPhase>(_context);
 
         public IGenericRepository<JobApplicationPhase> JobApplicationPhases => _jobApplicationPhase ??= new GenericRepository<JobApplicationPhase>(_context);
 

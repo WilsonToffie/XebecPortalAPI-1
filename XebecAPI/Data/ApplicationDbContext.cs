@@ -39,7 +39,6 @@ namespace XebecAPI.Data
         public DbSet<ProfilePortfolioLink> ProfilePortfolioLinks { get; set; }
         public DbSet<QuestionnaireHRForm> QuestionnaireHRForms { get; set; }
         public DbSet<QuestionnaireApplicantForm> QuestionnaireApplicantForms { get; set; }
-        public DbSet<ApplicationSubPhase> ApplicationSubPhases { get; set; }
         public DbSet<JobApplicationPhase> JobApplicationPhases { get; set; }
         public DbSet<Question> Questions { get; set; }
 

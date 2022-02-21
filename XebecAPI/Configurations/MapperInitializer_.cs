@@ -30,7 +30,6 @@ namespace XebecAPI.Configurations
             CreateMap<ProfilePortfolioLink, ProfilePortfolioLinkDTO>().ReverseMap();
             CreateMap<Status, StatusDTO>().ReverseMap();
             CreateMap<WorkHistory, WorkHistoryDTO>().ReverseMap();
-            CreateMap<ApplicationSubPhase, ApplicationSubPhaseDTO>().ReverseMap();
             CreateMap<JobApplicationPhase, JobApplicationPhaseDTO>().ReverseMap();
             CreateMap<QuestionnaireApplicantForm, QuestionnaireApplicantFormDTO>().ReverseMap();
             CreateMap<QuestionnaireHRForm, QuestionnaireHRFormDTO>().ReverseMap();
