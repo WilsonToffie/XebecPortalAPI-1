@@ -165,7 +165,7 @@ namespace XebecAPI.Controllers
             {
 				string key = new Guid().ToString(); //create new key
 
-				user.Key = key;
+				user.UserKey = key;
 				HttpClient client = new HttpClient();
 				EmailModel model = new EmailModel()
 				{

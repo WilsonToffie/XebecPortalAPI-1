@@ -18,7 +18,7 @@ namespace XebecAPI.Shared.Security
 
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Key { get; set; }
+        public string UserKey { get; set; }
         public bool Registered { get; set; } = false;
         public int LinkVisits { get; set; }
         public string? ImageUrl { get; set; }
