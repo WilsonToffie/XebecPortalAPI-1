@@ -18,7 +18,7 @@ namespace XebecAPI.Shared
         public Job Job { get; set; }
 
         //foreign key: ApplicationPhase
-        public int? ApplicationPhaseId { get; set; }
+        public int ApplicationPhaseId { get; set; }
 
         public ApplicationPhase ApplicationPhase { get; set; }
 
