@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using XebecAPI.Shared;
 using XebecAPI.DTOs;
 
@@ -13,28 +14,28 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class QuestionController : ControllerBase
+    public class UnsuccessfulReasonController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper mapper;
 
-        public QuestionController(IUnitOfWork unitOfWork, IMapper mapper)
+        public UnsuccessfulReasonController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
 
-        // GET: api/<QuestionController>
+        // GET: api/<UnsuccessfulReasonController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetQuestion()
+        public async Task<IActionResult> GetUnsuccessfulReason()
         {
             try
             {
-                var Question = await _unitOfWork.Questions.GetAll();
+                var UnsuccessfulReason = await _unitOfWork.UnsuccessfulReasons.GetAll();
 
-                return Ok(Question);
+                return Ok(UnsuccessfulReason);
 
             }
             catch (Exception e)
@@ -43,16 +44,16 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<QuestionController>/5
+        // GET api/<UnsuccessfulReasonController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetQuestion(int id)
+        public async Task<IActionResult> GetUnsuccessfulReason(int id)
         {
             try
             {
-                var Question = await _unitOfWork.Questions.GetT(q => q.Id == id);
-                return Ok(Question);
+                var UnsuccessfulReason = await _unitOfWork.UnsuccessfulReasons.GetT(q => q.Id == id);
+                return Ok(UnsuccessfulReason);
             }
             catch (Exception e)
             {
@@ -60,12 +61,12 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // POST api/<QuestionController>
+        // POST api/<UnsuccessfulReasonController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateQuestion([FromBody] Question question)
+        public async Task<IActionResult> CreateUnsuccessfulReason([FromBody] UnsuccessfulReason unsuccessfulReason)
         {
 
             if (!ModelState.IsValid)
@@ -78,10 +79,10 @@ namespace XebecAPI.Controllers
             try
             {
 
-                await _unitOfWork.Questions.Insert(question);
+                await _unitOfWork.UnsuccessfulReasons.Insert(unsuccessfulReason);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetQuestion", new { id = question.Id }, question);
+                return CreatedAtAction("GetQuestion", new { id = unsuccessfulReason.Id }, unsuccessfulReason);
 
             }
             catch (Exception e)
@@ -95,9 +96,9 @@ namespace XebecAPI.Controllers
         }
 
 
-        // PUT api/<QuestionController>/5
+        // PUT api/<UnsuccessfulReasonController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateQuestion(int id, [FromBody] QuestionDTO question)
+        public async Task<IActionResult> UpdateUnsuccessfulReason(int id, [FromBody] UnsuccessfulReasonDTO unsuccessfulReason)
         {
             if (!ModelState.IsValid)
             {
@@ -106,14 +107,14 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var originalquestion = await _unitOfWork.Questions.GetT(q => q.Id == id);
+                var originalUnsuccessfulReason = await _unitOfWork.UnsuccessfulReasons.GetT(q => q.Id == id);
 
-                if (originalquestion == null)
+                if (originalUnsuccessfulReason == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                mapper.Map(question, originalquestion);
-                _unitOfWork.Questions.Update(originalquestion);
+                mapper.Map(unsuccessfulReason, originalUnsuccessfulReason);
+                _unitOfWork.UnsuccessfulReasons.Update(originalUnsuccessfulReason);
                 await _unitOfWork.Save();
 
                 return NoContent();
@@ -127,12 +128,12 @@ namespace XebecAPI.Controllers
         }
 
 
-        // DELETE api/<QuestionController>/5
+        // DELETE api/<UnsuccessfulReasonController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteQuestion(int id)
+        public async Task<IActionResult> UnsuccessfulReasonQuestion(int id)
         {
             if (id < 1)
             {
@@ -141,14 +142,14 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var question = await _unitOfWork.Questions.GetT(q => q.Id == id);
+                var unsuccessfulReason = await _unitOfWork.UnsuccessfulReasons.GetT(q => q.Id == id);
 
-                if (question == null)
+                if (unsuccessfulReason == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
 
-                await _unitOfWork.Questions.Delete(id);
+                await _unitOfWork.UnsuccessfulReasons.Delete(id);
                 await _unitOfWork.Save();
 
                 return NoContent();

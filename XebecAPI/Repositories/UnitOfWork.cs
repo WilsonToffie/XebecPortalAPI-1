@@ -51,6 +51,7 @@ namespace XebecAPI.Repositories
         private IGenericRepository<AnswerType> _answerType;
         private IGenericRepository<CollaboratorAssigned> _collaboratorsAssigned;
         private IGenericRepository<CandidateRecommender> _candidatesRecommender;
+        private IGenericRepository<UnsuccessfulReason> _unsuccessfulReason;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -103,6 +104,8 @@ namespace XebecAPI.Repositories
         public IGenericRepository<CollaboratorAssigned> CollaboratorsAssigned => _collaboratorsAssigned ??= new GenericRepository<CollaboratorAssigned>(_context);
 
         public IGenericRepository<CandidateRecommender> CandidatesRecommender => _candidatesRecommender ??= new GenericRepository<CandidateRecommender>(_context);
+
+        public IGenericRepository<UnsuccessfulReason> UnsuccessfulReasons => _unsuccessfulReason ??= new GenericRepository<UnsuccessfulReason>(_context);
 
         public void Dispose()
         {

@@ -35,6 +35,7 @@ namespace XebecAPI.Configurations
             CreateMap<AnswerType, AnswerTypeDTO>().ReverseMap();
             CreateMap<CollaboratorAssigned, CollaboratorsAssignedDTO>().ReverseMap();
             CreateMap<CandidateRecommender, CandidateRecommenderDTO>().ReverseMap();
+            CreateMap<UnsuccessfulReason, UnsuccessfulReasonDTO>().ReverseMap();
         }
 
     }

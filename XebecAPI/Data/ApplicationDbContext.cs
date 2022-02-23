@@ -45,6 +45,8 @@ namespace XebecAPI.Data
         public DbSet<CollaboratorAssigned> CollaboratorsAssigneds { get; set; }
         public DbSet<CandidateRecommender> CandidatesRecommender { get; set; }
 
+        public DbSet<UnsuccessfulReason> UnsuccessfulReasons { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
