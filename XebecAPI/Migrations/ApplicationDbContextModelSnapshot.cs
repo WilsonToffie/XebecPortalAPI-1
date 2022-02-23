@@ -70,7 +70,7 @@ namespace XebecAPI.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ApplicationPhaseId")
+                    b.Property<int?>("ApplicationPhaseId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("BeginApplication")
@@ -720,9 +720,7 @@ namespace XebecAPI.Migrations
 
                     b.HasOne("XebecAPI.Shared.ApplicationPhase", "ApplicationPhase")
                         .WithMany()
-                        .HasForeignKey("ApplicationPhaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationPhaseId");
 
                     b.HasOne("XebecAPI.Shared.Job", "Job")
                         .WithMany("Applications")
