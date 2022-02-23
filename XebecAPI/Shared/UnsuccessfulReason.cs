@@ -10,5 +10,7 @@ namespace XebecAPI.Shared
         public int Id { get; set; }
 
         public string Reason { get; set; }
+
+        public List<RejectedCandidate> _RejectedCandidates { get; set; }
     }
 }
