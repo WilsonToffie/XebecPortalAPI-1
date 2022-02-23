@@ -14,7 +14,5 @@ namespace XebecAPI.Shared
         public List<ApplicationPhaseHelper> PhaseHelpers { get; set; }
 
         public List<JobApplicationPhase> JobPhases { get; set; }
-
-        public List<ApplicationPhase> AppPhases { get; set; }
     }
 }
