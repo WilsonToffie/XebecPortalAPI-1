@@ -32,7 +32,6 @@ namespace XebecAPI.Data
         public DbSet<LoginHelper> LoginHelpers { get; set;}
         public DbSet<PersonalInformation> PersonalInformations { get; set;}
         public DbSet<RegisterHelper> RegisterHelpers { get; set;}
-        public DbSet<Status> Statuses { get; set;}
         public DbSet<WorkHistory> WorkHistories { get; set;}
         public DbSet<JobPlatform> JobPlatforms { get; set; }
         public DbSet<JobPlatformHelper> JobPlatformHelpers { get; set; }
@@ -45,6 +44,9 @@ namespace XebecAPI.Data
         public DbSet<AnswerType> AnswerTypes { get; set; }
         public DbSet<CollaboratorAssigned> CollaboratorsAssigneds { get; set; }
         public DbSet<CandidateRecommender> CandidatesRecommender { get; set; }
+
+        public DbSet<UnsuccessfulReason> UnsuccessfulReasons { get; set; }
+        public DbSet<RejectedCandidate> RejectedCandidates { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

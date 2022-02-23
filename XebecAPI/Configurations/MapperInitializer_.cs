@@ -28,7 +28,6 @@ namespace XebecAPI.Configurations
             CreateMap<LoginHelper, LoginHelperDTO>().ReverseMap();
             CreateMap<PersonalInformation, PersonalInformationDTO>().ReverseMap();
             CreateMap<ProfilePortfolioLink, ProfilePortfolioLinkDTO>().ReverseMap();
-            CreateMap<Status, StatusDTO>().ReverseMap();
             CreateMap<WorkHistory, WorkHistoryDTO>().ReverseMap();
             CreateMap<JobApplicationPhase, JobApplicationPhaseDTO>().ReverseMap();
             CreateMap<QuestionnaireApplicantForm, QuestionnaireApplicantFormDTO>().ReverseMap();
@@ -36,6 +35,8 @@ namespace XebecAPI.Configurations
             CreateMap<AnswerType, AnswerTypeDTO>().ReverseMap();
             CreateMap<CollaboratorAssigned, CollaboratorsAssignedDTO>().ReverseMap();
             CreateMap<CandidateRecommender, CandidateRecommenderDTO>().ReverseMap();
+            CreateMap<UnsuccessfulReason, UnsuccessfulReasonDTO>().ReverseMap();
+            CreateMap<RejectedCandidate, RejectedCandidateDTO>().ReverseMap();
         }
 
     }

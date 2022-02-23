@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XebecAPI.Data;
 
 namespace XebecAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220223093319_RemoveStatus")]
+    partial class RemoveStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,9 +72,6 @@ namespace XebecAPI.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ApplicationPhaseId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("BeginApplication")
                         .HasColumnType("datetime2");
 
@@ -85,8 +84,6 @@ namespace XebecAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
-
-                    b.HasIndex("ApplicationPhaseId");
 
                     b.HasIndex("JobId");
 
@@ -568,28 +565,6 @@ namespace XebecAPI.Migrations
                     b.ToTable("RegisterHelpers");
                 });
 
-            modelBuilder.Entity("XebecAPI.Shared.RejectedCandidate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ApplicationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UnsuccessfulReasonId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId");
-
-                    b.HasIndex("UnsuccessfulReasonId");
-
-                    b.ToTable("RejectedCandidates");
-                });
-
             modelBuilder.Entity("XebecAPI.Shared.Security.AppUser", b =>
                 {
                     b.Property<int>("Id")
@@ -647,21 +622,6 @@ namespace XebecAPI.Migrations
                     b.ToTable("KeysAssigned");
                 });
 
-            modelBuilder.Entity("XebecAPI.Shared.UnsuccessfulReason", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UnsuccessfulReasons");
-                });
-
             modelBuilder.Entity("XebecAPI.Shared.WorkHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -713,17 +673,11 @@ namespace XebecAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("XebecAPI.Shared.ApplicationPhase", "ApplicationPhase")
-                        .WithMany()
-                        .HasForeignKey("ApplicationPhaseId");
-
                     b.HasOne("XebecAPI.Shared.Job", "Job")
                         .WithMany("Applications")
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ApplicationPhase");
 
                     b.Navigation("AppUser");
 
@@ -968,25 +922,6 @@ namespace XebecAPI.Migrations
                     b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("XebecAPI.Shared.RejectedCandidate", b =>
-                {
-                    b.HasOne("XebecAPI.Shared.Application", "Application")
-                        .WithMany()
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("XebecAPI.Shared.UnsuccessfulReason", "UnsuccessfulReason")
-                        .WithMany("_RejectedCandidates")
-                        .HasForeignKey("UnsuccessfulReasonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Application");
-
-                    b.Navigation("UnsuccessfulReason");
-                });
-
             modelBuilder.Entity("XebecAPI.Shared.WorkHistory", b =>
                 {
                     b.HasOne("XebecAPI.Shared.Security.AppUser", "AppUser")
@@ -1024,11 +959,6 @@ namespace XebecAPI.Migrations
             modelBuilder.Entity("XebecAPI.Shared.Security.AppUser", b =>
                 {
                     b.Navigation("Applications");
-                });
-
-            modelBuilder.Entity("XebecAPI.Shared.UnsuccessfulReason", b =>
-                {
-                    b.Navigation("_RejectedCandidates");
                 });
 #pragma warning restore 612, 618
         }

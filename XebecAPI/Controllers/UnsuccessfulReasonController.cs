@@ -1,44 +1,41 @@
 ﻿using AutoMapper;
-using XebecAPI.Data;
-using XebecAPI.IRepositories;
-using XebecAPI.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using XebecAPI.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using XebecAPI.Shared;
 using XebecAPI.DTOs;
-
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StatusController : ControllerBase
+    public class UnsuccessfulReasonController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper mapper;
 
-        public StatusController(IUnitOfWork unitOfWork, IMapper mapper)
+        public UnsuccessfulReasonController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
 
-        // GET: api/<StatusesController>
+        // GET: api/<UnsuccessfulReasonController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetStatuses()
+        public async Task<IActionResult> GetUnsuccessfulReason()
         {
             try
             {
-                var Statuses = await _unitOfWork.Statuses.GetAll();
-             
-                return Ok(Statuses);
+                var UnsuccessfulReason = await _unitOfWork.UnsuccessfulReasons.GetAll();
+
+                return Ok(UnsuccessfulReason);
 
             }
             catch (Exception e)
@@ -47,16 +44,16 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<StatusesController>/5
+        // GET api/<UnsuccessfulReasonController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetStatus(int id)
+        public async Task<IActionResult> GetUnsuccessfulReason(int id)
         {
             try
             {
-                var Status = await _unitOfWork.Statuses.GetT(q => q.Id == id);
-                return Ok(Status);
+                var UnsuccessfulReason = await _unitOfWork.UnsuccessfulReasons.GetT(q => q.Id == id);
+                return Ok(UnsuccessfulReason);
             }
             catch (Exception e)
             {
@@ -64,12 +61,12 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // POST api/<StatusesController>
+        // POST api/<UnsuccessfulReasonController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateStatus([FromBody] Status Status)
+        public async Task<IActionResult> CreateUnsuccessfulReason([FromBody] UnsuccessfulReason unsuccessfulReason)
         {
 
             if (!ModelState.IsValid)
@@ -82,10 +79,10 @@ namespace XebecAPI.Controllers
             try
             {
 
-                await _unitOfWork.Statuses.Insert(Status);
+                await _unitOfWork.UnsuccessfulReasons.Insert(unsuccessfulReason);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetStatus", new { id = Status.Id }, Status);
+                return CreatedAtAction("GetUnsuccessfulReason", new { id = unsuccessfulReason.Id }, unsuccessfulReason);
 
             }
             catch (Exception e)
@@ -99,9 +96,9 @@ namespace XebecAPI.Controllers
         }
 
 
-        // PUT api/<StatusesController>/5
+        // PUT api/<UnsuccessfulReasonController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateStatus(int id, [FromBody] StatusDTO Status)
+        public async Task<IActionResult> UpdateUnsuccessfulReason(int id, [FromBody] UnsuccessfulReasonDTO unsuccessfulReason)
         {
             if (!ModelState.IsValid)
             {
@@ -110,14 +107,14 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var originalStatus = await _unitOfWork.Statuses.GetT(q => q.Id == id);
+                var originalUnsuccessfulReason = await _unitOfWork.UnsuccessfulReasons.GetT(q => q.Id == id);
 
-                if (originalStatus == null)
+                if (originalUnsuccessfulReason == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                mapper.Map(Status, originalStatus);
-                _unitOfWork.Statuses.Update(originalStatus);
+                mapper.Map(unsuccessfulReason, originalUnsuccessfulReason);
+                _unitOfWork.UnsuccessfulReasons.Update(originalUnsuccessfulReason);
                 await _unitOfWork.Save();
 
                 return NoContent();
@@ -131,12 +128,12 @@ namespace XebecAPI.Controllers
         }
 
 
-        // DELETE api/<StatusesController>/5
+        // DELETE api/<UnsuccessfulReasonController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteStatus(int id)
+        public async Task<IActionResult> UnsuccessfulReasonQuestion(int id)
         {
             if (id < 1)
             {
@@ -145,14 +142,14 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var Status = await _unitOfWork.Statuses.GetT(q => q.Id == id);
+                var unsuccessfulReason = await _unitOfWork.UnsuccessfulReasons.GetT(q => q.Id == id);
 
-                if (Status == null)
+                if (unsuccessfulReason == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
 
-                await _unitOfWork.Statuses.Delete(id);
+                await _unitOfWork.UnsuccessfulReasons.Delete(id);
                 await _unitOfWork.Save();
 
                 return NoContent();

@@ -21,9 +21,6 @@ namespace XebecAPI.Shared
         public int ApplicationPhaseId { get; set; }
         public ApplicationPhase ApplicationPhase { get; set; }
 
-        //foreign key: Status
-        public int StatusId { get; set; }
-        public Status Status { get; set; }
     }
 
 }

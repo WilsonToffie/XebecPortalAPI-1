@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace XebecAPI.DTOs
 {
-     public class StatusDTO
+    public class UnsuccessfulReasonDTO
     {
         public int Id { get; set; }
-        public string Description { get; set; }
-        
+
+        public string Reason { get; set; }
     }
 }

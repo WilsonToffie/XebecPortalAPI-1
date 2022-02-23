@@ -34,7 +34,6 @@ namespace XebecAPI.Repositories
         private IGenericRepository<LoginHelper> _LoginHelpers;
         private IGenericRepository<PersonalInformation> _personalInfo;
         private IGenericRepository<RegisterHelper> _RegisterHelpers;
-        private IGenericRepository<Status> _statuses;
         
         private IGenericRepository<WorkHistory> _workHistories;
 
@@ -52,6 +51,8 @@ namespace XebecAPI.Repositories
         private IGenericRepository<AnswerType> _answerType;
         private IGenericRepository<CollaboratorAssigned> _collaboratorsAssigned;
         private IGenericRepository<CandidateRecommender> _candidatesRecommender;
+        private IGenericRepository<UnsuccessfulReason> _unsuccessfulReason;
+        private IGenericRepository<RejectedCandidate> _rejectedCandidate;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -84,7 +85,6 @@ namespace XebecAPI.Repositories
 
         public IGenericRepository<RegisterHelper> RegisterHelpers => _RegisterHelpers ??= new GenericRepository<RegisterHelper>(_context);
 
-        public IGenericRepository<Status> Statuses => _statuses ??= new GenericRepository<Status>(_context);
         public IGenericRepository<WorkHistory> WorkHistory => _workHistories ??= new GenericRepository<WorkHistory>(_context);
 
         public IGenericRepository<JobPlatform> JobPlatforms => _jobPlatforms ??= new GenericRepository<JobPlatform>(_context);
@@ -105,6 +105,11 @@ namespace XebecAPI.Repositories
         public IGenericRepository<CollaboratorAssigned> CollaboratorsAssigned => _collaboratorsAssigned ??= new GenericRepository<CollaboratorAssigned>(_context);
 
         public IGenericRepository<CandidateRecommender> CandidatesRecommender => _candidatesRecommender ??= new GenericRepository<CandidateRecommender>(_context);
+
+        public IGenericRepository<UnsuccessfulReason> UnsuccessfulReasons => _unsuccessfulReason ??= new GenericRepository<UnsuccessfulReason>(_context);
+
+        //RejectedCandidate
+        public IGenericRepository<RejectedCandidate> RejectedCandidates => _rejectedCandidate ??= new GenericRepository<RejectedCandidate>(_context);
 
         public void Dispose()
         {

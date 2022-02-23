@@ -28,7 +28,6 @@ namespace XebecAPI.IRepositories
         IGenericRepository<LoginHelper> LoginHelpers { get; }
         IGenericRepository<PersonalInformation> PersonalInformation { get; }
         IGenericRepository<RegisterHelper> RegisterHelpers { get; }
-        IGenericRepository<Status> Statuses { get; }
         IGenericRepository<WorkHistory> WorkHistory { get; }
         
         IGenericRepository<JobPlatform> JobPlatforms { get; }
@@ -48,6 +47,9 @@ namespace XebecAPI.IRepositories
         IGenericRepository<CollaboratorAssigned> CollaboratorsAssigned { get; }
 
         IGenericRepository<CandidateRecommender> CandidatesRecommender { get; }
+
+        IGenericRepository<UnsuccessfulReason> UnsuccessfulReasons { get; }
+        IGenericRepository<RejectedCandidate> RejectedCandidates { get; }
         //Saving to the DB
         Task Save();
 

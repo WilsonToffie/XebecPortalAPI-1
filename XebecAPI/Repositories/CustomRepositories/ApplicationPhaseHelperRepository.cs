@@ -42,7 +42,7 @@ namespace XebecAPI.Repositories
                          join applications in _context.Applications.Where(a => a.AppUserId == AppUserId && a.JobId == jobId)
                              on users.ApplicationId equals applications.Id
                          select users;
-            queryFinal = queryFinal.Include(a => a.Application).Include(s => s.Status).Include(p => p.ApplicationPhase);
+            queryFinal = queryFinal.Include(a => a.Application).Include(p => p.ApplicationPhase);
 
             return await queryFinal.AsNoTracking().ToListAsync();
         }

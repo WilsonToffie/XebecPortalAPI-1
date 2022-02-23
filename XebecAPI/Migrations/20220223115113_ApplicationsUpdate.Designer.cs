@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XebecAPI.Data;
 
 namespace XebecAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220223115113_ApplicationsUpdate")]
+    partial class ApplicationsUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,10 +102,15 @@ namespace XebecAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ApplicationPhaseId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationPhaseId");
 
                     b.ToTable("ApplicationPhases");
                 });
@@ -730,6 +737,13 @@ namespace XebecAPI.Migrations
                     b.Navigation("Job");
                 });
 
+            modelBuilder.Entity("XebecAPI.Shared.ApplicationPhase", b =>
+                {
+                    b.HasOne("XebecAPI.Shared.ApplicationPhase", null)
+                        .WithMany("AppPhases")
+                        .HasForeignKey("ApplicationPhaseId");
+                });
+
             modelBuilder.Entity("XebecAPI.Shared.ApplicationPhaseHelper", b =>
                 {
                     b.HasOne("XebecAPI.Shared.Application", "Application")
@@ -1005,6 +1019,8 @@ namespace XebecAPI.Migrations
 
             modelBuilder.Entity("XebecAPI.Shared.ApplicationPhase", b =>
                 {
+                    b.Navigation("AppPhases");
+
                     b.Navigation("JobPhases");
 
                     b.Navigation("PhaseHelpers");

@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace XebecAPI.Shared
 {
-    public class Status
+    public class UnsuccessfulReason
     {
         public int Id { get; set; }
-        public string Description { get; set; }
 
-        public List<ApplicationPhaseHelper> PhaseHelpers { get; set; }
+        public string Reason { get; set; }
 
+        public List<RejectedCandidate> _RejectedCandidates { get; set; }
     }
 }
