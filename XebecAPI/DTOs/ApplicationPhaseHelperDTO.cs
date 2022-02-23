@@ -14,9 +14,6 @@ namespace XebecAPI.DTOs
 
         public int ApplicationPhaseId { get; set; }
         public ApplicationPhaseDTO ApplicationPhase { get; set; }
-        public int StatusId { get; set; }
-
-        public StatusDTO Status { get; set; }
         public DateTime TimeMoved { get; set; }
         public string Comments { get; set; }
         

@@ -28,7 +28,6 @@ namespace XebecAPI.IRepositories
         IGenericRepository<LoginHelper> LoginHelpers { get; }
         IGenericRepository<PersonalInformation> PersonalInformation { get; }
         IGenericRepository<RegisterHelper> RegisterHelpers { get; }
-        IGenericRepository<Status> Statuses { get; }
         IGenericRepository<WorkHistory> WorkHistory { get; }
         
         IGenericRepository<JobPlatform> JobPlatforms { get; }

@@ -34,7 +34,6 @@ namespace XebecAPI.Repositories
         private IGenericRepository<LoginHelper> _LoginHelpers;
         private IGenericRepository<PersonalInformation> _personalInfo;
         private IGenericRepository<RegisterHelper> _RegisterHelpers;
-        private IGenericRepository<Status> _statuses;
         
         private IGenericRepository<WorkHistory> _workHistories;
 
@@ -84,7 +83,6 @@ namespace XebecAPI.Repositories
 
         public IGenericRepository<RegisterHelper> RegisterHelpers => _RegisterHelpers ??= new GenericRepository<RegisterHelper>(_context);
 
-        public IGenericRepository<Status> Statuses => _statuses ??= new GenericRepository<Status>(_context);
         public IGenericRepository<WorkHistory> WorkHistory => _workHistories ??= new GenericRepository<WorkHistory>(_context);
 
         public IGenericRepository<JobPlatform> JobPlatforms => _jobPlatforms ??= new GenericRepository<JobPlatform>(_context);

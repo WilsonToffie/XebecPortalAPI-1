@@ -32,7 +32,6 @@ namespace XebecAPI.Data
         public DbSet<LoginHelper> LoginHelpers { get; set;}
         public DbSet<PersonalInformation> PersonalInformations { get; set;}
         public DbSet<RegisterHelper> RegisterHelpers { get; set;}
-        public DbSet<Status> Statuses { get; set;}
         public DbSet<WorkHistory> WorkHistories { get; set;}
         public DbSet<JobPlatform> JobPlatforms { get; set; }
         public DbSet<JobPlatformHelper> JobPlatformHelpers { get; set; }

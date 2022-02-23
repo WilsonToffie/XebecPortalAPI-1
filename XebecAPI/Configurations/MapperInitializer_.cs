@@ -28,7 +28,6 @@ namespace XebecAPI.Configurations
             CreateMap<LoginHelper, LoginHelperDTO>().ReverseMap();
             CreateMap<PersonalInformation, PersonalInformationDTO>().ReverseMap();
             CreateMap<ProfilePortfolioLink, ProfilePortfolioLinkDTO>().ReverseMap();
-            CreateMap<Status, StatusDTO>().ReverseMap();
             CreateMap<WorkHistory, WorkHistoryDTO>().ReverseMap();
             CreateMap<JobApplicationPhase, JobApplicationPhaseDTO>().ReverseMap();
             CreateMap<QuestionnaireApplicantForm, QuestionnaireApplicantFormDTO>().ReverseMap();

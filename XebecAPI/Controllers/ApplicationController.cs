@@ -103,7 +103,6 @@ namespace XebecAPI.Controllers
                 ApplicationPhaseHelper applicationPhaseHelper = new ApplicationPhaseHelper
                 {
                     ApplicationId = application.Id,
-                    StatusId = 1,
                     ApplicationPhaseId = 1,
                     TimeMoved = application.TimeApplied
                 };
