@@ -214,7 +214,7 @@ namespace XebecAPI.Controllers
             return str;
         }
         
-        [HttpGet("getEnv")]
+        [HttpGet("getCurrent")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public string GetEnv()
@@ -225,9 +225,59 @@ namespace XebecAPI.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return e.Message;
             }
             
         }
+        
+        [HttpGet("GetBaseDir")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public string GetBase()
+        {
+            try
+            {
+                   return $"Physical location {AppDomain.CurrentDomain.BaseDirectory}";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+            
+        }
+        
+        [HttpGet("AppContext")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public string GettAppBase()
+        {
+            try
+            {
+                   return $"AppContext.BaseDir {AppContext.BaseDirectory}";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+            
+        }
+        
+       [HttpGet("Mainmodule")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public string GetStuff()
+        {
+            try
+            {
+                    return $"Runtime Call {Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+            
+        }
+           
+           
     }
 }
