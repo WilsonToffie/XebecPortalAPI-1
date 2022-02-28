@@ -262,21 +262,6 @@ namespace XebecAPI.Controllers
             
         }
         
-       [HttpGet("Mainmodule")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public string GetStuff()
-        {
-            try
-            {
-                    return $"Runtime Call {Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}";
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-            
-        }
            
            
     }
