@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics;
@@ -53,7 +53,12 @@ namespace XebecAPI.Controllers
 
             string ResumeFilePath = System.IO.Path.Combine(Environment.CurrentDirectory, @"CVs");
 
-             // file is downloaded
+            if (Directory.Exists(ResumeFilePath))
+            {
+                Directory.CreateDirectory(ResumeFilePath);
+            }
+
+            // file is downloaded
             // check file download was success or not
 
             dynamic fname =
@@ -98,8 +103,12 @@ namespace XebecAPI.Controllers
                 "sp=racwdli&st=2022-02-28T08:30:27Z&se=2022-03-11T16:30:27Z&sv=2020-08-04&sr=c&sig=TE%2B2VCz%2B6KKFbYHIkQwxGPOYWVUtht3xBPYZ8bE3kH4%3D");
             BlobClient blobClient = new BlobClient(new Uri(url), credential, new BlobClientOptions());
 
-
             string downloadFilePath = Environment.CurrentDirectory + @"\Resumes";
+            if (Directory.Exists(downloadFilePath))
+            {
+                Directory.CreateDirectory(downloadFilePath);
+            }
+           
 
             //var res = await blobClient.DownloadToAsync(downloadFilePath);
             Console.WriteLine($">>>>>>>>>>>>>>>>>>res path{Environment.CurrentDirectory} \n\ndownloadFilePath {downloadFilePath}<<<<<<<<<<<<<<<<<");
@@ -183,8 +192,50 @@ namespace XebecAPI.Controllers
             }
             return Ok($"{result.Status}");
         }
-        
-        
+
+        [HttpPost("upload2")]
+        public async Task<IActionResult> UploadFile2([FromForm] string url)
+        {
+            StringBuilder output = new StringBuilder("Running python\n");
+            Console.WriteLine();
+            Console.WriteLine("Running python\n");
+            //output.AppendLine( await SetupPython());
+            //Console.WriteLine();
+            //output.AppendLine(await InstallSpacy());
+            Console.WriteLine("Setting python Evnironment\n");
+            await Installer.SetupPython();
+            PythonEngine.Initialize();
+            dynamic sys = PythonEngine.ImportModule("sys");
+            Console.WriteLine("Done !! Setting python Evnironment\n");
+            output.AppendLine("Done !! Setting python Evnironment\n");
+            output.AppendLine($"Python version:{sys.version}");
+            await Installer.SetupPython();
+            Installer.TryInstallPip();
+            Installer.PipInstallModule("spacy==2.3.7");
+            //Installer.PipInstallModule("spacy-look-data");
+            PythonEngine.Initialize();
+            dynamic spacy = PythonEngine.ImportModule("spacy");
+            output.AppendLine("Done !! Installing Spacy");
+            output.AppendLine($"Spacy version:{spacy.__version__}");
+            dynamic nlp_model = spacy.load("nlp_model");
+            Installer.PipInstallModule("PyMuPDF");
+            dynamic fname = url;
+            //dynamic doc2 = fitz.open(fname);
+            StringBuilder text = new StringBuilder();
+            dynamic doc = nlp_model(ReadPDF(fname));
+            string res = "{";
+            foreach (dynamic ent in doc.ents)
+            {
+                res += $" \"{ent.label_}\" : \"{ent.text.ToString()}\",";
+            }
+            res = res.Substring(0, res.Length - 1);
+            res += "}";
+            Console.WriteLine(res);
+            var test = JObject.Parse(res);
+            return Ok(test);
+        }
+
+
         private string ReadPDF(string filepath)
         {
             //string filePath = @"C:\Users\me\RiderProjects\Work Projects\Real\CV Resume\FixedsumeReader\ScanResume\ScanResume\Server\StaticFiles\Resumes\functionalSample.pdf";
