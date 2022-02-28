@@ -279,6 +279,12 @@ namespace XebecAPI.Controllers
                 string str = "";
                 string resumefolder = Environment.CurrentDirectory;
                 DirectoryInfo d = new DirectoryInfo(resumefolder); //Assuming Test is your Folder
+                
+                if (Directory.Exists(Environment.CurrentDirectory))
+                {
+                    Directory.CreateDirectory(Environment.CurrentDirectory + @"\Resumes");
+                }
+                
                 DirectoryInfo[] child = d.GetDirectories();
 
                 foreach (DirectoryInfo file in child)
