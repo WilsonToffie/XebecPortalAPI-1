@@ -215,9 +215,19 @@ namespace XebecAPI.Controllers
         }
         
         [HttpGet("getEnv")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public string GetEnv()
         {
-            return Environment.CurrentDirectory;
+            try
+            {
+                return Environment.CurrentDirectory;
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+            
         }
     }
 }
