@@ -120,7 +120,7 @@ namespace XebecAPI.Controllers
                 Uri uri = new Uri(url);
                 string filename = System.IO.Path.GetFileName(uri.LocalPath);
 
-                string filePath = $"{downloadFilePath}/{filename}";
+               string filePath = $@"{downloadFilePath}\{filename}";
 
                 var result = blobClient.DownloadTo(filePath); // file is downloaded
                                                               // check file download was success or not
