@@ -213,5 +213,11 @@ namespace XebecAPI.Controllers
             }
             return str;
         }
+        
+        [HttpGet("getEnv")]
+        public string GetEnv()
+        {
+            return Environment.CurrentDirectory;
+        }
     }
 }
