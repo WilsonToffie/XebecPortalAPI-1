@@ -88,7 +88,7 @@ namespace XebecAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IActionResult))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPost]
-        public async Task<IActionResult> UploadFile([FromBody] string url)
+        public async Task<IActionResult> UploadFile([FromForm] string url)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Invalid data.");
