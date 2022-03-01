@@ -213,5 +213,56 @@ namespace XebecAPI.Controllers
             }
             return str;
         }
+        
+        [HttpGet("getCurrent")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public string GetEnv()
+        {
+            try
+            {
+                return Environment.CurrentDirectory;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+            
+        }
+        
+        [HttpGet("GetBaseDir")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public string GetBase()
+        {
+            try
+            {
+                   return $"Physical location {AppDomain.CurrentDomain.BaseDirectory}";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+            
+        }
+        
+        [HttpGet("AppContext")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public string GettAppBase()
+        {
+            try
+            {
+                   return $"AppContext.BaseDir {AppContext.BaseDirectory}";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+            
+        }
+        
+           
+           
     }
 }
