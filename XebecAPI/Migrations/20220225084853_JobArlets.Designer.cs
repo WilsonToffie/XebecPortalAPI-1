@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XebecAPI.Data;
 
 namespace XebecAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220225084853_JobArlets")]
+    partial class JobArlets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,35 +291,6 @@ namespace XebecAPI.Migrations
                     b.ToTable("Jobs");
                 });
 
-            modelBuilder.Entity("XebecAPI.Shared.JobAlert", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Company")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Department")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Job")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("JobAlerts");
-                });
-
             modelBuilder.Entity("XebecAPI.Shared.JobApplicationPhase", b =>
                 {
                     b.Property<int>("Id")
@@ -412,6 +385,35 @@ namespace XebecAPI.Migrations
                     b.HasIndex("JobTypeId");
 
                     b.ToTable("JobTypeHelpers");
+                });
+
+            modelBuilder.Entity("XebecAPI.Shared.JobsArlets", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Job")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("JobArlet");
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.LoginHelper", b =>
@@ -847,17 +849,6 @@ namespace XebecAPI.Migrations
                     b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("XebecAPI.Shared.JobAlert", b =>
-                {
-                    b.HasOne("XebecAPI.Shared.Security.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("XebecAPI.Shared.JobApplicationPhase", b =>
                 {
                     b.HasOne("XebecAPI.Shared.ApplicationPhase", "ApplicationPhase")
@@ -913,6 +904,17 @@ namespace XebecAPI.Migrations
                     b.Navigation("Job");
 
                     b.Navigation("JobType");
+                });
+
+            modelBuilder.Entity("XebecAPI.Shared.JobsArlets", b =>
+                {
+                    b.HasOne("XebecAPI.Shared.Security.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.LoginHelper", b =>

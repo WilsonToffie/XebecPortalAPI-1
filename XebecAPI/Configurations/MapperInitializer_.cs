@@ -37,6 +37,7 @@ namespace XebecAPI.Configurations
             CreateMap<CandidateRecommender, CandidateRecommenderDTO>().ReverseMap();
             CreateMap<UnsuccessfulReason, UnsuccessfulReasonDTO>().ReverseMap();
             CreateMap<RejectedCandidate, RejectedCandidateDTO>().ReverseMap();
+            CreateMap<JobAlert, JobArletsDTO>().ReverseMap();
         }
 
     }
