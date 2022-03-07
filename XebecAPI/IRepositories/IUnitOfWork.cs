@@ -50,6 +50,8 @@ namespace XebecAPI.IRepositories
 
         IGenericRepository<UnsuccessfulReason> UnsuccessfulReasons { get; }
         IGenericRepository<RejectedCandidate> RejectedCandidates { get; }
+        IGenericRepository<JobAlert> JobAlerts { get; }
+
         //Saving to the DB
         Task Save();
 

@@ -103,6 +103,9 @@ namespace XebecAPI.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("EmailTemplate")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("ApplicationPhases");
@@ -287,6 +290,35 @@ namespace XebecAPI.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("Jobs");
+                });
+
+            modelBuilder.Entity("XebecAPI.Shared.JobAlert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Job")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("JobAlerts");
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.JobApplicationPhase", b =>
@@ -814,6 +846,17 @@ namespace XebecAPI.Migrations
                     b.HasOne("XebecAPI.Shared.Security.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("XebecAPI.Shared.JobAlert", b =>
+                {
+                    b.HasOne("XebecAPI.Shared.Security.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AppUser");
                 });

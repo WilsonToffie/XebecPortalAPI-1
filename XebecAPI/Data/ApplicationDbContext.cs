@@ -47,6 +47,7 @@ namespace XebecAPI.Data
 
         public DbSet<UnsuccessfulReason> UnsuccessfulReasons { get; set; }
         public DbSet<RejectedCandidate> RejectedCandidates { get; set; }
+        public DbSet<JobAlert> JobAlerts { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
