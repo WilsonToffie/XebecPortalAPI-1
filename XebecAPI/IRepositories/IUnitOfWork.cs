@@ -52,6 +52,8 @@ namespace XebecAPI.IRepositories
         IGenericRepository<RejectedCandidate> RejectedCandidates { get; }
         IGenericRepository<JobAlert> JobAlerts { get; }
 
+        IGenericRepository<Reference> References { get; }
+
         //Saving to the DB
         Task Save();
 

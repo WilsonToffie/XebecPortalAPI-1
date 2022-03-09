@@ -49,6 +49,7 @@ namespace XebecAPI.Data
         public DbSet<RejectedCandidate> RejectedCandidates { get; set; }
         public DbSet<JobAlert> JobAlerts { get; set; }
 
+        public DbSet<Reference> References { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

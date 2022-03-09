@@ -54,6 +54,7 @@ namespace XebecAPI.Repositories
         private IGenericRepository<UnsuccessfulReason> _unsuccessfulReason;
         private IGenericRepository<RejectedCandidate> _rejectedCandidate;
         private IGenericRepository<JobAlert> _jobArlets;
+        private IGenericRepository<Reference> _references;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -112,6 +113,8 @@ namespace XebecAPI.Repositories
         //RejectedCandidate
         public IGenericRepository<RejectedCandidate> RejectedCandidates => _rejectedCandidate ??= new GenericRepository<RejectedCandidate>(_context);
         public IGenericRepository<JobAlert> JobAlerts => _jobArlets ??= new GenericRepository<JobAlert>(_context);
+
+        public IGenericRepository<Reference> References => _references ??= new GenericRepository<Reference>(_context);
 
         public void Dispose()
         {

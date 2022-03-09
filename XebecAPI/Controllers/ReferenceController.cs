@@ -17,28 +17,29 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicationController : ControllerBase
+    public class ReferenceController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper mapper;
 
-        public ApplicationController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ReferenceController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
 
-        // GET: api/<ApplicationsController>
+        // GET: api/<ReferenceController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetApplications()
+        public async Task<IActionResult> GetReferences()
         {
             try
             {
-                var Applications = await _unitOfWork.Applications.GetAll();
+                var Reference = await _unitOfWork.References.GetAll();
+             
+                return Ok(Reference);
 
-                return Ok(Applications);
             }
             catch (Exception e)
             {
@@ -46,16 +47,51 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<ApplicationsController>/5
+        // GET api/<ReferenceController>/5
+        [HttpGet("single/{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetReference(int id)
+        {
+            try
+            {
+                var Reference = await _unitOfWork.References.GetT(q => q.Id == id);
+                return Ok(Reference);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET api/<ReferenceController>/userId=1
+        [HttpGet("all/{userId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetReferenceByUserId(int userId)
+        {
+            try
+            {
+                var Reference = await _unitOfWork.References.GetAll(q => q.AppUserId == userId);
+                return Ok(Reference);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        //get by appuserid
+        // GET api/<ReferenceController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetApplication(int id)
+        public async Task<IActionResult> GetSingleReferenceByUserID(int id)
         {
             try
             {
-                var Application = await _unitOfWork.Applications.GetT(q => q.Id == id);
-                return Ok(Application);
+                var Reference = await _unitOfWork.References.GetT(q => q.AppUserId == id);
+                return Ok(Reference);
             }
             catch (Exception e)
             {
@@ -63,70 +99,80 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<ApplicationsController>/5
-        [HttpGet("job/{JobId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetApplicationByJob(int JobId)
-        {
-
-            try
-            {
-
-                var applications = await _unitOfWork.Applications.GetAll(p => p.JobId == JobId);
-
-                return Ok(applications);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
-
-        // POST api/<ApplicationsController>
+        // POST api/<ReferenceController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateApplication([FromBody] Application application)
+        public async Task<IActionResult> CreateReference([FromBody] Reference Reference)
         {
+
             if (!ModelState.IsValid)
             {
+
                 return BadRequest(ModelState);
             }
 
+
             try
             {
-                var existingapplications = await _unitOfWork.Applications.GetAll(id => id.JobId == application.JobId && id.AppUserId == application.AppUserId);
-                if (existingapplications != null)
-                {
-                    return StatusCode(StatusCodes.Status400BadRequest,
-                    "There is an existing application");
-                }
-                await _unitOfWork.Applications.Insert(application);
-                await _unitOfWork.Save();
-                ApplicationPhaseHelper applicationPhaseHelper = new ApplicationPhaseHelper
-                {
-                    ApplicationId = application.Id,
-                    ApplicationPhaseId = 1,
-                    TimeMoved = application.TimeApplied
-                };
-                await _unitOfWork.ApplicationPhaseHelpers.Insert(applicationPhaseHelper);
+
+                await _unitOfWork.References.Insert(Reference);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetApplication", new { id = application.Id }, application);
-                //return NoContent();
+                return CreatedAtAction("GetReference", new { id = Reference.Id }, Reference);
+
             }
             catch (Exception e)
             {
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     e.InnerException);
             }
+
+
         }
 
-        // PUT api/<ApplicationsController>/5
+        [HttpPost("List")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateReferences([FromBody] List<Reference> References)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+
+            try
+            {
+              
+                    await _unitOfWork.References.InsertRange(References);
+                    await _unitOfWork.Save();
+
+                   
+             
+
+                return CreatedAtAction("GetReferences", References);
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    e.InnerException);
+            }
+
+
+        }
+
+
+
+        // PUT api/<ReferenceController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateApplication(int id, [FromBody] ApplicationDTO Application)
+        public async Task<IActionResult> UpdateReference(int id, [FromBody] ReferenceDTO Reference)
         {
             if (!ModelState.IsValid)
             {
@@ -135,30 +181,33 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var originalApplication = await _unitOfWork.Applications.GetT(q => q.Id == id);
+                var originalReference = await _unitOfWork.References.GetT(q => q.Id == id);
 
-                if (originalApplication == null)
+                if (originalReference == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                mapper.Map(Application, originalApplication);
-                _unitOfWork.Applications.Update(originalApplication);
+                mapper.Map(Reference, originalReference);
+                _unitOfWork.References.Update(originalReference);
                 await _unitOfWork.Save();
 
                 return NoContent();
+
             }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
+
         }
 
-        // DELETE api/<ApplicationsController>/5
+
+        // DELETE api/<ReferenceController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteApplication(int id)
+        public async Task<IActionResult> DeleteReference(int id)
         {
             if (id < 1)
             {
@@ -167,22 +216,25 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var Application = await _unitOfWork.Applications.GetT(q => q.Id == id);
+                var Reference = await _unitOfWork.References.GetT(q => q.Id == id);
 
-                if (Application == null)
+                if (Reference == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
 
-                await _unitOfWork.Applications.Delete(id);
+                await _unitOfWork.References.Delete(id);
                 await _unitOfWork.Save();
 
                 return NoContent();
+
+
             }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
+
         }
     }
 }

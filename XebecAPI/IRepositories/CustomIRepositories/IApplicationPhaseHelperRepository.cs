@@ -19,5 +19,6 @@ namespace XebecAPI.IRepositories
         Task<List<myJobsViewModel>> GetApplicationPhaseInfoForUser(int AppUserId, int PhaseId);
 
         Task<List<ApplicantViewModel>> GetallApplicants();
+        Task<List<ApplicantPortalView>> GetApplicantsForJob(int JobId);
     }
 }
