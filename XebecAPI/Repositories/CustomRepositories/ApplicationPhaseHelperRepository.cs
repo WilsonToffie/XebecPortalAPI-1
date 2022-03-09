@@ -78,6 +78,24 @@ namespace XebecAPI.Repositories
             return await queryFinal.AsNoTracking().ToListAsync();
         }
 
+        public async Task<List<ApplicantPortalView>> GetApplicantsForJob(int JobId)
+        {
+            IQueryable<ApplicationPhaseHelper> queryphase;
+            IQueryable<ApplicantPortalView> queryFinal = null;
+            queryFinal = from applications in _context.Applications.Where(a => a.JobId == JobId)
+                         join phases in _context.ApplicationPhasesHelpers.Include(p => p.ApplicationPhase)
+                              on applications.Id equals phases.ApplicationId
+                         join users in _context.AppUser
+                       on applications.AppUserId equals users.Id
+                         select new ApplicantPortalView()
+                         {
+                             User = users,
+                             PhaseHelper = phases
+                         };
+
+            return await queryFinal.AsNoTracking().ToListAsync();
+        }
+
         public async Task<List<ApplicantViewModel>> GetallApplicants()
         {
             IQueryable<ApplicantViewModel> queryFinal;

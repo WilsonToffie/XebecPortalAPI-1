@@ -157,13 +157,13 @@ namespace XebecAPI.Controllers
 
 		}
 
-		[HttpPost("xcv")]
+		[HttpPost("key")]
 		public async Task<bool> RegisterKey([FromBody] AppUser user)
         {
 
             try
             {
-				string key = new Guid().ToString(); //create new key
+				string key = Guid.NewGuid().ToString().Substring(0,6); //create new key
 
 				user.UserKey = key;
 				HttpClient client = new HttpClient();
@@ -172,12 +172,11 @@ namespace XebecAPI.Controllers
 					Id = user.Id.ToString(),
 					ToEmail = user.Email,
 					ToName = user.Name,
-					PlainText = $" Hi there {user.Name} \n Please note that your key is {key}. If you have any questions, please email admin",
-					Subject = "Registration Confirmation key",
-					Htmlcontent = @" <b> This <\b> is a better test"
+					PlainText = $" Hi there {user.Name}, \n Please note that your key is {key}. If you have any questions, please email admin, \n Regards, Xebec Team",
+					Subject = "Registration Confirmation key"
 				};
 				var jsonInString = JsonConvert.SerializeObject(model);
-				using (var msg = await client.PostAsync("https://xebecmail.azurewebsites.net", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
+				using (var msg = await client.PostAsync("https://mailingservice2022.azurewebsites.net/api/email/sendgrid", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
                 {
                     if (msg.IsSuccessStatusCode)
                     {

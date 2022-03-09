@@ -206,6 +206,25 @@ namespace XebecAPI.Controllers
         }
 
         // GET: api/<ApplicationPhaseHelpersController>
+        [HttpGet("ApplicantPortal")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetApplicantPortalDetails([FromQuery] int JobId)
+        {
+            try
+            {
+                var ApplicationPhaseHelpers = await applicationPhaseHelperRepository.GetApplicationPhaseInfoForUser(0,JobId);
+                ApplicationPhaseHelpers = ApplicationPhaseHelpers.GroupBy(p => p.Application).Select(x => x.Last()).ToList();
+                return Ok(ApplicationPhaseHelpers);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET: api/<ApplicationPhaseHelpersController>
         [HttpGet("myJobs")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
