@@ -10,5 +10,7 @@ namespace XebecAPI.DTOs
         public int Id { get; set; }
 
         public string Reason { get; set; }
+
+        public string EmailTemplate { get; set; }
     }
 }
