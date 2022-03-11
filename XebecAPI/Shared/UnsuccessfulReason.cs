@@ -11,6 +11,8 @@ namespace XebecAPI.Shared
 
         public string Reason { get; set; }
 
+        public string? EmailTemplate { get; set; }
+
         public List<RejectedCandidate> _RejectedCandidates { get; set; }
     }
 }
