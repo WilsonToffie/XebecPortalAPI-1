@@ -85,7 +85,10 @@ namespace XebecAPI.Repositories
 			try
 			{
 				if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-					 return await unitOfWork.AppUsers.GetT(x => x.Id == 50);
+					return new AppUser()
+					{
+						Id = 0
+					};
 
 				//hash the password provided
 				string hashedPassword = CreateHash(password);
@@ -97,17 +100,22 @@ namespace XebecAPI.Repositories
                 {
 					user.Registered = true;
 				}
+                else
+                {
+					string key = Guid.NewGuid().ToString().Substring(0, 6); //create new key
+					user.UserKey = key;
+				}
 				//Saving stuff
 				await unitOfWork.AppUsers.Insert(user);
                 await unitOfWork.Save();
-               
-                // return user
-                return new AppUser(user.Id, email, role, name, surname); //get it done after saving
+
+				// return user
+				return user;
 
 			}
 			catch
 			{
-				return await unitOfWork.AppUsers.GetT(x => x.Id == 1);
+				return null;
 			}
 		}
 
