@@ -89,34 +89,40 @@ namespace XebecAPI.Controllers
 				}
 				//Add user to db if it doesn't return null
 				AppUser newuser = await userDb.AddUserModified(reg.Email, reg.Password, reg.Role, reg.Name, reg.Surname);
-                if (newuser.Id == 1)
+                if (newuser.Id == 0)
                 {
 
-					return new LoginResult { Message = "Catch is issue", Success = false };
+					return new LoginResult { Message = "Email or password is empty", Success = false };
 				}
-                else if (newuser.Id == 50)
-                {
-					return new LoginResult { Message = "Email or password are empty", Success = false };
-				}
-				if (newuser != null)
+				if (newuser != null && newuser.Id != 0)
 				{
+					bool emailKey = false;
 					if (newuser.Role != "Candidate")
-						await RegisterKey(newuser);
-					return new LoginResult
-					{
-						Message = "Registration successful.",
-						//JwtBearer = CreateJWT(newuser),// fix
-						Email = newuser.Email,
-						Role = newuser.Role,
-						Name = newuser.Name,
-						Surname = newuser.Surname,
-						Success = true,
-						AppUserId = newuser.Id
-					};
+                    {
+						 emailKey = await RegisterKey(newuser);
+					}
+                    if (!emailKey)
+                    {
+						return new LoginResult { Message = "failed to send email", Success = false };
+					}
+					else
+                    {
+						return new LoginResult
+						{
+							Message = "Registration successful",
+							//JwtBearer = CreateJWT(newuser),// fix
+							Email = newuser.Email,
+							Role = newuser.Role,
+							Name = newuser.Name,
+							Surname = newuser.Surname,
+							Success = true,
+							AppUserId = newuser.Id
+						};
+					}
 					
 				}
 		
-				return new LoginResult { Message = "Failed to register user oooo.", Success = false };
+				return new LoginResult { Message = "Failed to register user.", Success = false };
 
 			}
 			catch
@@ -177,26 +183,23 @@ namespace XebecAPI.Controllers
 
             try
             {
-				string key = Guid.NewGuid().ToString().Substring(0,6); //create new key
-
-				user.UserKey = key;
 				HttpClient client = new HttpClient();
 				EmailModel model = new EmailModel()
 				{
 					Id = user.Id.ToString(),
 					ToEmail = user.Email,
 					ToName = user.Name,
-					PlainText = $" Hi there {user.Name}, \n Please note that your key is {key}. If you have any questions, please email admin, \n Regards, Xebec Team",
+					PlainText = $" Hi there {user.Name}, \n Please note that your key is {user.UserKey}. If you have any questions, please email admin, \n Regards, Xebec Team",
 					Subject = "Registration Confirmation key"
 				};
 				
 				var jsonInString = JsonConvert.SerializeObject(model);
 				using (var msg = await client.PostAsync("https://mailingservice2022.azurewebsites.net/api/email/sendgrid", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
                 {
-                    if (msg.IsSuccessStatusCode)
+					unitOfWork.AppUsers.Update(user);
+					await unitOfWork.Save();
+					if (msg.IsSuccessStatusCode)
                     {
-						 unitOfWork.AppUsers.Update(user);
-						await unitOfWork.Save();
 						return true;
 					}
                 }
