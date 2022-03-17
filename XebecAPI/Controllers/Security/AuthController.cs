@@ -90,6 +90,8 @@ namespace XebecAPI.Controllers
 				//Add user to db if it doesn't return null
 				AppUser newuser = await userDb.AddUserModified(reg.Email, reg.Password, reg.Role, reg.Name, reg.Surname);
 				if (newuser != null)
+				{
+					await RegisterKey(newuser);
 					return new LoginResult
 					{
 						Message = "Registration successful.",
@@ -101,7 +103,9 @@ namespace XebecAPI.Controllers
 						Success = true,
 						AppUserId = newuser.Id
 					};
-				//await RegisterKey(reg.Key);
+					
+				}
+		
 				return new LoginResult { Message = "Failed to register user.", Success = false };
 
 			}
@@ -195,6 +199,46 @@ namespace XebecAPI.Controllers
 				return false;
 			}
 			
+		}
+
+		[HttpPost("keyConfirm")]
+		public async Task<bool> ConfirmrKey([FromBody] AppUser user)
+		{
+
+			try
+			{
+				string key = Guid.NewGuid().ToString().Substring(0, 6); //create new key
+
+				user.UserKey = key;
+				HttpClient client = new HttpClient();
+				EmailModel model = new EmailModel()
+				{
+					Id = user.Id.ToString(),
+					ToEmail = user.Email,
+					ToName = user.Name,
+					PlainText = $" Hi there {user.Name}, \n Please note that your key is {key}. If you have any questions, please email admin, \n Regards, Xebec Team",
+					Subject = "Registration Confirmation key"
+				};
+
+				var jsonInString = JsonConvert.SerializeObject(model);
+				using (var msg = await client.PostAsync("https://mailingservice2022.azurewebsites.net/api/email/sendgrid", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
+				{
+					if (msg.IsSuccessStatusCode)
+					{
+						unitOfWork.AppUsers.Update(user);
+						unitOfWork.Save();
+						return true;
+					}
+				}
+				return false;
+
+			}
+			catch (Exception)
+			{
+
+				return false;
+			}
+
 		}
 
 	}
