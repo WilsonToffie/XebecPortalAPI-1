@@ -9,7 +9,7 @@ namespace XebecAPI.DTOs.ViewModels
 {
     public class ApplicantPortalView
     {
-        public  AppUser User { get; set; }
+        public  CandidateRecommender User { get; set; }
         public ApplicationPhaseHelper PhaseHelper { get; set; }
     }
 }

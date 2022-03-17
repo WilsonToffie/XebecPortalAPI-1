@@ -61,6 +61,23 @@ namespace XebecAPI.Controllers
             }
         }
 
+        // GET api/<CandidatesRecommenderController>/5
+        [HttpGet("job/{jobId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCandidatesRecommendebyByJob(int jobId)
+        {
+            try
+            {
+                var CandidatesRecommender = await _unitOfWork.CandidatesRecommender.GetAll(q => q.JobId == jobId);
+                return Ok(CandidatesRecommender);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<CandidatesRecommenderController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]

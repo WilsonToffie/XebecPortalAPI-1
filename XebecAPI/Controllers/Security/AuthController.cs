@@ -175,11 +175,14 @@ namespace XebecAPI.Controllers
 					PlainText = $" Hi there {user.Name}, \n Please note that your key is {key}. If you have any questions, please email admin, \n Regards, Xebec Team",
 					Subject = "Registration Confirmation key"
 				};
+				
 				var jsonInString = JsonConvert.SerializeObject(model);
 				using (var msg = await client.PostAsync("https://mailingservice2022.azurewebsites.net/api/email/sendgrid", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
                 {
                     if (msg.IsSuccessStatusCode)
                     {
+						unitOfWork.AppUsers.Update(user);
+						unitOfWork.Save();
 						return true;
 					}
                 }

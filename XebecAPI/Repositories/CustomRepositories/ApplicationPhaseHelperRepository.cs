@@ -85,8 +85,8 @@ namespace XebecAPI.Repositories
             queryFinal = from applications in _context.Applications.Where(a => a.JobId == JobId)
                          join phases in _context.ApplicationPhasesHelpers.Include(p => p.ApplicationPhase)
                               on applications.Id equals phases.ApplicationId
-                         join users in _context.AppUser
-                       on applications.AppUserId equals users.Id
+                         join users in _context.CandidatesRecommender
+                       on applications.AppUserId equals users.AppUserId
                          select new ApplicantPortalView()
                          {
                              User = users,
