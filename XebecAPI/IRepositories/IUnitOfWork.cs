@@ -54,6 +54,8 @@ namespace XebecAPI.IRepositories
 
         IGenericRepository<Reference> References { get; }
 
+        IGenericRepository<Skill> Skills { get; }
+
         //Saving to the DB
         Task Save();
 
