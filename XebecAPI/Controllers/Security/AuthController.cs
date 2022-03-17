@@ -195,8 +195,8 @@ namespace XebecAPI.Controllers
                 {
                     if (msg.IsSuccessStatusCode)
                     {
-						unitOfWork.AppUsers.Update(user);
-						unitOfWork.Save();
+						 unitOfWork.AppUsers.Update(user);
+						await unitOfWork.Save();
 						return true;
 					}
                 }
@@ -217,28 +217,14 @@ namespace XebecAPI.Controllers
 
 			try
 			{
-				string key = Guid.NewGuid().ToString().Substring(0, 6); //create new key
+				AppUser newuser = await unitOfWork.AppUsers.GetT(x => x.Id == user.Id);
 
-				user.UserKey = key;
-				HttpClient client = new HttpClient();
-				EmailModel model = new EmailModel()
-				{
-					Id = user.Id.ToString(),
-					ToEmail = user.Email,
-					ToName = user.Name,
-					PlainText = $" Hi there {user.Name}, \n Please note that your key is {key}. If you have any questions, please email admin, \n Regards, Xebec Team",
-					Subject = "Registration Confirmation key"
-				};
-
-				var jsonInString = JsonConvert.SerializeObject(model);
-				using (var msg = await client.PostAsync("https://mailingservice2022.azurewebsites.net/api/email/sendgrid", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
-				{
-					if (msg.IsSuccessStatusCode)
-					{
-						unitOfWork.AppUsers.Update(user);
-						unitOfWork.Save();
+                if (newuser != null)
+                {
+                    if (newuser.UserKey == user.UserKey)
+                    {
 						return true;
-					}
+                    } 
 				}
 				return false;
 
