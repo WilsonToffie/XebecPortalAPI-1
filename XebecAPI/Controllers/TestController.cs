@@ -57,7 +57,7 @@ namespace XebecAPI.Controllers
                 var Type = await applicationPhaseHelper.GetApplicantsForJob(JobId);
                 if (Type.Count > 0)
                 {
-                    Type = Type.GroupBy(a => a.User.Id).Select(g => g.Last()).ToList();
+                    Type = Type.GroupBy(a => a.User.AppUserId).Select(g => g.Last()).ToList();
                 }
                 return Ok(Type);
 

@@ -25,6 +25,8 @@ namespace XebecAPI.Shared.Security
 
         public bool Success { get; set; }   //Used as a flag to indicate whether everything was a success or not
 
+        public string Avatar { get; set; }
+
     }
 
     public class LoginModel
