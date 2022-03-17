@@ -89,6 +89,15 @@ namespace XebecAPI.Controllers
 				}
 				//Add user to db if it doesn't return null
 				AppUser newuser = await userDb.AddUserModified(reg.Email, reg.Password, reg.Role, reg.Name, reg.Surname);
+                if (newuser.Id == 1)
+                {
+
+					return new LoginResult { Message = "Catch is issue", Success = false };
+				}
+                else if (newuser.Id == 50)
+                {
+					return new LoginResult { Message = "Email or password are empty", Success = false };
+				}
 				if (newuser != null)
 				{
 					if (newuser.Role != "Candidate")
