@@ -91,7 +91,8 @@ namespace XebecAPI.Controllers
 				AppUser newuser = await userDb.AddUserModified(reg.Email, reg.Password, reg.Role, reg.Name, reg.Surname);
 				if (newuser != null)
 				{
-					await RegisterKey(newuser);
+					if (newuser.Role != "Candidate")
+						await RegisterKey(newuser);
 					return new LoginResult
 					{
 						Message = "Registration successful.",
@@ -106,7 +107,7 @@ namespace XebecAPI.Controllers
 					
 				}
 		
-				return new LoginResult { Message = "Failed to register user.", Success = false };
+				return new LoginResult { Message = "Failed to register user oooo.", Success = false };
 
 			}
 			catch
