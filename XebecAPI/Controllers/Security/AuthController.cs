@@ -215,7 +215,7 @@ namespace XebecAPI.Controllers
 		}
 
 		[HttpPost("keyConfirm")]
-		public async Task<bool> ConfirmrKey([FromBody] AppUser user)
+		public async Task<string> ConfirmrKey([FromBody] AppUser user)
 		{
 
 			try
@@ -226,16 +226,17 @@ namespace XebecAPI.Controllers
                 {
                     if (newuser.UserKey == user.UserKey)
                     {
-						return true;
-                    } 
+						return "worked";
+                    }
+					return "user key does not match";
 				}
-				return false;
+				return "user not found";
 
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 
-				return false;
+				return e.Message ;
 			}
 
 		}
