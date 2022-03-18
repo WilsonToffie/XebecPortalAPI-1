@@ -292,7 +292,7 @@ namespace XebecAPI.Controllers
 
 			try
 			{
-				AppUser newuser = await unitOfWork.AppUsers.GetT(x => x.Id == user.Id);
+				AppUser newuser = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));
 
                 if (newuser != null)
                 {
