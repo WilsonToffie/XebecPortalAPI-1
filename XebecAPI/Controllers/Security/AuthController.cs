@@ -82,47 +82,48 @@ namespace XebecAPI.Controllers
 		{
 			try
 			{
-				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(reg.Email));// WATCH OUT
-				if (user != null)
+				var userId = await userDb.CheckExistingUser(reg.Email);
+				if (userId > 0)
 				{
 					return new LoginResult { Message = "User already exists.", Success = false };
 				}
-				//Add user to db if it doesn't return null
-				AppUser newuser = await userDb.AddUserModified(reg.Email, reg.Password, reg.Role, reg.Name, reg.Surname);
-                if (newuser.Id == 0)
-                {
-
-					return new LoginResult { Message = "Email or password is empty", Success = false };
-				}
-				if (newuser != null && newuser.Id != 0)
+				else if (userId == 0)
 				{
-					bool emailKey = false;
-					if (newuser.Role != "Candidate")
-                    {
-						 emailKey = await RegisterKey(newuser);
+					//Add user to db if it doesn't return null
+					AppUser newuser = await userDb.AddUserModified(reg.Email, reg.Password, reg.Role, reg.Name, reg.Surname);
+					if (newuser.Id == 0)
+					{
+						return new LoginResult { Message = "Email or password is empty", Success = false };
 					}
-                    if (!emailKey)
-                    {
-						return new LoginResult { Message = "failed to send email", Success = false };
-					}
-					else
-                    {
-						return new LoginResult
+					if (newuser != null && newuser.Id != 0)
+					{
+						bool emailKey = false;
+						if (newuser.Role != "Candidate")
 						{
-							Message = "Registration successful",
-							//JwtBearer = CreateJWT(newuser),// fix
-							Email = newuser.Email,
-							Role = newuser.Role,
-							Name = newuser.Name,
-							Surname = newuser.Surname,
-							Success = true,
-							AppUserId = newuser.Id
-						};
+							emailKey = await RegisterKey(newuser);
+						}
+						if (!emailKey)
+						{
+							return new LoginResult { Message = "failed to send email", Success = false };
+						}
+						else
+						{
+							return new LoginResult
+							{
+								Message = "Registration successful",
+								//JwtBearer = CreateJWT(newuser),// fix
+								Email = newuser.Email,
+								Role = newuser.Role,
+								Name = newuser.Name,
+								Surname = newuser.Surname,
+								Success = true,
+								AppUserId = newuser.Id
+							};
+						}
 					}
-					
 				}
 		
-				return new LoginResult { Message = "Failed to register user.", Success = false };
+				return new LoginResult { Message = "Failed to register user .", Success = false };
 
 			}
 			catch
@@ -169,11 +170,35 @@ namespace XebecAPI.Controllers
 					Role = user.Role,
 					Name = user.Name,
 					Surname = user.Surname,
-					
+					Avatar = user.ImageUrl,
 					Success = true,
 				};
 
 			return new LoginResult { Message = "User/password not found.", Success = false };
+
+		}
+
+		[HttpPost]
+		[Route("api/auth/changepassword")]
+		public async Task<LoginResult> ChangePassword([FromBody] LoginModel log)
+		{
+			AppUser user = await userDb.UpdateUserModified(log.Email, log.Password);
+
+			if (user != null)
+				return new LoginResult
+				{
+					AppUserId = user.Id,//<-newly added
+					Message = "Password Change successful.",
+					//JwtBearer = CreateJWT(user),
+					Email = user.Email,
+					Role = user.Role,
+					Name = user.Name,
+					Surname = user.Surname,
+					Avatar = user.ImageUrl,
+					Success = true,
+				};
+
+			return new LoginResult { Message = "password could not be changed.", Success = false };
 
 		}
 
@@ -214,6 +239,43 @@ namespace XebecAPI.Controllers
 			
 		}
 
+		[HttpPost("keyForgot")]
+		public async Task<bool> ForgotPasswordKey([FromBody] AppUser user)
+		{
+
+			try
+			{
+				HttpClient client = new HttpClient();
+				EmailModel model = new EmailModel()
+				{
+					Id = user.Id.ToString(),
+					ToEmail = user.Email,
+					ToName = user.Name,
+					PlainText = $" Hi there {user.Name}, \n Please note that your key is {user.UserKey}. If you have any questions, please email admin, \n Regards, Xebec Team",
+					Subject = "Forgot Password key"
+				};
+
+				var jsonInString = JsonConvert.SerializeObject(model);
+				using (var msg = await client.PostAsync("https://mailingservice2022.azurewebsites.net/api/email/sendgrid", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
+				{
+					unitOfWork.AppUsers.Update(user);
+					await unitOfWork.Save();
+					if (msg.IsSuccessStatusCode)
+					{
+						return true;
+					}
+				}
+				return false;
+
+			}
+			catch (Exception)
+			{
+
+				return false;
+			}
+
+		}
+
 		[HttpPost("keyConfirm")]
 		public async Task<string> ConfirmrKey([FromBody] AppUser user)
 		{
@@ -240,6 +302,8 @@ namespace XebecAPI.Controllers
 			}
 
 		}
+
+
 
 	}
 }

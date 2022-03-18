@@ -51,6 +51,8 @@ namespace XebecAPI.Data
 
         public DbSet<Reference> References { get; set; }
 
+        public DbSet<Skill> Skills { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);   
