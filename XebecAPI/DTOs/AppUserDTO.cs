@@ -66,6 +66,10 @@ namespace XebecAPI.DTOs
             
         }
 
-
+        public AppUserDTO(string email, string password)
+        {
+            Email = email;
+            PasswordHash = password;
+        }
     }
 }

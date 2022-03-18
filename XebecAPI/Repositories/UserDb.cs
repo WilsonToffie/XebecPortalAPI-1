@@ -80,6 +80,24 @@ namespace XebecAPI.Repositories
             }
 		}
 
+		public async Task<int> CheckExistingUser(string email)
+        {
+            try
+            {
+				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));// WATCH OUT
+				if (user != null)
+				{
+					return user.Id;
+				}
+				return 0;
+			}
+            catch (Exception)
+            {
+
+				return -1;
+            }
+        }
+
 		public async Task<AppUser> AddUserModified(string email, string password, string role, string name, string surname)
 		{
 			try
@@ -126,11 +144,38 @@ namespace XebecAPI.Repositories
 				if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
 					return null;
 
+				var userId = await CheckExistingUser(email);
+				if (userId < 1)
+					return null;
+
 				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));// WATCH OUT
 				var result = mapper.Map<AppUserDTO>(user);
 
 				if (!result.PasswordHash.Equals(CreateHash(password)))
 					return null;
+
+				return new AppUser(user.Id, email, result.Role, result.Name, result.Surname, result.ImageUrl);
+			}
+			catch (Exception)
+			{
+
+				return null;
+			}
+		}
+
+		public async Task<AppUser> UpdateUserModified(string email, string password)
+		{
+			try
+			{
+				if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+					return null;
+
+				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));
+				var result = mapper.Map<AppUserDTO>(user);
+				result.PasswordHash = password;
+
+				unitOfWork.AppUsers.Update(user);
+				await unitOfWork.Save();
 
 				return new AppUser(user.Id, email, result.Role, result.Name, result.Surname, result.ImageUrl);
 			}

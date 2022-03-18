@@ -16,5 +16,9 @@ namespace XebecAPI.IRepositories
         Task<AppUser> AddUserModified(string email, string password, string role, string name, string surname);
 
         Task<AppUser> AuthenticateUserModified(string email, string password);
+
+        Task<int> CheckExistingUser(string email);
+
+        Task<AppUser> UpdateUserModified(string email, string password);
     }
 }
