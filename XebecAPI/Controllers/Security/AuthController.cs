@@ -240,11 +240,21 @@ namespace XebecAPI.Controllers
 		}
 
 		[HttpPost("keyForgot")]
-		public async Task<bool> ForgotPasswordKey([FromBody] AppUser user)
+		public async Task<bool> ForgotPasswordKey([FromBody] string email)
 		{
 
 			try
 			{
+				var userId = await userDb.CheckExistingUser(email);
+				if (userId == 0)
+                {
+					return false;
+                }
+				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));
+				string key = Guid.NewGuid().ToString().Substring(0, 6); //create new key
+				user.UserKey = key;
+				unitOfWork.AppUsers.Update(user);
+				await unitOfWork.Save();
 				HttpClient client = new HttpClient();
 				EmailModel model = new EmailModel()
 				{

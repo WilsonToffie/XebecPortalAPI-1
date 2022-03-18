@@ -98,6 +98,23 @@ namespace XebecAPI.Repositories
             }
         }
 
+		public async Task<AppUser> AssignneyKey(AppUser user)
+		{
+			try
+			{
+					string key = Guid.NewGuid().ToString().Substring(0, 6); //create new key
+					user.UserKey = key;
+					unitOfWork.AppUsers.Update(user);
+					await unitOfWork.Save();
+				return user;
+			}
+			catch (Exception)
+			{
+
+				return null;
+			}
+		}
+
 		public async Task<AppUser> AddUserModified(string email, string password, string role, string name, string surname)
 		{
 			try
