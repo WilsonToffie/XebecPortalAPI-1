@@ -240,7 +240,7 @@ namespace XebecAPI.Controllers
 		}
 
 		[HttpPost("keyForgot")]
-		public async Task<bool> ForgotPasswordKey([FromBody] string email)
+		public async Task<string> ForgotPasswordKey([FromBody] string email)
 		{
 
 			try
@@ -248,7 +248,7 @@ namespace XebecAPI.Controllers
 				var userId = await userDb.CheckExistingUser(email);
 				if (userId == 0)
                 {
-					return false;
+					return "user already exists";
                 }
 				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));
 				string key = Guid.NewGuid().ToString().Substring(0, 6); //create new key
@@ -272,18 +272,17 @@ namespace XebecAPI.Controllers
 					await unitOfWork.Save();
 					if (msg.IsSuccessStatusCode)
 					{
-						return true;
+						return "true";
 					}
 				}
-				return false;
+				return "something went wrong";
 
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 
-				return false;
+				return e.Message ;
 			}
-
 		}
 
 		[HttpPost("keyConfirm")]
@@ -292,15 +291,15 @@ namespace XebecAPI.Controllers
 
 			try
 			{
-				AppUser newuser = await unitOfWork.AppUsers.GetT(x => x.Id == user.Id);
+				AppUser newuser = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(user.Email));
 
                 if (newuser != null)
                 {
                     if (newuser.UserKey == user.UserKey)
                     {
-						return "worked";
+						return "true";
                     }
-					return "user key does not match";
+					return "user key does not match because key is " + user.UserKey + "and db is" + newuser.UserKey;
 				}
 				return "user not found";
 
