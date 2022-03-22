@@ -283,20 +283,20 @@ namespace XebecAPI.Controllers
                 output.AppendLine($"Spacy version:{spacy.__version__}");
                 dynamic nlp_model = spacy.load("nlp_model");
                 Installer.PipInstallModule("PyMuPDF");
-                dynamic fname = url;
+                //dynamic fname = url;
                 //dynamic doc2 = fitz.open(fname);
-                StringBuilder text = new StringBuilder();
-                dynamic doc = nlp_model(ReadPDF(fname));
-                string res = "{";
-                foreach (dynamic ent in doc.ents)
-                {
-                    res += $" \"{ent.label_}\" : \"{ent.text.ToString()}\",";
-                }
-                res = res.Substring(0, res.Length - 1);
-                res += "}";
-                Console.WriteLine(res);
-                var test = JObject.Parse(res);
-                return Ok(test);
+                //StringBuilder text = new StringBuilder();
+                //dynamic doc = nlp_model(ReadPDF(fname));
+                //string res = "{";
+                //foreach (dynamic ent in doc.ents)
+                //{
+                //    res += $" \"{ent.label_}\" : \"{ent.text.ToString()}\",";
+                //}
+                //res = res.Substring(0, res.Length - 1);
+                //res += "}";
+                //Console.WriteLine(res);
+                //var test = JObject.Parse(res);
+                return Ok(output);
             }
             catch (Exception e)
             {
