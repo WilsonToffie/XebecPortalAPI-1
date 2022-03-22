@@ -29,7 +29,7 @@ namespace XebecAPI.IRepositories
         IGenericRepository<PersonalInformation> PersonalInformation { get; }
         IGenericRepository<RegisterHelper> RegisterHelpers { get; }
         IGenericRepository<WorkHistory> WorkHistory { get; }
-        
+
         IGenericRepository<JobPlatform> JobPlatforms { get; }
         IGenericRepository<JobPlatformHelper> JobPlatformHelpers { get; }
 
@@ -37,13 +37,13 @@ namespace XebecAPI.IRepositories
 
         IGenericRepository<QuestionnaireApplicantForm> QuestionnaireApplicantForms { get; }
 
-        IGenericRepository<QuestionnaireHRForm> QuestionnaireHRForms{ get; }
+        IGenericRepository<QuestionnaireHRForm> QuestionnaireHRForms { get; }
 
         IGenericRepository<JobApplicationPhase> JobApplicationPhases { get; }
 
         IGenericRepository<Question> Questions { get; }
 
-        IGenericRepository<AnswerType> AnswerTypes{ get; }
+        IGenericRepository<AnswerType> AnswerTypes { get; }
         IGenericRepository<CollaboratorAssigned> CollaboratorsAssigned { get; }
 
         IGenericRepository<CandidateRecommender> CandidatesRecommender { get; }
@@ -55,6 +55,8 @@ namespace XebecAPI.IRepositories
         IGenericRepository<Reference> References { get; }
 
         IGenericRepository<Skill> Skills { get; }
+
+        IGenericRepository<SkillsBank> SkillsBanks { get; }
 
         //Saving to the DB
         Task Save();
