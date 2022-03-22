@@ -252,6 +252,57 @@ namespace XebecAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+        
+         [HttpPost("uploadtest")]
+        public async Task<IActionResult> UploadFile2([FromForm] string url)
+        {
+            try
+            {
+
+
+                StringBuilder output = new StringBuilder("Running python\n");
+                Console.WriteLine();
+                Console.WriteLine("Running python\n");
+                //output.AppendLine( await SetupPython());
+                //Console.WriteLine();
+                //output.AppendLine(await InstallSpacy());
+                Console.WriteLine("Setting python Evnironment\n");
+                await Installer.SetupPython();
+                PythonEngine.Initialize();
+                dynamic sys = PythonEngine.ImportModule("sys");
+                Console.WriteLine("Done !! Setting python Evnironment\n");
+                output.AppendLine("Done !! Setting python Evnironment\n");
+                output.AppendLine($"Python version:{sys.version}");
+                await Installer.SetupPython();
+                Installer.TryInstallPip();
+                Installer.PipInstallModule("spacy==2.3.7");
+                //Installer.PipInstallModule("spacy-look-data");
+                PythonEngine.Initialize();
+                dynamic spacy = PythonEngine.ImportModule("spacy");
+                output.AppendLine("Done !! Installing Spacy");
+                output.AppendLine($"Spacy version:{spacy.__version__}");
+                dynamic nlp_model = spacy.load("nlp_model");
+                Installer.PipInstallModule("PyMuPDF");
+                dynamic fname = url;
+                //dynamic doc2 = fitz.open(fname);
+                StringBuilder text = new StringBuilder();
+                dynamic doc = nlp_model(ReadPDF(fname));
+                string res = "{";
+                foreach (dynamic ent in doc.ents)
+                {
+                    res += $" \"{ent.label_}\" : \"{ent.text.ToString()}\",";
+                }
+                res = res.Substring(0, res.Length - 1);
+                res += "}";
+                Console.WriteLine(res);
+                var test = JObject.Parse(res);
+                return Ok(test);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
 
 
         private string ReadPDF(string filepath)
