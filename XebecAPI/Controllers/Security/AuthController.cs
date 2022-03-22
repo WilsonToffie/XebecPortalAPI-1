@@ -299,7 +299,7 @@ namespace XebecAPI.Controllers
                     {
 						return "true";
                     }
-					return "user key does not match";
+					return "user key does not match because key is " + user.UserKey;
 				}
 				return "user not found";
 
