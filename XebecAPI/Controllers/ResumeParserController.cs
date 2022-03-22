@@ -254,7 +254,7 @@ namespace XebecAPI.Controllers
         }
         
          [HttpPost("uploadtest")]
-        public async Task<IActionResult> UploadFile2([FromForm] string url)
+        public async Task<IActionResult> UploadTest([FromForm] string url)
         {
             try
             {
