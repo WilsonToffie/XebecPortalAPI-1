@@ -303,6 +303,77 @@ namespace XebecAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+         [HttpPost("pythoneng")]
+        public string PythonEngen()
+        {
+            try
+            {
+                string output = "";
+                PythonEngine.Initialize();
+                output += "Initializing python";
+                dynamic sys = PythonEngine.ImportModule("sys");
+                output += "Installing sys";
+                return output;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+            
+        }
+        [HttpPost("PythonEngineSys")]
+        public string Eng()
+        {
+            try
+            {
+                string output = "";
+                PythonEngine.Initialize();
+                output += "Initializing python";
+                return output;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+
+        }
+
+
+        [HttpPost("Installer")]
+        public async Task<IActionResult> Initguy()
+        {
+            try
+            {
+                string output = "";
+                await Installer.SetupPython();
+                output += "Running Installer";
+                return Ok(output);
+            }
+            catch (Exception e)
+            {
+                return Ok(e.Message);
+            }
+
+        }
+
+        [HttpPost("InstallerPip")]
+        public async Task<IActionResult> InstallPip()
+        {
+            try
+            {
+                string output = "";
+                await Installer.SetupPython();
+                output += "Running Installer";
+                Installer.PipInstallModule("spacy==2.3.7");
+                output += "Installing pip";
+                return Ok(output);
+            }
+            catch (Exception e)
+            {
+                return Ok(e.Message);
+            }
+
+        }
 
 
         private string ReadPDF(string filepath)
