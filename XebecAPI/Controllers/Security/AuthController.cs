@@ -272,18 +272,17 @@ namespace XebecAPI.Controllers
 					await unitOfWork.Save();
 					if (msg.IsSuccessStatusCode)
 					{
-						return "worked";
+						return "true";
 					}
 				}
 				return "something went wrong";
 
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 
-				return "catch";
+				return e.Message ;
 			}
-
 		}
 
 		[HttpPost("keyConfirm")]
@@ -298,7 +297,7 @@ namespace XebecAPI.Controllers
                 {
                     if (newuser.UserKey == user.UserKey)
                     {
-						return "worked";
+						return "true";
                     }
 					return "user key does not match";
 				}
