@@ -314,6 +314,33 @@ namespace XebecAPI.Controllers
 		}
 
 
+		[HttpPost("keyConfirmKey")]
+		public async Task<string> ConfirmrKeyKey([FromBody] AppUser user)
+		{
+
+			try
+			{
+				AppUser newuser = await unitOfWork.AppUsers.GetT(x => x.Id == user.Id);
+
+				if (newuser != null)
+				{
+					if (newuser.UserKey == user.UserKey)
+					{
+						return "worked";
+					}
+					return "user key does not match";
+				}
+				return "user not found";
+
+			}
+			catch (Exception e)
+			{
+
+				return e.Message;
+			}
+
+		}
+
 
 	}
 }
