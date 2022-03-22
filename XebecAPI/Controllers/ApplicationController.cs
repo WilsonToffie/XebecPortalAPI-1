@@ -97,12 +97,6 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var existingapplications = await _unitOfWork.Applications.GetAll(id => id.JobId == application.JobId && id.AppUserId == application.AppUserId);
-                if (existingapplications != null)
-                {
-                    return StatusCode(StatusCodes.Status400BadRequest,
-                    "There is an existing application");
-                }
                 await _unitOfWork.Applications.Insert(application);
                 await _unitOfWork.Save();
                 ApplicationPhaseHelper applicationPhaseHelper = new ApplicationPhaseHelper
