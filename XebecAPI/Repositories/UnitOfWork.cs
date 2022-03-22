@@ -56,6 +56,7 @@ namespace XebecAPI.Repositories
         private IGenericRepository<JobAlert> _jobArlets;
         private IGenericRepository<Reference> _references;
         private IGenericRepository<Skill> _skills;
+        private IGenericRepository<SkillsBank> _skillsBank;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -118,6 +119,8 @@ namespace XebecAPI.Repositories
         public IGenericRepository<Reference> References => _references ??= new GenericRepository<Reference>(_context);
 
         public IGenericRepository<Skill> Skills => _skills ??= new GenericRepository<Skill>(_context);
+
+        public IGenericRepository<SkillsBank> SkillsBanks => _skillsBank ??= new GenericRepository<SkillsBank>(_context);
 
         public void Dispose()
         {

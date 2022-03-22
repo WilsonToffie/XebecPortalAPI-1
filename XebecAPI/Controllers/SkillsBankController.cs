@@ -17,28 +17,29 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicationController : ControllerBase
+    public class SkillsBankController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper mapper;
 
-        public ApplicationController(IUnitOfWork unitOfWork, IMapper mapper)
+        public SkillsBankController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
 
-        // GET: api/<ApplicationsController>
+        // GET: api/<SkillsBankController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetApplications()
+        public async Task<IActionResult> GetSkillsBanks()
         {
             try
             {
-                var Applications = await _unitOfWork.Applications.GetAll();
+                var SkillsBank = await _unitOfWork.SkillsBanks.GetAll();
+             
+                return Ok(SkillsBank);
 
-                return Ok(Applications);
             }
             catch (Exception e)
             {
@@ -46,16 +47,16 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<ApplicationsController>/5
-        [HttpGet("{id}")]
+        // GET api/<SkillsBankController>/5
+        [HttpGet("single/{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetApplication(int id)
+        public async Task<IActionResult> GetSkillsBank(int id)
         {
             try
             {
-                var Application = await _unitOfWork.Applications.GetT(q => q.Id == id);
-                return Ok(Application);
+                var SkillsBank = await _unitOfWork.SkillsBanks.GetT(q => q.Id == id);
+                return Ok(SkillsBank);
             }
             catch (Exception e)
             {
@@ -63,64 +64,80 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<ApplicationsController>/5
-        [HttpGet("job/{JobId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetApplicationByJob(int JobId)
-        {
-
-            try
-            {
-
-                var applications = await _unitOfWork.Applications.GetAll(p => p.JobId == JobId);
-
-                return Ok(applications);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
-
-        // POST api/<ApplicationsController>
+        // POST api/<SkillsBankController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateApplication([FromBody] Application application)
+        public async Task<IActionResult> CreateSkillsBank([FromBody] SkillsBank SkillsBank)
         {
+
             if (!ModelState.IsValid)
             {
+
                 return BadRequest(ModelState);
             }
 
+
             try
             {
-                await _unitOfWork.Applications.Insert(application);
-                await _unitOfWork.Save();
-                ApplicationPhaseHelper applicationPhaseHelper = new ApplicationPhaseHelper
-                {
-                    ApplicationId = application.Id,
-                    ApplicationPhaseId = 1,
-                    TimeMoved = application.TimeApplied
-                };
-                await _unitOfWork.ApplicationPhaseHelpers.Insert(applicationPhaseHelper);
+
+                await _unitOfWork.SkillsBanks.Insert(SkillsBank);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetApplication", new { id = application.Id }, application);
-                //return NoContent();
+                return CreatedAtAction("GetSkillsBank", new { id = SkillsBank.Id }, SkillsBank);
+
             }
             catch (Exception e)
             {
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     e.InnerException);
             }
+
+
         }
 
-        // PUT api/<ApplicationsController>/5
+        [HttpPost("List")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateSkillsBanks([FromBody] List<SkillsBank> SkillsBanks)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+
+            try
+            {
+              
+                    await _unitOfWork.SkillsBanks.InsertRange(SkillsBanks);
+                    await _unitOfWork.Save();
+
+                   
+             
+
+                return CreatedAtAction("GetSkillsBanks", SkillsBanks);
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    e.InnerException);
+            }
+
+
+        }
+
+
+
+        // PUT api/<SkillsBankController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateApplication(int id, [FromBody] ApplicationDTO Application)
+        public async Task<IActionResult> UpdateSkillsBank(int id, [FromBody] SkillsBankDTO SkillsBank)
         {
             if (!ModelState.IsValid)
             {
@@ -129,30 +146,33 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var originalApplication = await _unitOfWork.Applications.GetT(q => q.Id == id);
+                var originalSkillsBank = await _unitOfWork.SkillsBanks.GetT(q => q.Id == id);
 
-                if (originalApplication == null)
+                if (originalSkillsBank == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                mapper.Map(Application, originalApplication);
-                _unitOfWork.Applications.Update(originalApplication);
+                mapper.Map(SkillsBank, originalSkillsBank);
+                _unitOfWork.SkillsBanks.Update(originalSkillsBank);
                 await _unitOfWork.Save();
 
                 return NoContent();
+
             }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
+
         }
 
-        // DELETE api/<ApplicationsController>/5
+
+        // DELETE api/<SkillsBankController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteApplication(int id)
+        public async Task<IActionResult> DeleteSkillsBank(int id)
         {
             if (id < 1)
             {
@@ -161,22 +181,25 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var Application = await _unitOfWork.Applications.GetT(q => q.Id == id);
+                var SkillsBank = await _unitOfWork.SkillsBanks.GetT(q => q.Id == id);
 
-                if (Application == null)
+                if (SkillsBank == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
 
-                await _unitOfWork.Applications.Delete(id);
+                await _unitOfWork.SkillsBanks.Delete(id);
                 await _unitOfWork.Save();
 
                 return NoContent();
+
+
             }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
+
         }
     }
 }
