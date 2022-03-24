@@ -174,7 +174,7 @@ namespace XebecAPI.Repositories
 				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));// WATCH OUT
 				var result = mapper.Map<AppUserDTO>(user);
 
-				if (!result.Registered == false)
+				if (!result.Registered)
 					return new AppUser()
 					{
 						Id = -2
