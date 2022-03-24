@@ -255,8 +255,35 @@ namespace XebecAPI.Controllers
 
 				return StatusCode(500);
             }
-			
+		}
 
+		[HttpPost]
+		[Route("api/auth/KeyChange")]
+		public async Task<string>KeyChange ([FromBody] AppUser userguy)
+		{
+			try
+			{
+				AppUser newuser = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(userguy.Email));
+
+				if (newuser != null)
+				{
+					if (newuser.UserKey == userguy.UserKey)
+					{
+						newuser.LinkVisits = 1;
+						unitOfWork.AppUsers.Update(newuser);
+						await unitOfWork.Save();
+						return "true";
+					}
+					return "user key does not match";
+				}
+				return "user not found";
+
+			}
+			catch (Exception e)
+			{
+
+				return (e.Message);
+			}
 		}
 
 		[HttpPost("key")]
@@ -328,6 +355,9 @@ namespace XebecAPI.Controllers
                 {
                     if (newuser.UserKey == user.UserKey)
                     {
+						newuser.LinkVisits = 1;
+						unitOfWork.AppUsers.Update(newuser);
+						await unitOfWork.Save();
 						return "true";
                     }
 					return "user key does not match";
