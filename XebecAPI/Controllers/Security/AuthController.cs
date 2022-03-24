@@ -385,7 +385,7 @@ namespace XebecAPI.Controllers
 						await unitOfWork.Save();
 						return "true";
                     }
-					return "user key does not match";
+					return $"user key does not match because db is {newuser.UserKey} and UI is {user.UserKey}";
 				}
 				return "user not found";
 
