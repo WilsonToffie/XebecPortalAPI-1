@@ -333,6 +333,8 @@ namespace XebecAPI.Controllers
 				string key = Guid.NewGuid().ToString().Substring(0, 6); //create new key
 				user.UserKey = key;
 				
+				unitOfWork.AppUsers.Update(user);
+				await unitOfWork.Save();
 				await emailrepo.PowerAutomateForgotAsync(user, registerModel.Link);
 				return "true";
 
