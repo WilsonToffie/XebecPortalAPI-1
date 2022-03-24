@@ -334,7 +334,7 @@ namespace XebecAPI.Controllers
 				user.UserKey = key;
 				
 				await emailrepo.PowerAutomateForgotAsync(user, registerModel.Link);
-				return "something went wrong";
+				return "true";
 
 			}
 			catch (Exception e)
