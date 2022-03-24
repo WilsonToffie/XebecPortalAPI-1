@@ -8,8 +8,10 @@ namespace XebecAPI.IRepositories
 {
     public interface IEmailRepo
     {
-        Task<bool> ConfrimRegisterKey(AppUser user);
+        Task<bool> ConfrimRegisterKey(AppUser user, string stringUrl);
 
+        Task<bool> ForgotPasswordKey(AppUser user, string stringUrl);
 
+        Task<bool> SendAdminNotification(AppUser user, string stringUrl);
     }
 }

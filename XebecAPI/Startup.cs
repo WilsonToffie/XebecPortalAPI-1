@@ -45,7 +45,7 @@ namespace XebecAPI
             services.AddTransient<IJobsCustomRepo, JobsCustomRepo>();
             services.AddTransient<IApplicationPhaseHelperRepository, ApplicationPhaseHelperRepository>();
             services.AddTransient<IMyJobsCustomRepo, MyJobsCustomRepo>();
-
+            services.AddTransient<IEmailRepo, EmailRepo>();
 
             services.AddAutoMapper(typeof(MapperInitializer_));
 
