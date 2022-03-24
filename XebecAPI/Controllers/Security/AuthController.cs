@@ -128,7 +128,7 @@ namespace XebecAPI.Controllers
 						{
 							//emailKey = await RegisterKey(newuser, reg.Url);
 							
-							await emailrepo.PowerAutomateAsync(newuser, reg.Url);
+							await emailrepo.PowerAutomateAsync(newuser, reg.Link);
 						}
                         else
                         {
@@ -333,14 +333,7 @@ namespace XebecAPI.Controllers
 				string key = Guid.NewGuid().ToString().Substring(0, 6); //create new key
 				user.UserKey = key;
 				
-				var fd = await emailrepo.ForgotPasswordKey(user, registerModel.Url);
-
-				if (fd)
-				{
-					unitOfWork.AppUsers.Update(user);
-					await unitOfWork.Save();
-					return "true";
-				}
+				await emailrepo.PowerAutomateForgotAsync(user, registerModel.Link);
 				return "something went wrong";
 
 			}
@@ -350,6 +343,30 @@ namespace XebecAPI.Controllers
 				return e.Message ;
 			}
 		}
+
+		//[HttpPost]
+		//[Route("api/auth/forgotguy")]
+		//public async Task<ActionResult> ForgotPasswordGUy([FromQuery] string email)
+		//{
+		//	try
+		//	{
+		//		var userId = await userDb.CheckExistingUser(email);
+		//		if (userId == 0)
+		//		{
+		//			return NotFound();
+		//		}
+
+				
+		//		unitOfWork.AppUsers.Update(user);
+		//		await unitOfWork.Save();
+		//		return Accepted();
+		//	}
+		//	catch (Exception e)
+		//	{
+
+		//		return StatusCode(500);
+		//	}
+		//}
 
 		[HttpPost("keyConfirm")]
 		public async Task<string> ConfirmrKey([FromBody] AppUser user)

@@ -107,7 +107,28 @@ Xebec Team",
 			}
 		}
 
-        public async Task<bool> SendAdminNotification(AppUser user, string stringUrl)
+		public async Task PowerAutomateForgotAsync(AppUser mod, string URL)
+		{
+			PowerAutomate automate = new PowerAutomate()
+			{
+				Name = mod.Name,
+				Surname = mod.Surname,
+				Email = mod.Email,
+				Role = mod.Role,
+				UserKey = mod.UserKey,
+				Link = URL,
+			};
+			var jsonInString = JsonConvert.SerializeObject(automate);
+			using (var msg = await client.PostAsync("https://prod-190.westeurope.logic.azure.com:443/workflows/d75a383183ca494db72572570e675786/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=9Bm8MmkTEdBveGzxeOARUY9WkIb_xy00XfC2dQTiINI", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
+			{
+				if (msg.IsSuccessStatusCode)
+				{
+
+				}
+			}
+		}
+
+		public async Task<bool> SendAdminNotification(AppUser user, string stringUrl)
         {
 			try
 			{
