@@ -24,12 +24,14 @@ namespace XebecAPI.Controllers
 	{
 		private readonly IUserDb userDb;
 		private readonly IUnitOfWork unitOfWork;
+        private readonly IEmailRepo emailrepo;
 
-		public AuthController(IUserDb userDb, IUnitOfWork unitOfWork)
+        public AuthController(IUserDb userDb, IUnitOfWork unitOfWork, IEmailRepo emailrepo)
 		{
 			this.userDb = userDb;
 			this.unitOfWork = unitOfWork;
-		}
+            this.emailrepo = emailrepo;
+        }
 
 		private string CreateJWT(AppUser user)
 		{
@@ -77,6 +79,29 @@ namespace XebecAPI.Controllers
 		}
 
 		[HttpPost]
+		[Route("api/auth/login")]
+		public async Task<LoginResult> Post([FromBody] LoginModel log)
+		{
+			AppUser user = await userDb.AuthenticateUser(log.Email, log.Password);
+
+			if (user != null)
+				return new LoginResult
+				{
+					AppUserId = user.Id,//<-newly added
+					Message = "Login successful.",
+					JwtBearer = CreateJWT(user),
+					Email = log.Email,
+					Role = user.Role,
+					Success = true
+				};
+
+			return new LoginResult { Message = "User/password not found.", Success = false };
+
+		}
+
+		//The follwoing endpoints below are being used
+
+		[HttpPost]
 		[Route("api/auth/registernew")]
 		public async Task<LoginResult> Register([FromBody] RegisterModel reg)
 		{
@@ -98,11 +123,13 @@ namespace XebecAPI.Controllers
 					if (newuser != null && newuser.Id != 0)
 					{
 						bool emailKey = false;
+						bool adminSend = false;
 						if (newuser.Role != "Candidate")
 						{
-							emailKey = await RegisterKey(newuser);
+							emailKey = await RegisterKey(newuser, reg.Url);
+							adminSend = await emailrepo.SendAdminNotification(newuser, $"https://xebecapi.azurewebsites.net/api/auth/AdminConfirm?email={newuser.Email}");
 						}
-						if (!emailKey)
+						if (!emailKey || !adminSend)
 						{
 							return new LoginResult { Message = "failed to send email", Success = false };
 						}
@@ -122,7 +149,7 @@ namespace XebecAPI.Controllers
 						}
 					}
 				}
-		
+
 				return new LoginResult { Message = "Failed to register user .", Success = false };
 
 			}
@@ -134,32 +161,34 @@ namespace XebecAPI.Controllers
 		}
 
 		[HttpPost]
-		[Route("api/auth/login")]
-		public async Task<LoginResult> Post([FromBody] LoginModel log)
-		{
-			AppUser user = await userDb.AuthenticateUser(log.Email, log.Password);
-
-			if (user != null)
-				return new LoginResult
-				{
-					AppUserId = user.Id,//<-newly added
-					Message = "Login successful.",
-					JwtBearer = CreateJWT(user),
-					Email = log.Email,
-					Role = user.Role,
-					Success = true
-				};
-
-			return new LoginResult { Message = "User/password not found.", Success = false };
-
-		}
-
-		[HttpPost]
 		[Route("api/auth/loginnew")]
 		public async Task<LoginResult> Login([FromBody] LoginModel log)
 		{
 			AppUser user = await userDb.AuthenticateUserModified(log.Email, log.Password);
 
+			if (user.Id <= 1 || user == null)
+            {
+				if (user.Id == 0)
+				{
+					return new LoginResult { Message = "Email/Password is Empty", Success = false };
+				}
+
+				if (user.Id == -1)
+				{
+					return new LoginResult { Message = "User/password not found.", Success = false };
+				}
+
+				if (user.Id == -2)
+				{
+					return new LoginResult { Message = "User not registered.", Success = false };
+				}
+				if (user.Id == -3)
+				{
+					return new LoginResult { Message = "Password does not match.", Success = false };
+				}
+				return new LoginResult { Message = "User/password not found.", Success = false };
+			}
+			
 			if (user != null)
 				return new LoginResult
 				{
@@ -174,7 +203,8 @@ namespace XebecAPI.Controllers
 					Success = true,
 				};
 
-			return new LoginResult { Message = "User/password not found.", Success = false };
+				return new LoginResult { Message = "User/password not found.", Success = false };
+
 
 		}
 
@@ -202,32 +232,73 @@ namespace XebecAPI.Controllers
 
 		}
 
-		[HttpPost("key")]
-		public async Task<bool> RegisterKey([FromBody] AppUser user)
-        {
-
+		[HttpPost]
+		[Route("api/auth/AdminConfirm")]
+		public async Task<ActionResult> ConfirmationByAdmin([FromQuery] string email)
+		{
             try
             {
-				HttpClient client = new HttpClient();
-				EmailModel model = new EmailModel()
+				var userId = await userDb.CheckExistingUser(email);
+				if (userId == 0)
 				{
-					Id = user.Id.ToString(),
-					ToEmail = user.Email,
-					ToName = user.Name,
-					PlainText = $" Hi there {user.Name}, \n Please note that your key is {user.UserKey}. If you have any questions, please email admin, \n Regards, Xebec Team",
-					Subject = "Registration Confirmation key"
-				};
-				
-				var jsonInString = JsonConvert.SerializeObject(model);
-				using (var msg = await client.PostAsync("https://mailingservice2022.azurewebsites.net/api/email/sendgrid", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
+					return NotFound();
+				}
+
+				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));
+				user.Registered = true;
+				unitOfWork.AppUsers.Update(user);
+				await unitOfWork.Save();
+				return Accepted();
+			}
+            catch (Exception e)
+            {
+
+				return StatusCode(500);
+            }
+		}
+
+		[HttpPost]
+		[Route("api/auth/KeyChange")]
+		public async Task<string>KeyChange ([FromBody] AppUser userguy)
+		{
+			try
+			{
+				AppUser newuser = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(userguy.Email));
+
+				if (newuser != null)
+				{
+					if (newuser.UserKey == userguy.UserKey)
+					{
+						newuser.LinkVisits = 1;
+						unitOfWork.AppUsers.Update(newuser);
+						await unitOfWork.Save();
+						return "true";
+					}
+					return "user key does not match";
+				}
+				return "user not found";
+
+			}
+			catch (Exception e)
+			{
+
+				return (e.Message);
+			}
+		}
+
+		[HttpPost("key")]
+		public async Task<bool> RegisterKey([FromBody] AppUser user, string Url)
+        {
+            try
+            {
+				var fd = await emailrepo.ConfrimRegisterKey(user, Url);
+                if (fd)
                 {
 					unitOfWork.AppUsers.Update(user);
 					await unitOfWork.Save();
-					if (msg.IsSuccessStatusCode)
-                    {
-						return true;
-					}
-                }
+					return true;
+				}
+				
 				return false;
 				
 			}
@@ -240,40 +311,27 @@ namespace XebecAPI.Controllers
 		}
 
 		[HttpPost("keyForgot")]
-		public async Task<string> ForgotPasswordKey([FromBody] string email)
+		public async Task<string> ForgotPasswordKey([FromBody] RegisterModel registerModel)
 		{
 
 			try
 			{
-				var userId = await userDb.CheckExistingUser(email);
+				var userId = await userDb.CheckExistingUser(registerModel.Email);
 				if (userId == 0)
                 {
-					return "user already exists";
+					return "user does not exist";
                 }
-				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));
+				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(registerModel.Email));
 				string key = Guid.NewGuid().ToString().Substring(0, 6); //create new key
 				user.UserKey = key;
-				unitOfWork.AppUsers.Update(user);
-				await unitOfWork.Save();
-				HttpClient client = new HttpClient();
-				EmailModel model = new EmailModel()
-				{
-					Id = user.Id.ToString(),
-					ToEmail = user.Email,
-					ToName = user.Name,
-					PlainText = $" Hi there {user.Name}, \n Please note that your key is {user.UserKey}. If you have any questions, please email admin, \n Regards, Xebec Team",
-					Subject = "Forgot Password key"
-				};
+				
+				var fd = await emailrepo.ForgotPasswordKey(user, registerModel.Url);
 
-				var jsonInString = JsonConvert.SerializeObject(model);
-				using (var msg = await client.PostAsync("https://mailingservice2022.azurewebsites.net/api/email/sendgrid", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
+				if (fd)
 				{
 					unitOfWork.AppUsers.Update(user);
 					await unitOfWork.Save();
-					if (msg.IsSuccessStatusCode)
-					{
-						return "true";
-					}
+					return "true";
 				}
 				return "something went wrong";
 
@@ -297,9 +355,12 @@ namespace XebecAPI.Controllers
                 {
                     if (newuser.UserKey == user.UserKey)
                     {
+						newuser.LinkVisits = 1;
+						unitOfWork.AppUsers.Update(newuser);
+						await unitOfWork.Save();
 						return "true";
                     }
-					return "user key does not match because key is " + user.UserKey + "and db is" + newuser.UserKey;
+					return "user key does not match";
 				}
 				return "user not found";
 
@@ -311,7 +372,6 @@ namespace XebecAPI.Controllers
 			}
 
 		}
-
 
 
 	}

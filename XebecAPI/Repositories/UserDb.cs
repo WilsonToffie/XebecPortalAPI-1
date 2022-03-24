@@ -120,10 +120,10 @@ namespace XebecAPI.Repositories
 			try
 			{
 				if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-					return new AppUser()
-					{
-						Id = 0
-					};
+						return new AppUser()
+						{
+							Id = 0
+						};
 
 				//hash the password provided
 				string hashedPassword = CreateHash(password);
@@ -159,17 +159,33 @@ namespace XebecAPI.Repositories
 			try
 			{
 				if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-					return null;
+					return new AppUser()
+					{
+						Id = 0
+					};
 
 				var userId = await CheckExistingUser(email);
 				if (userId < 1)
-					return null;
+					return new AppUser()
+					{
+						Id = -1
+					};
 
 				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));// WATCH OUT
 				var result = mapper.Map<AppUserDTO>(user);
 
+				if (!result.Registered == false)
+					return new AppUser()
+					{
+						Id = -2
+					};
+
+
 				if (!result.PasswordHash.Equals(CreateHash(password)))
-					return null;
+					return new AppUser()
+					{
+						Id = -3
+					};
 
 				return new AppUser(user.Id, email, result.Role, result.Name, result.Surname, result.ImageUrl);
 			}
