@@ -335,6 +335,7 @@ namespace XebecAPI.Controllers
 				
 				unitOfWork.AppUsers.Update(user);
 				await unitOfWork.Save();
+				//look ma no hands
 				await emailrepo.PowerAutomateForgotAsync(user, registerModel.Link);
 				return "true";
 
