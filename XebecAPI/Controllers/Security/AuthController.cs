@@ -126,15 +126,24 @@ namespace XebecAPI.Controllers
 						bool adminSend = false;
 						if (newuser.Role != "Candidate")
 						{
-							emailKey = await RegisterKey(newuser, reg.Url);
-							adminSend = await emailrepo.SendAdminNotification(newuser, $"https://xebecapi.azurewebsites.net/api/auth/AdminConfirm?email={newuser.Email}");
+							//emailKey = await RegisterKey(newuser, reg.Url);
+							
+							await emailrepo.PowerAutomateAsync(newuser, reg.Url);
 						}
-						if (!emailKey || !adminSend)
-						{
-							return new LoginResult { Message = "failed to send email", Success = false };
-						}
-						else
-						{
+                        else
+                        {
+
+                        }
+						//if (!emailKey )
+						//{
+						//	return new LoginResult { Message = "failed to send email to user", Success = false };
+						//}
+						//else
+							
+						//if (!adminSend)
+						//{
+						//	return new LoginResult { Message = "failed to send email to admin", Success = false };
+						//}
 							return new LoginResult
 							{
 								Message = "Registration successful",
@@ -146,7 +155,6 @@ namespace XebecAPI.Controllers
 								Success = true,
 								AppUserId = newuser.Id
 							};
-						}
 					}
 				}
 

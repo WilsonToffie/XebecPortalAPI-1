@@ -13,5 +13,7 @@ namespace XebecAPI.IRepositories
         Task<bool> ForgotPasswordKey(AppUser user, string stringUrl);
 
         Task<bool> SendAdminNotification(AppUser user, string stringUrl);
+
+        Task PowerAutomateAsync(AppUser mod, string URL);
     }
 }
