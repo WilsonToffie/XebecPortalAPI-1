@@ -15,5 +15,6 @@ namespace XebecAPI.IRepositories
         Task<bool> SendAdminNotification(AppUser user, string stringUrl);
 
         Task PowerAutomateAsync(AppUser mod, string URL);
+        Task PowerAutomateForgotAsync(AppUser mod, string URL);
     }
 }
