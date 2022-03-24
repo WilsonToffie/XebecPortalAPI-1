@@ -20,11 +20,13 @@ namespace XebecAPI.Controllers
     public class ApplicationController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMyJobsCustomRepo myJobsCustomRepo;
         private readonly IMapper mapper;
 
-        public ApplicationController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ApplicationController(IUnitOfWork unitOfWork, IMyJobsCustomRepo myJobsCustomRepo, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.myJobsCustomRepo = myJobsCustomRepo;
             this.mapper = mapper;
         }
 
@@ -78,6 +80,24 @@ namespace XebecAPI.Controllers
                 return Ok(applications);
             }
             catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET api/<ApplicationController>/
+        [HttpGet("user/{AppUserId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetApplicationByUser(int AppUserId)
+        {
+            try
+            {
+                var Application = await myJobsCustomRepo.GetAllApplicationDetails(AppUserId);
+
+                return Ok(Application);
+            }
+            catch(Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
