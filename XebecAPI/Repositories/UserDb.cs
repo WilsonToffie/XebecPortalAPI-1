@@ -206,7 +206,7 @@ namespace XebecAPI.Repositories
 
 				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));
 				var result = mapper.Map<AppUserDTO>(user);
-				result.PasswordHash = password;
+				user.PasswordHash = password;
 
 				unitOfWork.AppUsers.Update(user);
 				await unitOfWork.Save();
