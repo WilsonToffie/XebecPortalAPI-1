@@ -216,30 +216,20 @@ namespace XebecAPI.Controllers
 
 		}
 
+		
 		[HttpPost]
 		[Route("api/auth/changepassword")]
-		public async Task<LoginResult> ChangePassword([FromBody] LoginModel log)
+		public async Task<string> ChangePassword([FromBody] LoginModel log)
 		{
 			AppUser user = await userDb.UpdateUserModified(log.Email, log.Password);
 
 			if (user != null)
-				return new LoginResult
-				{
-					AppUserId = user.Id,//<-newly added
-					Message = "Password Change successful.",
-					//JwtBearer = CreateJWT(user),
-					Email = user.Email,
-					Role = user.Role,
-					Name = user.Name,
-					Surname = user.Surname,
-					Avatar = user.ImageUrl,
-					Success = true,
-				};
+				return "true";
 
-			return new LoginResult { Message = "password could not be changed.", Success = false };
+			return "password could not be changed.";
 
 		}
-
+		
 		[HttpPost]
 		[Route("api/auth/AdminConfirm")]
 		public async Task<ActionResult> ConfirmationByAdmin([FromQuery] string email)
