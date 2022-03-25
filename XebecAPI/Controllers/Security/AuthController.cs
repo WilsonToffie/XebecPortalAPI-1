@@ -77,7 +77,7 @@ namespace XebecAPI.Controllers
 			return new LoginResult { Message = "User already exists.", Success = false };
 
 		}
-
+//
 		[HttpPost]
 		[Route("api/auth/login")]
 		public async Task<LoginResult> Post([FromBody] LoginModel log)
