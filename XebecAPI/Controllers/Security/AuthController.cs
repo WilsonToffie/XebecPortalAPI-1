@@ -212,6 +212,7 @@ namespace XebecAPI.Controllers
 
 		}
 
+		
 		[HttpPost]
 		[Route("api/auth/changepassword")]
 		public async Task<string> ChangePassword([FromBody] LoginModel log)
@@ -224,7 +225,7 @@ namespace XebecAPI.Controllers
 			return "password could not be changed.";
 
 		}
-
+		
 		[HttpPost]
 		[Route("api/auth/AdminConfirm")]
 		public async Task<ActionResult> ConfirmationByAdmin([FromQuery] string email)
