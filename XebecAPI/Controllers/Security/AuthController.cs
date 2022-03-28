@@ -122,18 +122,14 @@ namespace XebecAPI.Controllers
 					}
 					if (newuser != null && newuser.Id != 0)
 					{
-						bool emailKey = false;
-						bool adminSend = false;
+						//bool emailKey = false;
+						//bool adminSend = false;
 						if (newuser.Role != "Candidate")
 						{
 							//emailKey = await RegisterKey(newuser, reg.Url);
 							
 							await emailrepo.PowerAutomateAsync(newuser, reg.Link);
 						}
-                        else
-                        {
-
-                        }
 						//if (!emailKey )
 						//{
 						//	return new LoginResult { Message = "failed to send email to user", Success = false };
@@ -248,7 +244,7 @@ namespace XebecAPI.Controllers
 				await unitOfWork.Save();
 				return Accepted();
 			}
-            catch (Exception e)
+            catch
             {
 
 				return StatusCode(500);
