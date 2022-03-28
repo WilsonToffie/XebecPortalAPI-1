@@ -122,18 +122,14 @@ namespace XebecAPI.Controllers
 					}
 					if (newuser != null && newuser.Id != 0)
 					{
-						bool emailKey = false;
-						bool adminSend = false;
+						//bool emailKey = false;
+						//bool adminSend = false;
 						if (newuser.Role != "Candidate")
 						{
 							//emailKey = await RegisterKey(newuser, reg.Url);
 							
 							await emailrepo.PowerAutomateAsync(newuser, reg.Link);
 						}
-                        else
-                        {
-
-                        }
 						//if (!emailKey )
 						//{
 						//	return new LoginResult { Message = "failed to send email to user", Success = false };
@@ -218,25 +214,14 @@ namespace XebecAPI.Controllers
 
 		[HttpPost]
 		[Route("api/auth/changepassword")]
-		public async Task<LoginResult> ChangePassword([FromBody] LoginModel log)
+		public async Task<string> ChangePassword([FromBody] LoginModel log)
 		{
 			AppUser user = await userDb.UpdateUserModified(log.Email, log.Password);
 
 			if (user != null)
-				return new LoginResult
-				{
-					AppUserId = user.Id,//<-newly added
-					Message = "Password Change successful.",
-					//JwtBearer = CreateJWT(user),
-					Email = user.Email,
-					Role = user.Role,
-					Name = user.Name,
-					Surname = user.Surname,
-					Avatar = user.ImageUrl,
-					Success = true,
-				};
+				return "true";
 
-			return new LoginResult { Message = "password could not be changed.", Success = false };
+			return "password could not be changed.";
 
 		}
 
@@ -258,7 +243,7 @@ namespace XebecAPI.Controllers
 				await unitOfWork.Save();
 				return Accepted();
 			}
-            catch (Exception e)
+            catch
             {
 
 				return StatusCode(500);

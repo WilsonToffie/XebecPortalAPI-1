@@ -20,15 +20,17 @@ namespace XebecAPI.Controllers
     public class ProfilePortfolioLinkController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUsersCustomRepo usersCustomRepo;
         private readonly IMapper mapper;
 
-        public ProfilePortfolioLinkController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ProfilePortfolioLinkController(IUnitOfWork unitOfWork, IUsersCustomRepo _usersCustomRepo, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            usersCustomRepo = _usersCustomRepo;
             this.mapper = mapper;
         }
 
-        // GET: api/<ProfilePortfolioLinksController>
+        // GET: api/<ProfilePortfolioLinkController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -36,9 +38,9 @@ namespace XebecAPI.Controllers
         {
             try
             {
-                var ProfilePortfolioLinks = await _unitOfWork.ProfilePortfolioLinks.GetAll();
+                var ProfilePortfolioLink = await _unitOfWork.ProfilePortfolioLinks.GetAll();
 
-                return Ok(ProfilePortfolioLinks);
+                return Ok(ProfilePortfolioLink);
 
             }
             catch (Exception e)
@@ -47,11 +49,11 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<ProfilePortfolioLinksController>/5
+        // GET api/<ProfilePortfolioLinkController>/5
         [HttpGet("single/{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetSingleProfilePortfolioLink(int id)
+        public async Task<IActionResult> GetProfilePortfolioLink(int id)
         {
             try
             {
@@ -63,10 +65,13 @@ namespace XebecAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
+        //get by appuserId
+        // GET api/<ProfilePortfolioLinkController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetSingleProfilePortfolioLinkByUserId(int id)
+        public async Task<IActionResult> GetFirstProfilePortfolioLinkByUserID(int id)
         {
             try
             {
@@ -79,17 +84,17 @@ namespace XebecAPI.Controllers
             }
         }
 
+        //get by appuserId
+        // GET api/<ProfilePortfolioLinkController>/5
         [HttpGet("all/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetProfilePortfolioLinksAppUserId(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetProfilePortfolioLinksByUserID(int id)
         {
             try
             {
-                var AdditionalInformationTests = await _unitOfWork.ProfilePortfolioLinks.GetAll(q => q.AppUserId == id);
-
-                return Ok(AdditionalInformationTests);
-
+                var ProfilePortfolioLink = await _unitOfWork.ProfilePortfolioLinks.GetAll(q => q.AppUserId == id);
+                return Ok(ProfilePortfolioLink);
             }
             catch (Exception e)
             {
@@ -97,12 +102,12 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // POST api/<ProfilePortfolioLinksController>
+        // POST api/<ProfilePortfolioLinkController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateProfilePortfolioLink([FromBody] ProfilePortfolioLink profilePortfolioLink)
+        public async Task<IActionResult> CreateProfilePortfolioLink([FromBody] ProfilePortfolioLink ProfilePortfolioLink)
         {
 
             if (!ModelState.IsValid)
@@ -114,12 +119,11 @@ namespace XebecAPI.Controllers
 
             try
             {
-              
 
-                await _unitOfWork.ProfilePortfolioLinks.Insert(profilePortfolioLink);
+                await _unitOfWork.ProfilePortfolioLinks.Insert(ProfilePortfolioLink);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetProfilePortfolioLink", new { id = profilePortfolioLink.Id }, profilePortfolioLink);
+                return CreatedAtAction("GetProfilePortfolioLink", new { id = ProfilePortfolioLink.Id }, ProfilePortfolioLink);
 
             }
             catch (Exception e)
@@ -133,9 +137,9 @@ namespace XebecAPI.Controllers
         }
 
 
-        // PUT api/<ProfilePortfolioLinksController>/5
+        // PUT api/<ProfilePortfolioLinkController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateJob(int id, [FromBody] ProfilePortfolioLinkDTO profilePortfolioLink)
+        public async Task<IActionResult> UpdateProfilePortfolioLink(int id, [FromBody] ProfilePortfolioLinkDTO ProfilePortfolioLink)
         {
             if (!ModelState.IsValid)
             {
@@ -150,7 +154,7 @@ namespace XebecAPI.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                mapper.Map(profilePortfolioLink, originalProfilePortfolioLink);
+                mapper.Map(ProfilePortfolioLink, originalProfilePortfolioLink);
                 _unitOfWork.ProfilePortfolioLinks.Update(originalProfilePortfolioLink);
                 await _unitOfWork.Save();
 
@@ -165,7 +169,7 @@ namespace XebecAPI.Controllers
         }
 
 
-        // DELETE api/<ProfilePortfolioLinksController>/5
+        // DELETE api/<ProfilePortfolioLinkController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -179,9 +183,9 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var profilePortfolioLink = await _unitOfWork.ProfilePortfolioLinks.GetT(q => q.Id == id);
+                var ProfilePortfolioLink = await _unitOfWork.ProfilePortfolioLinks.GetT(q => q.Id == id);
 
-                if (profilePortfolioLink == null)
+                if (ProfilePortfolioLink == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }

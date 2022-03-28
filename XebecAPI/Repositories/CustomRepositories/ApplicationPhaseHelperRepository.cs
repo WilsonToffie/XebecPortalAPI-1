@@ -80,7 +80,6 @@ namespace XebecAPI.Repositories
 
         public async Task<List<ApplicantPortalView>> GetApplicantsForJob(int JobId)
         {
-            IQueryable<ApplicationPhaseHelper> queryphase;
             IQueryable<ApplicantPortalView> queryFinal = null;
             queryFinal = from applications in _context.Applications.Where(a => a.JobId == JobId)
                          join phases in _context.ApplicationPhasesHelpers.Include(p => p.ApplicationPhase)
@@ -100,7 +99,6 @@ namespace XebecAPI.Repositories
         {
             IQueryable<ApplicantViewModel> queryFinal;
             Random r = new Random();
-            int i = 1;
             string[] Comments = new[]
             {
             "Awaiting resutls", "Good Choice", "Has Portential", "No Potential", "I like a lot", "Overqualified", "Balmy", "I don't know", "Maybe in the future?", "@Merril it's yours"
@@ -134,7 +132,6 @@ namespace XebecAPI.Repositories
         {
             IQueryable<ApplicantViewModel> queryFinal;
             Random r = new Random();
-            int i = 1;
             string[] Comments = new[]
             {
             "Awaiting resutls", "Good Choice", "Has Portential", "No Potential", "I like a lot", "Overqualified", "Balmy", "I don't know", "Maybe in the future?", "@Merril it's yours"
