@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using XebecAPI.Shared.Security;
 using XebecAPI.DTOs;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -31,12 +33,14 @@ namespace XebecAPI.Controllers
 
         // GET: api/<UsersController>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetUsers()
         {
             try
             {
+               
                 var users = await _unitOfWork.AppUsers.GetAll();
              
                 return Ok(users);
@@ -198,6 +202,48 @@ namespace XebecAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
+
+        }
+
+        [HttpGet("AllAuth")]
+        [Authorize]
+        public IActionResult GetUserAuthorised()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                var userclaims = identity.Claims;
+                var user = new AppUser();
+                user.Email = userclaims.FirstOrDefault(i => i.Type == ClaimTypes.Email)?.Value;
+                user.Name = userclaims.FirstOrDefault(i => i.Type == ClaimTypes.Name)?.Value;
+                user.Role = userclaims.FirstOrDefault(i => i.Type == ClaimTypes.Role)?.Value;
+                user.Id = int.Parse(userclaims.FirstOrDefault(i => i.Type == ClaimTypes.SerialNumber)?.Value);
+
+                return Ok($"Hi there {user.Name}, your id is {user.Id}, while your email is {user.Email} and your role is {user.Role}");
+
+            }
+            return Ok("Not passed");
+                
+        }
+
+        [HttpGet("Admins")]
+        [Authorize(Roles="Super Admin")]
+        public IActionResult GetAdminAuthorised()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                var userclaims = identity.Claims;
+                var user = new AppUser();
+                user.Email = userclaims.FirstOrDefault(i => i.Type == ClaimTypes.Email)?.Value;
+                user.Name = userclaims.FirstOrDefault(i => i.Type == ClaimTypes.Name)?.Value;
+                user.Role = userclaims.FirstOrDefault(i => i.Type == ClaimTypes.Role)?.Value;
+                user.Id = int.Parse(userclaims.FirstOrDefault(i => i.Type == ClaimTypes.SerialNumber)?.Value);
+
+                return Ok($"Hi there Admin {user.Name}, your id is {user.Id}, while your email is {user.Email} and your role is {user.Role}");
+
+            }
+            return Ok("Not passed");
 
         }
     }
