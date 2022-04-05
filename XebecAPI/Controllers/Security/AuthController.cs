@@ -45,6 +45,7 @@ namespace XebecAPI.Controllers
 				new Claim(ClaimTypes.Name, user.Email), // NOTE: this will be the "User.Identity.Name" value
 				new Claim(JwtRegisteredClaimNames.Sub, user.Email),
 				new Claim(JwtRegisteredClaimNames.Email, user.Email),
+				new Claim(ClaimTypes.Role, user.Role),
 				new Claim(JwtRegisteredClaimNames.Jti, user.Email) 
 				// NOTE: this could a unique ID assigned to the user by a database
 			};
@@ -143,7 +144,7 @@ namespace XebecAPI.Controllers
 							return new LoginResult
 							{
 								Message = "Registration successful",
-								//JwtBearer = CreateJWT(newuser),// fix
+								JwtBearer = CreateJWT(newuser),// fix
 								Email = newuser.Email,
 								Role = newuser.Role,
 								Name = newuser.Name,
@@ -198,7 +199,7 @@ namespace XebecAPI.Controllers
 				{
 					AppUserId = user.Id,//<-newly added
 					Message = "Login successful.",
-					//JwtBearer = CreateJWT(user),
+					JwtBearer = CreateJWT(user),
 					Email = user.Email,
 					Role = user.Role,
 					Name = user.Name,
