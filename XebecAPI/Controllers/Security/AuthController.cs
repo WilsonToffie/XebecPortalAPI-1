@@ -42,11 +42,12 @@ namespace XebecAPI.Controllers
 
 			var claims = new[] // NOTE: could also use List<Claim> here
 			{
-				new Claim(ClaimTypes.Name, user.Email), // NOTE: this will be the "User.Identity.Name" value
+				new Claim(ClaimTypes.Name, user.Name), // NOTE: this will be the "User.Identity.Name" value
+				new Claim(ClaimTypes.SerialNumber, user.Id.ToString()),
 				new Claim(JwtRegisteredClaimNames.Sub, user.Email),
 				new Claim(JwtRegisteredClaimNames.Email, user.Email),
 				new Claim(ClaimTypes.Role, user.Role),
-				new Claim(JwtRegisteredClaimNames.Jti, user.Email) 
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) 
 				// NOTE: this could a unique ID assigned to the user by a database
 			};
 
