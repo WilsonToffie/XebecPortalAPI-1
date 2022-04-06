@@ -33,7 +33,6 @@ namespace XebecAPI.Controllers
 
         // GET: api/<UsersController>
         [HttpGet]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetUsers()
