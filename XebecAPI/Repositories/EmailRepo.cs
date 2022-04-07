@@ -12,8 +12,15 @@ namespace XebecAPI.Repositories
 {
     public class EmailRepo : IEmailRepo
     {
-		HttpClient client = new HttpClient();
-		public async Task<bool> ConfrimRegisterKey(AppUser user, string stringUrl)
+        private readonly IUnitOfWork unitofWork;
+        HttpClient client = new HttpClient();
+
+        public EmailRepo(IUnitOfWork unitofWork)
+        {
+            this.unitofWork = unitofWork;
+        }
+
+        public async Task<bool> ConfrimRegisterKey(AppUser user, string stringUrl)
 		{
 
 			try
@@ -87,24 +94,25 @@ Xebec Team",
         }
         public async Task PowerAutomateAsync(AppUser mod, string URL)
         {
-			PowerAutomate automate = new PowerAutomate()
-			{
-				Name = mod.Name,
-				Surname = mod.Surname,
-				Email = mod.Email,
-				Role = mod.Role,
-				UserKey = mod.UserKey,
-				Link = URL,
-				AuthorizerEmail = "mltivi001@myuct.ac.za"
-			};
-			var jsonInString = JsonConvert.SerializeObject(automate);
-			using (var msg = await client.PostAsync("https://prod-06.westeurope.logic.azure.com:443/workflows/d3868b8230194f7e8114e9a60c87fa68/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=XhSdN1NSepuD65aL7jSdHIky1NHKQHrGp86y3RQadgs", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
-			{
-				if (msg.IsSuccessStatusCode)
+			var admins = await unitofWork.Admins.GetAll();
+            for (int i = 0; i < admins.Count ; i++)
+            {
+				PowerAutomate automate = new PowerAutomate()
 				{
-
+					Name = mod.Name,
+					Surname = mod.Surname,
+					Email = mod.Email,
+					Role = mod.Role,
+					UserKey = mod.UserKey,
+					Link = URL,
+					AuthorizerEmail = admins[i].Email
+				};
+				var jsonInString = JsonConvert.SerializeObject(automate);
+				using (var msg = await client.PostAsync("https://prod-06.westeurope.logic.azure.com:443/workflows/d3868b8230194f7e8114e9a60c87fa68/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=XhSdN1NSepuD65aL7jSdHIky1NHKQHrGp86y3RQadgs", new StringContent(jsonInString, Encoding.UTF8, "application/json"), System.Threading.CancellationToken.None))
+				{
 				}
 			}
+			
 		}
 
 		public async Task PowerAutomateForgotAsync(AppUser mod, string URL)
