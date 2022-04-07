@@ -16,6 +16,7 @@ using XebecAPI.DTOs;
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class PersonalInformationController : ControllerBase
     {
