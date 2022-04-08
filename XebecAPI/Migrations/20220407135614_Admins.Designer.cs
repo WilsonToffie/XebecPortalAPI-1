@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XebecAPI.Data;
 
 namespace XebecAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220407135614_Admins")]
+    partial class Admins
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,43 +60,6 @@ namespace XebecAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AnswerTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Type = "Number"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Type = "Long Text"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Type = "Short Text"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Type = "Date/Time"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Type = "Boolean"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Type = "File Upload"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Type = "Hybrid"
-                        });
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.Application", b =>
@@ -146,89 +111,6 @@ namespace XebecAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApplicationPhases");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Applied"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Schedule Phone Screen"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Description = "Phone Screened"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Description = "MS Teams Screened",
-                            EmailTemplate = "Hi , {firstname}\r\n\r\nI received your application and would love to learn more about you and answer any questions you may have about 1Nebula or the { jobtitle } position.\r\n\r\nCould you send me a few times when you’d be available for a 30 minute Microsoft Teams call in the next few days ? I will be sending you a link to the meeting based on your availability.\r\n\r\nI look forward to our conversation,\r\n\r\n{ sentname}\r\n            { sentsurname}\r\n            { senttitle}\r\n\r\n            1Nebula"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Description = "First Round Interview",
-                            EmailTemplate = "Dear: {firstname} {surname},\r\n\r\nIt was so lovely chatting with you and getting to know you a bit more. \r\n\r\nI was overall impressed with your background and experience and have consulted with the team on your application for the {jobtitle} position.\r\n\r\nThe team has decided to progress you to the first stage which is the first round interview. Details of the interview are listed below. Should you be available, a Microsoft teams meeting link will be sent to your email address linked to this application.\r\n\r\nDate: {date}\r\nTime: {time}\r\nMedium: MS Teams\r\nInterview Panel: {panel}\r\n\r\nNo need to prepare anything as this will be a culture interview as the team would like to get to know you and understand your skill set in relation to your career goals.\r\n\r\nI look forward to your response.\r\nKind regards,\r\n{sentname} {sentsurname}\r\n{senttitle}\r\n1Nebula\r\nwww.1nebula.com"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Description = "Assessment Phase",
-                            EmailTemplate = "Dear: {firstname} {surname},\r\n\r\nTrust you are well.\r\n\r\nIt is with great excitement we now invite you to move forward in the recruitment process with 1Nebula. The next phase will be the completion of an assessment. \r\n\r\nAttached you will find our {jobtitle}. We would like for you to present this to us via MS teams on:\r\n\r\nDate: {date}\r\nTime: {time}\r\nPresentation Panel: {panel}\r\n\r\nKindly have a look and let me know if you would like to proceed as well as confirm your availability.\r\n\r\nKind regards,\r\n{sentname} {sentsurname}\r\n{senttitle}\r\n1Nebula\r\nwww.1nebula.com"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            Description = "Second Round Interview",
-                            EmailTemplate = "Dear: {firstname} {surname},\r\n\r\nTrust you are well.\r\n\r\nHi {firstname},\r\n\r\nTrust you are well.\r\n\r\nWe were extremely impressed with your coding assessment and we would like for you to move forward to the next step of the Recruitment process, which is the Technical interview. It will entail getting to know you and assessing your capabilities. Details of the interview are listed below. Should you be available, a Microsoft teams meeting link will be sent to your email address linked to this application.\r\n\r\nDate: {date}\r\nTime: {time}\r\nMedium: MS Teams\r\nInterview Panel: {panel}\r\n\r\nVideo will be needed for this session so please ensure you are in a well-lit room with a strong connection and no distractions.\r\n\r\nLooking forward to your response.\r\n\r\n\r\nKind Regards,\r\n{sentname} {sentsurname}\r\n{senttitle}\r\n1Nebula\r\nwww.1nebula.com"
-                        },
-                        new
-                        {
-                            Id = 29,
-                            Description = "Waiting on Manager feedback"
-                        },
-                        new
-                        {
-                            Id = 30,
-                            Description = "CTO/MD Interview"
-                        },
-                        new
-                        {
-                            Id = 31,
-                            Description = "CEO Interview",
-                            EmailTemplate = "Dear {firstname},\r\n\r\nWe are delighted to have you move forward to the final stage of the recruitment process. This will be your final interview with the CEO, Mr Daniel Nel.\r\n\r\n\r\nDate: {date}\r\nTime: {time}\r\nMedium: MS Teams\r\n\r\nWishing you the best of luck!\r\n\r\nRegards,\r\n{sentname} {sentsurname}\r\n(www.1nebula.com)"
-                        },
-                        new
-                        {
-                            Id = 32,
-                            Description = "Checking References",
-                            EmailTemplate = "Hi {firstname},\r\n\r\nCould you please send me 3 professional references for us to contact? Be sure to include their names, titles, companies, phone numbers, and email addresses.\r\n\r\nThank you!\r\n\r\n{sentname}{sentsurname}\r\n{senttitle}\r\nOneNebula"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            Description = "Offer Sent"
-                        },
-                        new
-                        {
-                            Id = 34,
-                            Description = "Offer Pending – Candidate"
-                        },
-                        new
-                        {
-                            Id = 35,
-                            Description = "Offer Pending - Second Opinion"
-                        },
-                        new
-                        {
-                            Id = 36,
-                            Description = "Final Phase"
-                        });
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.ApplicationPhaseHelper", b =>
@@ -476,33 +358,6 @@ namespace XebecAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("JobPlatforms");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            PlatformName = "Main 1Nebula Platform"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            PlatformName = "Xebec Platform"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            PlatformName = "48Software"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            PlatformName = "Oneview"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            PlatformName = "Stactize"
-                        });
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.JobPlatformHelper", b =>
@@ -540,38 +395,6 @@ namespace XebecAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("JobTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Type = "Freelance"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Type = "Full Time"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Type = "Part Time"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Type = "Contract"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Type = "Temporary"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Type = "Internship"
-                        });
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.JobTypeHelper", b =>
@@ -959,116 +782,6 @@ namespace XebecAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UnsuccessfulReasons");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Reason = "Declined Offer"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Reason = "Hired Elsewhere"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you for your interest in OneNebula!\r\n\r\n                    We received an overwhelming response to the {jobtitle} position, which makes us feel both humble and proud that so many talented individuals (like you!) want to join our team. This volume of response makes for an extremely competitive selection process. Although your background is impressive, we regret to inform you that we have decided to pursue other candidates for the position at this time.\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings. We hope you see another position that sparks your interest!\r\n\r\n                    Best wishes,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Does not fit ICP: Qualification Type"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you for your interest in OneNebula!\r\n\r\n                    We received an overwhelming response to the {jobtitle} position, which makes us feel both humble and proud that so many talented individuals (like you!) want to join our team. This volume of response makes for an extremely competitive selection process. Although your background is impressive, we regret to inform you that we have decided to pursue other candidates for the position at this time.\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings. We hope you see another position that sparks your interest!\r\n\r\n                    Best wishes,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Does not fit ICP: University Type"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you for your interest in OneNebula!\r\n\r\n                    We received an overwhelming response to the {jobtitle} position, which makes us feel both humble and proud that so many talented individuals (like you!) want to join our team. This volume of response makes for an extremely competitive selection process. Although your background is impressive, we regret to inform you that we have decided to pursue other candidates for the position at this time.\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings. We hope you see another position that sparks your interest!\r\n\r\n                    Best wishes,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Does not fit ICP: Salary Expectations Too High"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you for your interest in OneNebula!\r\n\r\n                    We received an overwhelming response to the {jobtitle} position, which makes us feel both humble and proud that so many talented individuals (like you!) want to join our team. This volume of response makes for an extremely competitive selection process. Although your background is impressive, we regret to inform you that we have decided to pursue other candidates for the position at this time.\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings. We hope you see another position that sparks your interest!\r\n\r\n                    Best wishes,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Does not fit ICP: Age Category"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you for your interest in OneNebula!\r\n\r\n                    We received an overwhelming response to the {jobtitle} position, which makes us feel both humble and proud that so many talented individuals (like you!) want to join our team. This volume of response makes for an extremely competitive selection process. Although your background is impressive, we regret to inform you that we have decided to pursue other candidates for the position at this time.\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings. We hope you see another position that sparks your interest!\r\n\r\n                    Best wishes,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Does not fit ICP: Too Junior"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you for your interest in OneNebula!\r\n\r\n                    We received an overwhelming response to the {jobtitle} position, which makes us feel both humble and proud that so many talented individuals (like you!) want to join our team. This volume of response makes for an extremely competitive selection process. Although your background is impressive, we regret to inform you that we have decided to pursue other candidates for the position at this time.\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings. We hope you see another position that sparks your interest!\r\n\r\n                    Best wishes,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Does not fit ICP: Not in Desired Location"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you for your interest in OneNebula!\r\n\r\n                    We received an overwhelming response to the {jobtitle} position, which makes us feel both humble and proud that so many talented individuals (like you!) want to join our team. This volume of response makes for an extremely competitive selection process. Although your background is impressive, we regret to inform you that we have decided to pursue other candidates for the position at this time.\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings. We hope you see another position that sparks your interest!\r\n\r\n                    Best wishes,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Does not fit ICP: Job Hopping"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you for your interest in OneNebula!\r\n\r\n                    We received an overwhelming response to the {jobtitle} position, which makes us feel both humble and proud that so many talented individuals (like you!) want to join our team. This volume of response makes for an extremely competitive selection process. Although your background is impressive, we regret to inform you that we have decided to pursue other candidates for the position at this time.\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings. We hope you see another position that sparks your interest!\r\n\r\n                    Best wishes,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Does not fit ICP: References/MIE checks"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Reason = "No Portfolio of Evidence"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Reason = "No Response from Candidate"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            EmailTemplate = "Dear: {firstname},\r\n\r\n                    Trust you are well.\r\n\r\n                    We have completed the review of your coding assessment. Unfortunately upon reviewing, the team could not select you as the ideal candidate for this role as we are in need of someone a bit more senior for the current role we are recruiting for.\r\n\r\n                    However, we do see the potential in you and would love to keep your application on file for other positions that may become available in our environment.\r\n\r\n                    As one of the leaders within our industry, we receive many qualified applicants like yourself, so thank you again for taking the time to apply!\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings on our careers page. We hope you see another position that sparks your interest in the future and wish you the best in your career pursuits!\r\n\r\n                    Regards,\r\n                    {sentname}\r\n                    {senttitle}\r\n                    (www.1nebula.com)\r\n                    ",
-                            Reason = "Unsuccessful Assessment"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Reason = "Unsuccessful Screening: Not a culture fit"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you again for your interest in OneNebula! I appreciated the opportunity we had to speak together, and I was overall impressed with your experience.\r\n\r\n                    Although your background is impressive, upon further review, we were unable to select you as an ideal fit for the position and current needs. As one of the leaders within our industry, we receive many qualified applicants like yourself, so thank you again for taking the time to apply!\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings on our careers page. We hope you see another position that sparks your interest in the future and wish you the best in your career pursuits!\r\n\r\n                    Regards,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Unsuccessful First Round Interview"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you again for your interest in OneNebula! I appreciated the opportunity we had to speak together, and I was overall impressed with your experience.\r\n\r\n                    Although your background is impressive, upon further review, we were unable to select you as an ideal fit for the position and current needs. As one of the leaders within our industry, we receive many qualified applicants like yourself, so thank you again for taking the time to apply!\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings on our careers page. We hope you see another position that sparks your interest in the future and wish you the best in your career pursuits!\r\n\r\n                    Regards,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Unsuccessful Technical Interview"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Reason = "No relevant experience linked to the role"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you again for your interest in OneNebula! I appreciated the opportunity we had to speak together, and I was overall impressed with your experience.\r\n\r\n                    Although your background is impressive, upon further review, we were unable to select you as an ideal fit for the position and current needs. As one of the leaders within our industry, we receive many qualified applicants like yourself, so thank you again for taking the time to apply!\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings on our careers page. We hope you see another position that sparks your interest in the future and wish you the best in your career pursuits!\r\n\r\n                    Regards,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Unsuccessful CTO/MD interview"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            EmailTemplate = "Hi {firstname},\r\n\r\n                    Thank you again for your interest in OneNebula! I appreciated the opportunity we had to speak together, and I was overall impressed with your experience.\r\n\r\n                    Although your background is impressive, upon further review, we were unable to select you as an ideal fit for the position and current needs. As one of the leaders within our industry, we receive many qualified applicants like yourself, so thank you again for taking the time to apply!\r\n\r\n                    Just as we at OneNebula value our customers, we value our job candidates and invite you to review future job openings on our careers page. We hope you see another position that sparks your interest in the future and wish you the best in your career pursuits!\r\n\r\n                    Regards,\r\n                    {sentname} {sentsurname}\r\n                    {senttitle}\r\n \r\n                    OneNebula\r\n                    ",
-                            Reason = "Unsuccessful CEO Interview"
-                        });
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.WorkHistory", b =>

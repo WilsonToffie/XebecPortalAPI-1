@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using XebecAPI.Configurations;
 using XebecAPI.Shared;
 using XebecAPI.Shared.Security;
 
@@ -58,8 +59,12 @@ namespace XebecAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);   
-           
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new AnswerTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new JobPlatformConfiguration());
+            modelBuilder.ApplyConfiguration(new JobTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new AppPhaseConfiguration());
+            modelBuilder.ApplyConfiguration(new UnsuccessfulReasonConfiguration());
         }
 
     }
