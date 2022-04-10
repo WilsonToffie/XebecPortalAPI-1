@@ -2,7 +2,7 @@ name: Build and deploy .NET Core application to Web App XebecAPI
 on:
   push:
     branches:
-    - master
+    - stage
 env:
   AZURE_WEBAPP_NAME: XebecAPI
   AZURE_WEBAPP_PACKAGE_PATH: XebecAPI\publish
@@ -30,7 +30,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.XEBECAPI_FFFF }}
+        publish-profile: ${{ secrets.XEBECSTAGE }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
     - name: Publish Artifacts
       uses: actions/upload-artifact@v1.0.0
