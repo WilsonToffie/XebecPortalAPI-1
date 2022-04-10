@@ -6,7 +6,7 @@ on:
 env:
   AZURE_WEBAPP_NAME: xebechumancapitalapi
   AZURE_WEBAPP_PACKAGE_PATH: XebecAPI/publish
-  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.xebechumancapitalapi_d96b }}
+  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.XEBECPROD }}
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 5.0.x
   WORKING_DIRECTORY: XebecAPI
