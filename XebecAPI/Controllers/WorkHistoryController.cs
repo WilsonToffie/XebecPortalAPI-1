@@ -18,7 +18,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class WorkHistoryController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
