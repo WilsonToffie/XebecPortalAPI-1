@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,6 +18,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ApplicationPhaseController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -66,6 +68,7 @@ namespace XebecAPI.Controllers
 
         // POST api/<PhasesController>
         [HttpPost]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -101,6 +104,7 @@ namespace XebecAPI.Controllers
 
         // PUT api/<PhasesController>/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         public async Task<IActionResult> UpdatePhase(int id, [FromBody] ApplicationPhaseDTO Phase)
         {
             if (!ModelState.IsValid)
@@ -133,6 +137,7 @@ namespace XebecAPI.Controllers
 
         // DELETE api/<PhasesController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

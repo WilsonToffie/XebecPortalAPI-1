@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 using XebecAPI.Shared;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "HRAdmin, Super Admin")]
     public class UnsuccessfulReasonController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

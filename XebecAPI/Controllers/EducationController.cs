@@ -32,6 +32,7 @@ namespace XebecAPI.Controllers
 
         // GET: api/<EducationController>
         [HttpGet]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetEducations()
@@ -51,6 +52,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<EducationController>/5
         [HttpGet("single/{id}")]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetEducation(int id)
@@ -68,6 +70,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<EducationController>/userId=1
         [HttpGet("all/{userId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetEducationByUserId(int userId)
@@ -86,6 +89,7 @@ namespace XebecAPI.Controllers
         //get by appuserid
         // GET api/<EducationController>/5
         [HttpGet("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetSingleEducationByUserID(int id)

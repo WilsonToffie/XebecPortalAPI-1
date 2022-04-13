@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,6 +18,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class JobController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -32,6 +34,7 @@ namespace XebecAPI.Controllers
 
         // GET: api/<JobsController>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetJobs()
@@ -51,6 +54,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<JobsController>/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetJob(int id)
@@ -69,6 +73,7 @@ namespace XebecAPI.Controllers
 
         // POST api/<JobsController>
         [HttpPost]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -105,6 +110,7 @@ namespace XebecAPI.Controllers
 
         // PUT api/<JobsController>/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         public async Task<IActionResult> UpdateJob(int id, [FromBody] JobDTO Job)
         {
             if (!ModelState.IsValid)
@@ -138,6 +144,7 @@ namespace XebecAPI.Controllers
 
         // DELETE api/<JobsController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
