@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace XebecAPI.Controllers
 {
@@ -25,17 +26,19 @@ namespace XebecAPI.Controllers
 		private readonly IUserDb userDb;
 		private readonly IUnitOfWork unitOfWork;
         private readonly IEmailRepo emailrepo;
+        private readonly IConfiguration config;
 
-        public AuthController(IUserDb userDb, IUnitOfWork unitOfWork, IEmailRepo emailrepo)
+        public AuthController(IUserDb userDb, IUnitOfWork unitOfWork, IEmailRepo emailrepo, IConfiguration _config)
 		{
 			this.userDb = userDb;
 			this.unitOfWork = unitOfWork;
             this.emailrepo = emailrepo;
+            config = _config;
         }
 
 		private string CreateJWT(AppUser user)
 		{
-			var secretkey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("THIS IS THE SECRET KEY"));
+			var secretkey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(config["JWT:Key"]));
 			// NOTE: SAME KEY AS USED IN Startup.cs FILE
 
 			var credentials = new SigningCredentials(secretkey, SecurityAlgorithms.HmacSha256);
@@ -51,7 +54,7 @@ namespace XebecAPI.Controllers
 				// NOTE: this could a unique ID assigned to the user by a database
 			};
 
-			var token = new JwtSecurityToken(issuer: "domain.com", audience: "domain.com", claims: claims, expires: DateTime.Now.AddMinutes(60), signingCredentials: credentials);
+			var token = new JwtSecurityToken(issuer: config["JWT:Issuer"], audience: config["JWT:Audience"], claims: claims, expires: DateTime.Now.AddMinutes(15), signingCredentials: credentials);
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 
