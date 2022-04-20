@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class EducationController : ControllerBase
     {
@@ -70,7 +70,7 @@ namespace XebecAPI.Controllers
         [HttpGet("all/{userId}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetEducationByUserId(int userId)
+        public async Task<IActionResult> GetEducationsByUserId(int userId)
         {
             try
             {
@@ -85,14 +85,15 @@ namespace XebecAPI.Controllers
 
         //get by appuserid
         // GET api/<EducationController>/5
-        [HttpGet("{id}")]
+        [Authorize]
+        [HttpGet("{userid}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetSingleEducationByUserID(int id)
+        public async Task<IActionResult> GetSingleEducationByUserID(int userid)
         {
             try
             {
-                var Education = await _unitOfWork.Education.GetT(q => q.AppUserId == id);
+                var Education = await _unitOfWork.Education.GetT(q => q.AppUserId == userid);
                 return Ok(Education);
             }
             catch (Exception e)

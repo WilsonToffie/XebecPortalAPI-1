@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class PersonalInformationController : ControllerBase
     {
@@ -54,7 +54,7 @@ namespace XebecAPI.Controllers
         [HttpGet("single/{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPersonalInformation(int id)
+        public async Task<IActionResult> GetPersonalInformationById(int id)
         {
             try
             {
@@ -69,14 +69,15 @@ namespace XebecAPI.Controllers
 
         //get by appuserId
         // GET api/<PersonalInformationController>/5
-        [HttpGet("{id}")]
+        [Authorize]
+        [HttpGet("{userid}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetFirstPersonalInformationByUserID(int id)
+        public async Task<IActionResult> GetSinglePersonalInformationByUserID(int userid)
         {
             try
             {
-                var PersonalInformation = await _unitOfWork.PersonalInformation.GetT(q => q.AppUserId == id);
+                var PersonalInformation = await _unitOfWork.PersonalInformation.GetT(q => q.AppUserId == userid);
                 return Ok(PersonalInformation);
             }
             catch (Exception e)
@@ -86,7 +87,7 @@ namespace XebecAPI.Controllers
         }
 
         //get by appuserId
-        // GET api/<PersonalInformationController>/5
+        // GET api/<PersonalInformationController>/all/5
         [HttpGet("all/{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -197,7 +198,7 @@ namespace XebecAPI.Controllers
                 await _unitOfWork.PersonalInformation.Insert(PersonalInformation);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetPersonalInformation", new { id = PersonalInformation.Id }, PersonalInformation);
+                return CreatedAtAction("GetPersonalInformationById", new { id = PersonalInformation.Id }, PersonalInformation);
 
             }
             catch (Exception e)
