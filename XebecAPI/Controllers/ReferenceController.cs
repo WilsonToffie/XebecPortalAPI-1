@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class ReferenceController : ControllerBase
     {
@@ -85,7 +85,6 @@ namespace XebecAPI.Controllers
 
         //get by appuserid
         // GET api/<ReferenceController>/5
-        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]

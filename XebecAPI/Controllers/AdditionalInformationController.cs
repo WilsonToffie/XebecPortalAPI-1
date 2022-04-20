@@ -12,12 +12,13 @@ using XebecAPI.DTOs;
 using Microsoft.AspNetCore.Authorization;
 
 
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class AdditionalInformationController : ControllerBase
     {
@@ -28,18 +29,18 @@ namespace XebecAPI.Controllers
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
-        }
+        } 
 
         // GET: api/<AdditionalInformationController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAdditionalInformations()
+        public async Task<IActionResult> GetAdditionalInformation()
         {
             try
             {
                 var AdditionalInformation = await _unitOfWork.AdditionalInformation.GetAll();
-
+             
                 return Ok(AdditionalInformation);
 
             }
@@ -49,11 +50,11 @@ namespace XebecAPI.Controllers
             }
         }
 
-        // GET api/<AdditionalInformationController>single/5
-        [HttpGet("single/{id}")]
+        // GET api/<AdditionalInformationController>/5
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAdditionalInformationById(int id)
+        public async Task<IActionResult> GetAdditionalInformation(int id)
         {
             try
             {
@@ -66,44 +67,6 @@ namespace XebecAPI.Controllers
             }
         }
 
-        //get by appuserid
-        // GET api/<AdditionalInformationController>/5
-        [Authorize]
-        [HttpGet("{userid}")]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetSingleAdditionalInformationByUserId(int userid)
-        {
-            try
-            {
-                var AdditionalInformation = await _unitOfWork.AdditionalInformation.GetT(q => q.AppUserId == userid);
-                return Ok(AdditionalInformation);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
-
-
-        // GET api/<AdditionalInformationController>/userId=1
-        [HttpGet("all/{userId}")]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllAdditionalInformationByUserId(int userId)
-        {
-            try
-            {
-                var AdditionalInformation = await _unitOfWork.AdditionalInformation.GetAll(q => q.AppUserId == userId);
-                return Ok(AdditionalInformation);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
-
-      
         // POST api/<AdditionalInformationController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -125,7 +88,7 @@ namespace XebecAPI.Controllers
                 await _unitOfWork.AdditionalInformation.Insert(AdditionalInformation);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetAdditionalInformationById", new { id = AdditionalInformation.Id }, AdditionalInformation);
+                return CreatedAtAction("GetAdditionalInformation", new { id = AdditionalInformation.Id }, AdditionalInformation);
 
             }
             catch (Exception e)
@@ -137,42 +100,6 @@ namespace XebecAPI.Controllers
 
 
         }
-
-        [HttpPost("List")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateAdditionalInformations([FromBody] List<AdditionalInformation> AdditionalInformations)
-        {
-
-            if (!ModelState.IsValid)
-            {
-
-                return BadRequest(ModelState);
-            }
-
-
-            try
-            {
-
-                await _unitOfWork.AdditionalInformation.InsertRange(AdditionalInformations);
-                await _unitOfWork.Save();
-
-
-
-
-                return CreatedAtAction("GetAdditionalInformations", AdditionalInformations);
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    e.InnerException);
-            }
-
-
-        }
-
 
 
         // PUT api/<AdditionalInformationController>/5
