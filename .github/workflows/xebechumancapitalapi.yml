@@ -1,4 +1,4 @@
-name: Prod Env: Build and deploy to xebechumancapitalapi App Service
+name: Build and deploy .NET Core app to Windows WebApp xebechumancapitalapi
 on:
   push:
     branches:

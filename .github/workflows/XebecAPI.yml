@@ -1,4 +1,4 @@
-name: Staging Env: Build and deploy to XebecAPI App Service
+name: Build and deploy .NET Core application to Web App XebecAPI
 on:
   push:
     branches:
