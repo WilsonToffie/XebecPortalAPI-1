@@ -58,6 +58,8 @@ namespace XebecAPI.IRepositories
 
         IGenericRepository<SkillsBank> SkillsBanks { get; }
 
+        IGenericRepository<Department> Departments { get; }
+
         IGenericRepository<Admin> Admins { get; }
 
         //Saving to the DB

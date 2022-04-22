@@ -58,6 +58,8 @@ namespace XebecAPI.Repositories
         private IGenericRepository<Skill> _skills;
         private IGenericRepository<SkillsBank> _skillsBank;
         private IGenericRepository<Admin> _admins;
+
+        private IGenericRepository<Department> _departments;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -124,6 +126,8 @@ namespace XebecAPI.Repositories
         public IGenericRepository<SkillsBank> SkillsBanks => _skillsBank ??= new GenericRepository<SkillsBank>(_context);
 
         public IGenericRepository<Admin> Admins => _admins ??= new GenericRepository<Admin>(_context);
+
+        public IGenericRepository<Department> Departments => _departments ??= new GenericRepository<Department>(_context);
 
         public void Dispose()
         {

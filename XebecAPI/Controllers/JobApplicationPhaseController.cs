@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using XebecAPI.Shared.Security;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,6 +19,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "HRAdmin, Super Admin")]
     public class JobApplicationPhaseController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

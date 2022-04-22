@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,6 +18,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "HRAdmin, Super Admin")]
     public class ProfilePortfolioLinkController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -69,6 +71,7 @@ namespace XebecAPI.Controllers
         //get by appuserId
         // GET api/<ProfilePortfolioLinkController>/5
         [HttpGet("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetFirstProfilePortfolioLinkByUserID(int id)
@@ -87,6 +90,7 @@ namespace XebecAPI.Controllers
         //get by appuserId
         // GET api/<ProfilePortfolioLinkController>/5
         [HttpGet("all/{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetProfilePortfolioLinksByUserID(int id)

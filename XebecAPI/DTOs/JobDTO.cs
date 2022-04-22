@@ -18,7 +18,9 @@ namespace XebecAPI.DTOs
 
         public string Location { get; set; }
 
-        public string Department { get; set; }
+        public int DepartmentId { get; set; }
+
+        public DepartmentDTO Department { get; set; }
 
         public string Status { get; set; }
 

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,6 +18,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class JobTypeHelperController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -85,6 +87,7 @@ namespace XebecAPI.Controllers
 
         // POST api/<JobTypeHelperController>
         [HttpPost]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -119,6 +122,7 @@ namespace XebecAPI.Controllers
 
         // POST api/<JobTypeHelperController>/list
         [HttpPost("list")]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -152,6 +156,7 @@ namespace XebecAPI.Controllers
 
         // PUT api/<JobTypeHelpersController>/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         public async Task<IActionResult> UpdateJobTypeHelper(int id, [FromBody] JobTypeHelperDTO JobTypeHelper)
         {
             if (!ModelState.IsValid)
@@ -184,6 +189,7 @@ namespace XebecAPI.Controllers
 
         // DELETE api/<JobTypeHelpersController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
