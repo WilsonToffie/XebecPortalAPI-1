@@ -57,6 +57,8 @@ namespace XebecAPI.Data
         public DbSet<SkillsBank> SkillsBanks { get; set; }
         public DbSet<Admin> Admins { get; set; }
 
+        public DbSet<Department> Departments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
