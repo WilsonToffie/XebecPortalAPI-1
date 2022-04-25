@@ -52,7 +52,7 @@ namespace XebecAPI.Controllers
         }
 
         // GET api/<AdditionalInformationController>/5
-        [HttpGet("{id}")]
+        [HttpGet("single/{id}")]
         [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]

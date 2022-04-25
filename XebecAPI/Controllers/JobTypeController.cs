@@ -32,7 +32,7 @@ namespace XebecAPI.Controllers
 
         // GET: api/<JobTypesController>
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetJobType()
