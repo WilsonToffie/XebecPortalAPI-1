@@ -60,6 +60,7 @@ namespace XebecAPI.Repositories
         private IGenericRepository<Admin> _admins;
 
         private IGenericRepository<Department> _departments;
+        private IGenericRepository<CollaboratorQuestion> _collaboratorQuestion;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -128,6 +129,8 @@ namespace XebecAPI.Repositories
         public IGenericRepository<Admin> Admins => _admins ??= new GenericRepository<Admin>(_context);
 
         public IGenericRepository<Department> Departments => _departments ??= new GenericRepository<Department>(_context);
+
+        public IGenericRepository<CollaboratorQuestion> CollaboratorQuestions => _collaboratorQuestion ??= new GenericRepository<CollaboratorQuestion>(_context);
 
         public void Dispose()
         {

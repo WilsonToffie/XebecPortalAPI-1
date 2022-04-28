@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XebecAPI.Data;
 
 namespace XebecAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220426075131_Policies")]
+    partial class Policies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,28 +192,6 @@ namespace XebecAPI.Migrations
                     b.HasIndex("JobId");
 
                     b.ToTable("CollaboratorsAssigneds");
-                });
-
-            modelBuilder.Entity("XebecAPI.Shared.CollaboratorQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuestionnaireHrFormId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("QuestionnaireHrFormId");
-
-                    b.ToTable("CollaboratorQuestions");
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.Department", b =>
@@ -947,25 +927,6 @@ namespace XebecAPI.Migrations
                     b.Navigation("AppUser");
 
                     b.Navigation("Job");
-                });
-
-            modelBuilder.Entity("XebecAPI.Shared.CollaboratorQuestion", b =>
-                {
-                    b.HasOne("XebecAPI.Shared.Security.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("XebecAPI.Shared.QuestionnaireHRForm", "QuestionnaireHRForm")
-                        .WithMany()
-                        .HasForeignKey("QuestionnaireHrFormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("QuestionnaireHRForm");
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.Document", b =>

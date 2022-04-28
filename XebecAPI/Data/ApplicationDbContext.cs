@@ -59,6 +59,8 @@ namespace XebecAPI.Data
 
         public DbSet<Department> Departments { get; set; }
 
+        public DbSet<CollaboratorQuestion> CollaboratorQuestions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

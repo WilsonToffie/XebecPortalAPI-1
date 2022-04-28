@@ -23,6 +23,8 @@ namespace XebecAPI.Shared
 
         public string Location { get; set; }
 
+        public string Policy { get; set; }
+
         public int? DepartmentId { get; set; }
 
         public Department Department { get; set; }

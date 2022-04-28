@@ -42,6 +42,7 @@ namespace XebecAPI.Configurations
             CreateMap<Skill, SkillDTO>().ReverseMap();
             CreateMap<SkillsBank, SkillsBankDTO>().ReverseMap();
             CreateMap<Department, DepartmentDTO>().ReverseMap();
+            CreateMap<CollaboratorQuestion, CollaboratorQuestionDTO>().ReverseMap();
         }
 
     }

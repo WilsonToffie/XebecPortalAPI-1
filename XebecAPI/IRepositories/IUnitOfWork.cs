@@ -60,6 +60,8 @@ namespace XebecAPI.IRepositories
 
         IGenericRepository<Department> Departments { get; }
 
+        IGenericRepository<CollaboratorQuestion> CollaboratorQuestions { get; }
+
         IGenericRepository<Admin> Admins { get; }
 
         //Saving to the DB
