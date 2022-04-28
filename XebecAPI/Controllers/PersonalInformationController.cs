@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "HRAdmin, Super Admin")]
+    [Authorize]
     [ApiController]
     public class PersonalInformationController : ControllerBase
     {
