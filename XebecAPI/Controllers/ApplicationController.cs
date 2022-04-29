@@ -108,6 +108,24 @@ namespace XebecAPI.Controllers
             }
         }
 
+        // GET api/<ApplicationController>/
+        [HttpGet("all/{userId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetApplicationUserId(int userId)
+        {
+            try
+            {
+                var application = await _unitOfWork.Applications.GetAll(q => q.AppUserId == userId);
+                return Ok(application);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<ApplicationsController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
