@@ -73,7 +73,7 @@ namespace XebecAPI.Controllers
 
         // POST api/<JobsController>
         [HttpPost]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -110,7 +110,7 @@ namespace XebecAPI.Controllers
 
         // PUT api/<JobsController>/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
+        [Authorize]
         public async Task<IActionResult> UpdateJob(int id, [FromBody] JobDTO Job)
         {
             if (!ModelState.IsValid)
@@ -144,7 +144,7 @@ namespace XebecAPI.Controllers
 
         // DELETE api/<JobsController>/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

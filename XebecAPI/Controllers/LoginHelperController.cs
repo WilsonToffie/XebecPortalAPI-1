@@ -18,7 +18,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "HRAdmin, Super Admin")]
+    [Authorize]
     public class LoginHelperController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -85,7 +85,6 @@ namespace XebecAPI.Controllers
 
         // POST api/<LoginHelpersController>
         [HttpPost]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

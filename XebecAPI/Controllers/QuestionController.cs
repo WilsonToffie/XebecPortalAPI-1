@@ -14,7 +14,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "HRAdmin, Super Admin")]
+    [Authorize]
     public class QuestionController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
