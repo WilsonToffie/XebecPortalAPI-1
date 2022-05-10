@@ -18,7 +18,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "HRAdmin, Super Admin")]
+    [Authorize]
     public class JobTypeController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

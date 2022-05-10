@@ -64,7 +64,6 @@ namespace XebecAPI.Controllers
 
         // POST api/<AdditionalInformationController>
         [HttpPost]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -100,7 +99,6 @@ namespace XebecAPI.Controllers
 
         // PUT api/<AdditionalInformationController>/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
         public async Task<IActionResult> UpdateType(int id, [FromBody] AnswerTypeDTO Type)
         {
             if (!ModelState.IsValid)
@@ -133,7 +131,6 @@ namespace XebecAPI.Controllers
 
         // DELETE api/<AdditionalInformationController>/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

@@ -32,7 +32,6 @@ namespace XebecAPI.Controllers
 
         // GET: api/<DocumentsController>
         [HttpGet]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetDocuments()
@@ -52,7 +51,6 @@ namespace XebecAPI.Controllers
 
         // GET api/<DocumentsController>/5
         [HttpGet("single/{id}")]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetSingleDocumentById(int id)
