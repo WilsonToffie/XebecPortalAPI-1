@@ -50,6 +50,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<QuestionnaireController>/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "HRAdmin, Super Admin, Candidate")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetQuestionnaire(int id)
@@ -66,7 +67,7 @@ namespace XebecAPI.Controllers
         }
 
         [HttpGet("job/{jobId}")]
-        [Authorize]
+        [Authorize(Roles = "HRAdmin, Super Admin, Candidate")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetQuestionnairebyJob(int jobId)
