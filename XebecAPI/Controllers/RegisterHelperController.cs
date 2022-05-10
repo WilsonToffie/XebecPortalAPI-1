@@ -32,7 +32,6 @@ namespace XebecAPI.Controllers
 
         // GET: api/<RegisterHelpersController>
         [HttpGet]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetRegisterHelpers()
@@ -52,7 +51,6 @@ namespace XebecAPI.Controllers
 
         // GET api/<RegisterHelpersController>/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetRegisterHelper(int id)
@@ -137,7 +135,6 @@ namespace XebecAPI.Controllers
 
         // DELETE api/<RegisterHelpersController>/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

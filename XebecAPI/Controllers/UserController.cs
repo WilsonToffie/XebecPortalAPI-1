@@ -20,7 +20,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "HRAdmin, Super Admin")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -228,7 +228,7 @@ namespace XebecAPI.Controllers
         }
 
         [HttpGet("Admins")]
-        [Authorize(Roles="Super Admin")]
+        [Authorize]
         public IActionResult GetAdminAuthorised()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
