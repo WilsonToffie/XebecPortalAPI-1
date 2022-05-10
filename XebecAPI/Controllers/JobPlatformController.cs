@@ -148,14 +148,14 @@ namespace XebecAPI.Controllers
 
             try
             {
-                var JobType = await _unitOfWork.JobTypes.GetT(q => q.Id == id);
+                var JobType = await _unitOfWork.JobPlatforms.GetT(q => q.Id == id);
 
                 if (JobType == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
 
-                await _unitOfWork.JobTypes.Delete(id);
+                await _unitOfWork.JobPlatforms.Delete(id);
                 await _unitOfWork.Save();
 
                 return NoContent();
