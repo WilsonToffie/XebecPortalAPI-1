@@ -88,7 +88,7 @@ namespace XebecAPI.Controllers
 
                 await _unitOfWork.Departments.Insert(Department);
                 await _unitOfWork.Save();
-                return CreatedAtAction("GetDepartment", new { id = Department.Id }, Department);
+                return CreatedAtAction("GetSingleDepartmentById", new { id = Department.Id }, Department);
 
             }
             catch (Exception e)
