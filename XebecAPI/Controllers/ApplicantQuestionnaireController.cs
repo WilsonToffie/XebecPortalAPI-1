@@ -66,24 +66,26 @@ namespace XebecAPI.Controllers
             }
         }
 
-        [HttpGet("job/{JobId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetQuestionsForApplicantByJob(int JobId)
-        {
+        //[HttpGet("job/{JobId}")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> GetQuestionsForApplicantByJob(int JobId)
+        //{
             
-            try
-            {
-                
-                var Question = await _unitOfWork.QuestionnaireHRForms.GetAll(p => p.JobId == JobId);
+        //    //this is completely wrong
 
-                return Ok(Question);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
+        //    try
+        //    {
+                
+        //        var Question = await _unitOfWork.QuestionnaireHRForms.GetAll(p => p.JobId == JobId);
+
+        //        return Ok(Question);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        //    }
+        //}
 
         // POST api/<QuestionnaireController>
         [HttpPost]
