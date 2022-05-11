@@ -63,6 +63,25 @@ namespace XebecAPI.Controllers
             }
         }
 
+        //Get api<CollaboratorsAssignedController/{jobId}>
+        [HttpGet("collaborators/{jobId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCollaboratorsAssignedByJob(int jobId)
+        {
+            try
+            {
+                var collaboratorsAssignedByJob = await _unitOfWork.CollaboratorsAssigned.GetAll(q => q.JobId == jobId);
+
+                return Ok(collaboratorsAssignedByJob);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<CollaboratorsAssignedController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
