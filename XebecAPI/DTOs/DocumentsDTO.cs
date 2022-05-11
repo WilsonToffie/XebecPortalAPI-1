@@ -11,9 +11,17 @@ namespace XebecAPI.DTOs
     {
         public int Id { get; set; }
 
-        public string DocumentName { get; set; }
+        public string CV { get; set; }
 
-        public string DocumentUrl { get; set; }
+        public string MatricCertificate { get; set; }
+
+        public string UniversityTranscript { get; set; }
+
+        public string AdditionalCert1 { get; set; }
+
+        public string AdditionalCert2 { get; set; }
+
+        public string AdditionalCert3 { get; set; }
 
         public int AppUserId { get; set; }
 
