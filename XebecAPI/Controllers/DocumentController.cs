@@ -121,7 +121,7 @@ namespace XebecAPI.Controllers
 
                 await _unitOfWork.Documents.Insert(Document);
                 await _unitOfWork.Save();
-                return CreatedAtAction("GetDocument", new { id = Document.Id }, Document);
+                return CreatedAtAction("GetSingleDocumentById", new { id = Document.Id }, Document);
 
             }
             catch (Exception e)
