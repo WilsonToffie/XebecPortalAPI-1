@@ -107,7 +107,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<ApplicationController>/
         [HttpGet("all/{userId}")]
-        [Authorize]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetApplicationUserId(int userId)
