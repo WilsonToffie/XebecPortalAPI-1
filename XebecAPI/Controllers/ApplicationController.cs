@@ -34,6 +34,7 @@ namespace XebecAPI.Controllers
 
         // GET: api/<ApplicationsController>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetApplications()
@@ -52,6 +53,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<ApplicationsController>/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetApplication(int id)
@@ -69,6 +71,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<ApplicationsController>/5
         [HttpGet("job/{JobId}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetApplicationByJob(int JobId)
@@ -89,6 +92,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<ApplicationController>/
         [HttpGet("user/{AppUserId}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetApplicationByUser(int AppUserId)
@@ -107,7 +111,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<ApplicationController>/
         [HttpGet("all/{userId}")]
-        [Authorize]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetApplicationUserId(int userId)

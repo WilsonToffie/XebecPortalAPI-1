@@ -29,6 +29,7 @@ namespace XebecAPI.Controllers
         }
         // GET: api/<CandidatesRecommenderController>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCandidatesRecommender()
@@ -48,6 +49,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<CandidatesRecommenderController>/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCandidatesRecommender(int id)
@@ -65,6 +67,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<CandidatesRecommenderController>/5
         [HttpGet("job/{jobId}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCandidatesRecommendebyByJob(int jobId)

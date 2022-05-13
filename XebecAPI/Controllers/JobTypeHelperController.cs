@@ -32,6 +32,7 @@ namespace XebecAPI.Controllers
 
         // GET: api/<JobTypeHelpersController>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetJobTypeHelpers()
@@ -51,6 +52,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<JobTypeHelpersController>/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetJobTypeHelper(int id)
@@ -67,6 +69,7 @@ namespace XebecAPI.Controllers
         }
 
         [HttpGet("job/{jobId}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetJobTypeHelperbyJob(int jobId)
