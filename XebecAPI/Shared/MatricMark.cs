@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using XebecAPI.Shared.Security;
 
-public class MatricMark
+namespace XebecAPI.Shared
 {
-	public MatricMark()
+	public class MatricMark
 	{
-		public int Id { get; set;
+		public int Id { get; set; }
         public string SubjectName { get; set; }
         public int SubjectMark { get; set; }
         public int AppUserId { get; set; }
