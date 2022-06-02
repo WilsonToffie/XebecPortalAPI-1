@@ -64,6 +64,8 @@ namespace XebecAPI.IRepositories
 
         IGenericRepository<Admin> Admins { get; }
 
+        IGenericRepository<MatricMark> MatricMarks { get; }
+
         //Saving to the DB
         Task Save();
 

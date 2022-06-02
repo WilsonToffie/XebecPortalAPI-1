@@ -61,6 +61,8 @@ namespace XebecAPI.Data
 
         public DbSet<CollaboratorQuestion> CollaboratorQuestions { get; set; }
 
+        public DbSet<MatricMark> MatricMarks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
