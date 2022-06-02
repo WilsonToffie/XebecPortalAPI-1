@@ -69,11 +69,8 @@ namespace XebecAPI.Controllers
         {
             try
             {
-
                 var DeveloperInfo = await usersCustomRepo.SearchUser("Developer", name);
-
                 return Ok(DeveloperInfo);
-
             }
             catch (Exception e)
             {
