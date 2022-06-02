@@ -60,6 +60,20 @@ namespace XebecAPI
 
             //});
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/api/auth/google-login";
+                })
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "178358724448-mtd4oduq3ku3i4bsm72tsf75ge6isic0.apps.googleusercontent.com";
+                    options.ClientSecret = "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";
+                });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
