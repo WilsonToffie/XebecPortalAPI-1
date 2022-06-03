@@ -37,7 +37,7 @@ namespace XebecAPI.Controllers.Security
         {
             var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
 
-            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme); // 
         }
 
         [HttpGet]
