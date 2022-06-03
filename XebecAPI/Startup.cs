@@ -64,14 +64,14 @@ namespace XebecAPI
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/api/auth/google-login";
-                })
+                //.AddCookie(options =>
+                //{
+                //    options.LoginPath = "/api/auth/google-login";
+                //})
                 .AddGoogle(options =>
                 {
-                    options.ClientId = "84965387423-9q7fhvqmo2s2fqostiiuhn9rlv637043.apps.googleusercontent.com";
-                    options.ClientSecret = "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";
+                    options.ClientId = Configuration["Google:ClientId"];
+                    options.ClientSecret = Configuration["Google:ClientSecret"];                    
                 });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
