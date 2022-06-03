@@ -28,7 +28,8 @@ namespace XebecAPI.Controllers.Security
         public async Task GoogleSignIn()
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
-            new AuthenticationProperties { RedirectUri = "/main" });
+            new AuthenticationProperties { });//RedirectUri = "/main" 
+
         }
 
         [HttpGet]
