@@ -70,8 +70,8 @@ namespace XebecAPI
                 })
                 .AddGoogle(options =>
                 {
-                    options.ClientId = "178358724448-mtd4oduq3ku3i4bsm72tsf75ge6isic0.apps.googleusercontent.com";
-                    options.ClientSecret = "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";
+                    options.ClientId = "84965387423-9q7fhvqmo2s2fqostiiuhn9rlv637043.apps.googleusercontent.com";
+                    options.ClientSecret = "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";
                 });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
