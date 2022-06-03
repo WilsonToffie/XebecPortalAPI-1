@@ -17,6 +17,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace XebecAPI.Controllers
 {
@@ -394,6 +395,42 @@ namespace XebecAPI.Controllers
 
 		}
 
+        [HttpGet("newgoogle-login")]		
 
+		public IActionResult googleLogin(string returnURL)
+        {
+			return Challenge(new AuthenticationProperties
+			{
+				RedirectUri = Url.Action(nameof(googleAccountLoginCallback), new { returnURL})
+			}, GoogleDefaults.AuthenticationScheme
+			);
+        }
+
+        [HttpGet("newgoogle-login-callback")]
+		public async Task<IActionResult> googleAccountLoginCallback(string returnURL)
+        {
+			var authenticationResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+
+            if (authenticationResult.Succeeded) // if it succeed then it needs to check if the user exists otherwise it has to add it
+            {
+				string email = HttpContext.User.Claims
+					.Where(x => x.Type ==ClaimTypes.Email)
+					.Select(p => p.Value)
+					.FirstOrDefault();
+
+				string firstname = HttpContext.User.Claims
+					.Where(x => x.Type == ClaimTypes.GivenName)
+					.Select(p => p.Value)
+					.FirstOrDefault();
+
+				string lastName = HttpContext.User.Claims
+					.Where(x => x.Type == ClaimTypes.Surname)
+					.Select(p => p.Value)
+					.FirstOrDefault();
+				return Redirect($"{returnURL}?externalauth=true");
+			}
+			return Redirect($"{returnURL}?externalauth=false");
+			// just add the info then to the method that adds users to it
+		} 
 	}
 }
