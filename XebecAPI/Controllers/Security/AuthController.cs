@@ -414,7 +414,7 @@ namespace XebecAPI.Controllers
             if (authenticationResult.Succeeded) // if it succeed then it needs to check if the user exists otherwise it has to add it
             {
 				string email = HttpContext.User.Claims
-					.Where(x => x.Type ==ClaimTypes.Email)
+					.Where(x => x.Type == ClaimTypes.Email)
 					.Select(p => p.Value)
 					.FirstOrDefault();
 
@@ -427,9 +427,9 @@ namespace XebecAPI.Controllers
 					.Where(x => x.Type == ClaimTypes.Surname)
 					.Select(p => p.Value)
 					.FirstOrDefault();
-				return Redirect($"{returnURL}?externalauth=true");
+				return Redirect($"{returnURL}/main");
 			}
-			return Redirect($"{returnURL}?externalauth=false");
+			return Redirect($"{returnURL}");
 			// just add the info then to the method that adds users to it
 		} 
 	}
