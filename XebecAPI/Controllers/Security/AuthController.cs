@@ -395,41 +395,59 @@ namespace XebecAPI.Controllers
 
 		}
 
-        [HttpGet("newgoogle-login")]		
-
+        [HttpGet]
+        [Route("newgoogle-login")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		public IActionResult googleLogin(string returnURL)
         {
-			return Challenge(new AuthenticationProperties
-			{
-				RedirectUri = Url.Action(nameof(googleAccountLoginCallback), new { returnURL})
-			}, GoogleDefaults.AuthenticationScheme
-			);
+            try
+            {
+				return Ok(Challenge(new AuthenticationProperties
+				{// Once the login in is successful it will redirect to the callback method
+					RedirectUri = Url.Action(nameof(googleAccountLoginCallback), new { returnURL })
+				}, GoogleDefaults.AuthenticationScheme));
+			}
+            catch (Exception e)
+            {
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
+			
         }
 
         [HttpGet("newgoogle-login-callback")]
 		public async Task<IActionResult> googleAccountLoginCallback(string returnURL)
         {
-			var authenticationResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
-            if (authenticationResult.Succeeded) // if it succeed then it needs to check if the user exists otherwise it has to add it
+            try
             {
-				string email = HttpContext.User.Claims
-					.Where(x => x.Type == ClaimTypes.Email)
-					.Select(p => p.Value)
-					.FirstOrDefault();
+				var authenticationResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme); // This will mainly be used to check if the authentication is successful or not	
 
-				string firstname = HttpContext.User.Claims
-					.Where(x => x.Type == ClaimTypes.GivenName)
-					.Select(p => p.Value)
-					.FirstOrDefault();
+				if (authenticationResult.Succeeded) // if it succeed then it needs to check if the user exists otherwise it has to add it
+				{
+					string email = HttpContext.User.Claims
+						.Where(x => x.Type == ClaimTypes.Email)
+						.Select(p => p.Value)
+						.FirstOrDefault();
 
-				string lastName = HttpContext.User.Claims
-					.Where(x => x.Type == ClaimTypes.Surname)
-					.Select(p => p.Value)
-					.FirstOrDefault();
-				return Redirect($"{returnURL}/main");
+					string firstname = HttpContext.User.Claims
+						.Where(x => x.Type == ClaimTypes.GivenName)
+						.Select(p => p.Value)
+						.FirstOrDefault();
+
+					string lastName = HttpContext.User.Claims
+						.Where(x => x.Type == ClaimTypes.Surname)
+						.Select(p => p.Value)
+						.FirstOrDefault();
+					return Redirect($"{returnURL}/main");
+				}
+				return Ok(Redirect($"{returnURL}"));
 			}
-			return Redirect($"{returnURL}");
+            catch (Exception e)
+            {
+				return StatusCode(StatusCodes.Status500InternalServerError, "Throwback method " + e.Message);
+			}
+			
 			// just add the info then to the method that adds users to it
 		} 
 	}
