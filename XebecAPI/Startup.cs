@@ -64,10 +64,10 @@ namespace XebecAPI
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-                //.AddCookie(options =>
-                //{
-                //    options.LoginPath = "/api/auth/google-login";
-                //})
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/api/auth/google-login";
+                })
                 .AddGoogle(options =>
                 {
                     options.ClientId = Configuration["Google:ClientId"];
