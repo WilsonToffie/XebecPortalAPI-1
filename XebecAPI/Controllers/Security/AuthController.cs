@@ -403,10 +403,10 @@ namespace XebecAPI.Controllers
         {
             try
             {
-				return Ok(Challenge(new AuthenticationProperties
+				return Challenge(new AuthenticationProperties
 				{// Once the login in is successful it will redirect to the callback method
 					RedirectUri = Url.Action(nameof(googleAccountLoginCallback), new { returnURL })
-				}, GoogleDefaults.AuthenticationScheme));
+				}, GoogleDefaults.AuthenticationScheme);
 			}
             catch (Exception e)
             {
@@ -443,7 +443,7 @@ namespace XebecAPI.Controllers
 						.FirstOrDefault();
 					return Redirect($"{returnURL}/main");
 				}
-				return Ok(Redirect($"{returnURL}"));
+				return Redirect($"{returnURL}");
 			}
             catch (Exception e)
             {
