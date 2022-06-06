@@ -410,7 +410,7 @@ namespace XebecAPI.Controllers
 			}
             catch (Exception e)
             {
-				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+				return StatusCode(StatusCodes.Status500InternalServerError,"Error at confirming " +  e.Message);
 			}
 			
         }
