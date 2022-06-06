@@ -446,6 +446,7 @@ namespace XebecAPI.Controllers
             catch (Exception e)
             {
 				return StatusCode(StatusCodes.Status500InternalServerError, "Throwback method " + e.Message);
+				// Test
 			}
 			
 			// just add the info then to the method that adds users to it
