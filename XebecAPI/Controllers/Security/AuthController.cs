@@ -416,6 +416,8 @@ namespace XebecAPI.Controllers
         }
 
         [HttpGet("newgoogle-login-callback")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		public async Task<IActionResult> googleAccountLoginCallback(string returnURL)
         {
 
