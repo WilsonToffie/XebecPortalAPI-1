@@ -13,25 +13,31 @@ namespace XebecAPI.DTOs
         public string Title { get; set; }
 
         public string Description { get; set; }
+        public int? CompanyId { get; set; }
 
-        public string Company { get; set; }
+        public CompanyDTO Company { get; set; }
 
-        public string Location { get; set; }
+        public decimal? Compensation { get; set; }
 
-        public string Policy { get; set; }
+        public int? MinimumExperience { get; set; }
+        public int? LocationId { get; set; }
 
-        public int DepartmentId { get; set; }
+        public LocationDTO Location { get; set; }
+        public int? PolicyID { get; set; }
+
+        public PolicyDTO Policy { get; set; }
+
+        public int? DepartmentId { get; set; }
 
         public DepartmentDTO Department { get; set; }
 
-        public string Status { get; set; }
+        public string? Status { get; set; }
 
         public int? AppUserId { get; set; }
         public AppUserDTO AppUser { get; set; }
 
         public DateTime DueDate { get; set; }
-        public string JobType { get; set; }
-        public DateTime CreationDate { get; set; }
 
+        public DateTime CreationDate { get; set; }       
     }
 }

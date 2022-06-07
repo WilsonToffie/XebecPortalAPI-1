@@ -64,6 +64,10 @@ namespace XebecAPI.Repositories
 
         private IGenericRepository<MatricMark> _matricMarks;
 
+        private IGenericRepository<Company> _companies;
+        private IGenericRepository<Location> _locations;
+        private IGenericRepository<Policy> _policies;
+
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -136,6 +140,9 @@ namespace XebecAPI.Repositories
         public IGenericRepository<CollaboratorQuestion> CollaboratorQuestions => _collaboratorQuestion ??= new GenericRepository<CollaboratorQuestion>(_context);
 
         public IGenericRepository<MatricMark> MatricMarks => _matricMarks ??= new GenericRepository<MatricMark>(_context);
+        public IGenericRepository<Company> Companies  => _companies ??= new GenericRepository<Company>(_context);
+        public IGenericRepository<Location> Locations  => _locations ??= new GenericRepository<Location>(_context);
+        public IGenericRepository<Policy> Policies  => _policies ??= new GenericRepository<Policy>(_context);
 
         public void Dispose()
         {
