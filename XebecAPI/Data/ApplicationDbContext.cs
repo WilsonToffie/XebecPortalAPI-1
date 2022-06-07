@@ -62,6 +62,9 @@ namespace XebecAPI.Data
         public DbSet<CollaboratorQuestion> CollaboratorQuestions { get; set; }
 
         public DbSet<MatricMark> MatricMarks { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Policy> Policies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

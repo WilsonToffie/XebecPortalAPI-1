@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XebecAPI.Data;
 
 namespace XebecAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220607072733_newTables")]
+    partial class newTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,8 +320,8 @@ namespace XebecAPI.Migrations
                     b.Property<int?>("AppUserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Compensation")
                         .HasColumnType("decimal(18,2)");
@@ -336,14 +338,14 @@ namespace XebecAPI.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LocationId")
-                        .HasColumnType("int");
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("MinimumExperience")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PolicyID")
-                        .HasColumnType("int");
+                    b.Property<string>("Policy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -355,13 +357,7 @@ namespace XebecAPI.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.HasIndex("CompanyId");
-
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("PolicyID");
 
                     b.ToTable("Jobs");
                 });
@@ -1081,31 +1077,13 @@ namespace XebecAPI.Migrations
                         .WithMany()
                         .HasForeignKey("AppUserId");
 
-                    b.HasOne("XebecAPI.Shared.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId");
-
                     b.HasOne("XebecAPI.Shared.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId");
 
-                    b.HasOne("XebecAPI.Shared.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
-
-                    b.HasOne("XebecAPI.Shared.Policy", "Policy")
-                        .WithMany()
-                        .HasForeignKey("PolicyID");
-
                     b.Navigation("AppUser");
 
-                    b.Navigation("Company");
-
                     b.Navigation("Department");
-
-                    b.Navigation("Location");
-
-                    b.Navigation("Policy");
                 });
 
             modelBuilder.Entity("XebecAPI.Shared.JobAlert", b =>
