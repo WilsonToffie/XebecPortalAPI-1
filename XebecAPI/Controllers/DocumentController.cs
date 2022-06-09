@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,6 +18,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DocumentController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -119,7 +121,7 @@ namespace XebecAPI.Controllers
 
                 await _unitOfWork.Documents.Insert(Document);
                 await _unitOfWork.Save();
-                return CreatedAtAction("GetDocument", new { id = Document.Id }, Document);
+                return CreatedAtAction("GetSingleDocumentById", new { id = Document.Id }, Document);
 
             }
             catch (Exception e)

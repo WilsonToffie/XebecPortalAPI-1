@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
-   // [Authorize]
+    [Authorize]
     [ApiController]
     public class SkillController : ControllerBase
     {
@@ -32,6 +32,7 @@ namespace XebecAPI.Controllers
 
         // GET: api/<SkillController>
         [HttpGet]
+        [Authorize(Roles = "HRAdmin, Super Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetSkills()

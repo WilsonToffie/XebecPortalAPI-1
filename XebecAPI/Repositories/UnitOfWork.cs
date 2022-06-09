@@ -58,6 +58,16 @@ namespace XebecAPI.Repositories
         private IGenericRepository<Skill> _skills;
         private IGenericRepository<SkillsBank> _skillsBank;
         private IGenericRepository<Admin> _admins;
+
+        private IGenericRepository<Department> _departments;
+        private IGenericRepository<CollaboratorQuestion> _collaboratorQuestion;
+
+        private IGenericRepository<MatricMark> _matricMarks;
+
+        private IGenericRepository<Company> _companies;
+        private IGenericRepository<Location> _locations;
+        private IGenericRepository<Policy> _policies;
+
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -124,6 +134,15 @@ namespace XebecAPI.Repositories
         public IGenericRepository<SkillsBank> SkillsBanks => _skillsBank ??= new GenericRepository<SkillsBank>(_context);
 
         public IGenericRepository<Admin> Admins => _admins ??= new GenericRepository<Admin>(_context);
+
+        public IGenericRepository<Department> Departments => _departments ??= new GenericRepository<Department>(_context);
+
+        public IGenericRepository<CollaboratorQuestion> CollaboratorQuestions => _collaboratorQuestion ??= new GenericRepository<CollaboratorQuestion>(_context);
+
+        public IGenericRepository<MatricMark> MatricMarks => _matricMarks ??= new GenericRepository<MatricMark>(_context);
+        public IGenericRepository<Company> Companies  => _companies ??= new GenericRepository<Company>(_context);
+        public IGenericRepository<Location> Locations  => _locations ??= new GenericRepository<Location>(_context);
+        public IGenericRepository<Policy> Policies  => _policies ??= new GenericRepository<Policy>(_context);
 
         public void Dispose()
         {

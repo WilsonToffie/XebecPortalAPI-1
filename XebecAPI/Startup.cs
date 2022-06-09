@@ -60,6 +60,20 @@ namespace XebecAPI
 
             //});
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/api/auth/google-login";
+                })
+                .AddGoogle(options =>
+                {
+                    options.ClientId = Configuration["Google:ClientId"];
+                    options.ClientSecret = Configuration["Google:ClientSecret"];                    
+                });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters

@@ -14,16 +14,23 @@ namespace XebecAPI.Shared
         public string Title { get; set; }
 
         public string Description { get; set; }
+        public int? CompanyId { get; set; }
 
-        public string Company { get; set; }
+        public Company Company { get; set; }
 
         public decimal? Compensation { get; set; }
 
         public int? MinimumExperience { get; set; }
+        public int? LocationId { get; set; }
 
-        public string Location { get; set; }
+        public Location Location { get; set; }
+        public int? PolicyID { get; set; }
 
-        public string Department { get; set; }
+        public Policy Policy { get; set; }
+
+        public int? DepartmentId { get; set; }
+
+        public Department Department { get; set; }
 
         public string? Status { get; set; }
 

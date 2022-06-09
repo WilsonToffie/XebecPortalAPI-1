@@ -18,7 +18,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize]
+    [Authorize]
     public class WorkHistoryController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -68,6 +68,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<WorkHistoryController>/all/1
         [HttpGet("all/{userId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetWorkHistoryByUserId(int userId)
@@ -84,6 +85,7 @@ namespace XebecAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetSingleWorkHistoryByUserId(int id)

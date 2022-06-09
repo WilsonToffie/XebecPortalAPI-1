@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class PersonalInformationController : ControllerBase
     {
@@ -33,6 +33,7 @@ namespace XebecAPI.Controllers
 
         // GET: api/<PersonalInformationController>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPersonalInformations()
@@ -52,6 +53,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<PersonalInformationController>/5
         [HttpGet("single/{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPersonalInformation(int id)
@@ -70,6 +72,7 @@ namespace XebecAPI.Controllers
         //get by appuserId
         // GET api/<PersonalInformationController>/5
         [HttpGet("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetFirstPersonalInformationByUserID(int id)
@@ -88,6 +91,7 @@ namespace XebecAPI.Controllers
         //get by appuserId
         // GET api/<PersonalInformationController>/5
         [HttpGet("all/{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPersonalInformationsByUserID(int id)
@@ -105,6 +109,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<PersonalInformationController>/email=test@test.com
         [HttpGet("email={email}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPersonalInfoByEmail(string email)
@@ -178,6 +183,7 @@ namespace XebecAPI.Controllers
 
         // POST api/<PersonalInformationController>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -213,6 +219,7 @@ namespace XebecAPI.Controllers
 
         // PUT api/<PersonalInformationController>/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdatePersonalInformation(int id, [FromBody] PersonalInformationDTO PersonalInformation)
         {
             if (!ModelState.IsValid)
@@ -245,6 +252,7 @@ namespace XebecAPI.Controllers
 
         // DELETE api/<PersonalInformationController>/5
         [HttpDelete("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

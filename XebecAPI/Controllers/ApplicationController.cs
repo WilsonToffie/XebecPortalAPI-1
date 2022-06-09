@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,6 +18,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ApplicationController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -32,6 +34,7 @@ namespace XebecAPI.Controllers
 
         // GET: api/<ApplicationsController>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetApplications()
@@ -50,6 +53,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<ApplicationsController>/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetApplication(int id)
@@ -67,6 +71,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<ApplicationsController>/5
         [HttpGet("job/{JobId}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetApplicationByJob(int JobId)
@@ -87,6 +92,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<ApplicationController>/
         [HttpGet("user/{AppUserId}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetApplicationByUser(int AppUserId)
@@ -98,6 +104,24 @@ namespace XebecAPI.Controllers
                 return Ok(Application);
             }
             catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET api/<ApplicationController>/
+        [HttpGet("all/{userId}")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetApplicationUserId(int userId)
+        {
+            try
+            {
+                var application = await _unitOfWork.Applications.GetAll(q => q.AppUserId == userId);
+                return Ok(application);
+            }
+            catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }

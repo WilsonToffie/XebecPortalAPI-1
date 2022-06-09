@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Authentication;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace XebecAPI.Controllers
 {
@@ -26,16 +28,19 @@ namespace XebecAPI.Controllers
 		private readonly IUnitOfWork unitOfWork;
         private readonly IEmailRepo emailrepo;
 
-        public AuthController(IUserDb userDb, IUnitOfWork unitOfWork, IEmailRepo emailrepo)
+		private readonly IConfiguration config;
+
+		public AuthController(IUserDb userDb, IUnitOfWork unitOfWork, IEmailRepo emailrepo, IConfiguration _config)
 		{
 			this.userDb = userDb;
 			this.unitOfWork = unitOfWork;
-            this.emailrepo = emailrepo;
-        }
+			this.emailrepo = emailrepo;
+			config = _config;
+		}
 
 		private string CreateJWT(AppUser user)
 		{
-			var secretkey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("THIS IS THE SECRET KEY"));
+			var secretkey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(config["JWT:Key"]));
 			// NOTE: SAME KEY AS USED IN Startup.cs FILE
 
 			var credentials = new SigningCredentials(secretkey, SecurityAlgorithms.HmacSha256);
@@ -51,9 +56,10 @@ namespace XebecAPI.Controllers
 				// NOTE: this could a unique ID assigned to the user by a database
 			};
 
-			var token = new JwtSecurityToken(issuer: "domain.com", audience: "domain.com", claims: claims, expires: DateTime.Now.AddMinutes(60), signingCredentials: credentials);
+			var token = new JwtSecurityToken(issuer: config["JWT:Issuer"], audience: config["JWT:Audience"], claims: claims, expires: DateTime.Now.AddMinutes(15), signingCredentials: credentials);
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
+
 
 
 
@@ -389,6 +395,62 @@ namespace XebecAPI.Controllers
 
 		}
 
+        [HttpGet]
+        [Route("newgoogle-login")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+		public IActionResult googleLogin(string returnURL)
+        {
+            try
+            {
+				return Challenge(new AuthenticationProperties
+				{// Once the login in is successful it will redirect to the callback method
+					RedirectUri = Url.Action(nameof(googleAccountLoginCallback), new { returnURL })
+				}, GoogleDefaults.AuthenticationScheme);
+			}
+            catch (Exception e)
+            {
+				return StatusCode(StatusCodes.Status500InternalServerError,"Error at confirming " +  e.Message);
+			}			
+        }
 
+        [HttpGet("newgoogle-login-callback")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+		public async Task<IActionResult> googleAccountLoginCallback(string returnURL)
+        {
+
+            try
+            {
+				var authenticationResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme); // This will mainly be used to check if the authentication is successful or not	
+
+				if (authenticationResult.Succeeded) // if it succeed then it needs to check if the user exists otherwise it has to add it
+				{
+					string email = HttpContext.User.Claims
+						.Where(x => x.Type == ClaimTypes.Email)
+						.Select(p => p.Value)
+						.FirstOrDefault();
+
+					string firstname = HttpContext.User.Claims
+						.Where(x => x.Type == ClaimTypes.GivenName)
+						.Select(p => p.Value)
+						.FirstOrDefault();
+
+					string lastName = HttpContext.User.Claims
+						.Where(x => x.Type == ClaimTypes.Surname)
+						.Select(p => p.Value)
+						.FirstOrDefault();
+					return Redirect($"{returnURL}/main");
+				}
+				return Redirect($"{returnURL}");
+			}
+            catch (Exception e)
+            {
+				return StatusCode(StatusCodes.Status500InternalServerError, "Throwback method " + e.Message);
+				// Test
+			}
+			
+			// just add the info then to the method that adds users to it
+		} 
 	}
 }

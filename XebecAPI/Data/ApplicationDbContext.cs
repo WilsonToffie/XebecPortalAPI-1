@@ -57,14 +57,23 @@ namespace XebecAPI.Data
         public DbSet<SkillsBank> SkillsBanks { get; set; }
         public DbSet<Admin> Admins { get; set; }
 
+        public DbSet<Department> Departments { get; set; }
+
+        public DbSet<CollaboratorQuestion> CollaboratorQuestions { get; set; }
+
+        public DbSet<MatricMark> MatricMarks { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Policy> Policies { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new AnswerTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new JobPlatformConfiguration());
-            modelBuilder.ApplyConfiguration(new JobTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new AppPhaseConfiguration());
-            modelBuilder.ApplyConfiguration(new UnsuccessfulReasonConfiguration());
+            //modelBuilder.ApplyConfiguration(new AnswerTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new JobPlatformConfiguration());
+            //modelBuilder.ApplyConfiguration(new JobTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new AppPhaseConfiguration());
+            //modelBuilder.ApplyConfiguration(new UnsuccessfulReasonConfiguration());
         }
 
     }

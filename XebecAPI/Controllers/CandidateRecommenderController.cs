@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,6 +16,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CandidateRecommenderController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -27,6 +29,7 @@ namespace XebecAPI.Controllers
         }
         // GET: api/<CandidatesRecommenderController>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCandidatesRecommender()
@@ -46,6 +49,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<CandidatesRecommenderController>/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCandidatesRecommender(int id)
@@ -63,6 +67,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<CandidatesRecommenderController>/5
         [HttpGet("job/{jobId}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCandidatesRecommendebyByJob(int jobId)
@@ -80,6 +85,7 @@ namespace XebecAPI.Controllers
 
         // POST api/<CandidatesRecommenderController>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

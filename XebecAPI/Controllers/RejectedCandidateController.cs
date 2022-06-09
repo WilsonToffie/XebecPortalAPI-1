@@ -8,11 +8,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using XebecAPI.Shared;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RejectedCandidateController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -59,6 +61,7 @@ namespace XebecAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
 
         // POST api/<RejectedCandidateController>
         [HttpPost]

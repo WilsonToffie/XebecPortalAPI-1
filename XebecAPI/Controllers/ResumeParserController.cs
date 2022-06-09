@@ -14,11 +14,13 @@ using iTextSharp.text.pdf.parser;
 using Newtonsoft.Json.Linq;
 using Azure;
 using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ResumeParserController : ControllerBase
     {
         [HttpGet]

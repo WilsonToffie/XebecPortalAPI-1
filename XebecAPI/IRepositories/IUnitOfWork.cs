@@ -58,7 +58,16 @@ namespace XebecAPI.IRepositories
 
         IGenericRepository<SkillsBank> SkillsBanks { get; }
 
+        IGenericRepository<Department> Departments { get; }
+
+        IGenericRepository<CollaboratorQuestion> CollaboratorQuestions { get; }
+
         IGenericRepository<Admin> Admins { get; }
+
+        IGenericRepository<MatricMark> MatricMarks { get; }
+        IGenericRepository<Company> Companies { get; }
+        IGenericRepository<Location> Locations { get; }
+        IGenericRepository<Policy> Policies { get; }
 
         //Saving to the DB
         Task Save();

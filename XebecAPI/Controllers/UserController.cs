@@ -20,6 +20,7 @@ namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -53,6 +54,7 @@ namespace XebecAPI.Controllers
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUser(int id)
@@ -226,7 +228,7 @@ namespace XebecAPI.Controllers
         }
 
         [HttpGet("Admins")]
-        [Authorize(Roles="Super Admin")]
+        [Authorize]
         public IActionResult GetAdminAuthorised()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;

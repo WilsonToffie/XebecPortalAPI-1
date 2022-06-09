@@ -24,7 +24,5 @@ namespace XebecAPI.DTOs
        public int AppUserId { get; set; }
 
         public AppUserDTO AppUser { get; set; }
-
-
      }
 }

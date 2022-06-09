@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 using XebecAPI.Shared;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class QuestionnaireController : ControllerBase
     {
 
@@ -29,6 +31,7 @@ namespace XebecAPI.Controllers
 
         // GET: api/<QuestionnaireController>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetQuestionnaire()
@@ -64,6 +67,7 @@ namespace XebecAPI.Controllers
         }
 
         [HttpGet("job/{jobId}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetQuestionnairebyJob(int jobId)

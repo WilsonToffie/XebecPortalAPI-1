@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class AdditionalInformationController : ControllerBase
     {
@@ -51,7 +51,7 @@ namespace XebecAPI.Controllers
         }
 
         // GET api/<AdditionalInformationController>/5
-        [HttpGet("{id}")]
+        [HttpGet("single/{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAdditionalInformation(int id)
@@ -59,6 +59,41 @@ namespace XebecAPI.Controllers
             try
             {
                 var AdditionalInformation = await _unitOfWork.AdditionalInformation.GetT(q => q.Id == id);
+                return Ok(AdditionalInformation);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET api/<AdditionalInformationController>/userId=1
+        [HttpGet("all/{userId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAdditionalInformationsByUserId(int userId)
+        {
+            try
+            {
+                var additionalInformations = await _unitOfWork.AdditionalInformation.GetAll(q => q.AppUserId == userId);
+                return Ok(additionalInformations);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        //get by appuserid
+        // GET api/<AdditionalInformationController>/5
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSingleAdditionalInformationByUserID(int id)
+        {
+            try
+            {
+                var AdditionalInformation = await _unitOfWork.AdditionalInformation.GetT(q => q.AppUserId == id);
                 return Ok(AdditionalInformation);
             }
             catch (Exception e)

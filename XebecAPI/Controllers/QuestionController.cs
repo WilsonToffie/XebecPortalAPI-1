@@ -8,11 +8,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using XebecAPI.Shared;
 using XebecAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace XebecAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class QuestionController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
