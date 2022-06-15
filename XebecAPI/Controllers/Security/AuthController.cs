@@ -216,8 +216,6 @@ namespace XebecAPI.Controllers
 				};
 
 				return new LoginResult { Message = "User/password not found.", Success = false };
-
-
 		}
 
 		

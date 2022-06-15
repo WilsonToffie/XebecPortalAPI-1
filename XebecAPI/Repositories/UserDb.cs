@@ -203,10 +203,11 @@ namespace XebecAPI.Repositories
 			{
 				if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
 					return null;
-
+				string hashedPassword = CreateHash(password);
 				var user = await unitOfWork.AppUsers.GetT(q => q.Email.Equals(email));
 				var result = mapper.Map<AppUserDTO>(user);
-				user.PasswordHash = password;
+				//user.PasswordHash = password;
+				user.PasswordHash = hashedPassword;
 
 				unitOfWork.AppUsers.Update(user);
 				await unitOfWork.Save();
