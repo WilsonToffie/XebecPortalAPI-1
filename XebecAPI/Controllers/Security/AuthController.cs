@@ -56,7 +56,7 @@ namespace XebecAPI.Controllers
 				// NOTE: this could a unique ID assigned to the user by a database
 			};
 
-			var token = new JwtSecurityToken(issuer: config["JWT:Issuer"], audience: config["JWT:Audience"], claims: claims, expires: DateTime.Now.AddMinutes(15), signingCredentials: credentials);
+			var token = new JwtSecurityToken(issuer: config["JWT:Issuer"], audience: config["JWT:Audience"], claims: claims, expires: DateTime.Now.AddMinutes(60), signingCredentials: credentials);
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 
